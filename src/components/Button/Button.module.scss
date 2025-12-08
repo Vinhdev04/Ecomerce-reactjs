@@ -1,0 +1,15 @@
+/* @use '@styles/mixin.module.scss' as mixin; */
+@use '@styles/mixin.module.scss' as *;
+
+.btn {
+    // call mixin
+    /* @include mixin.btn(30px, 30px, #5db39d, 8px); */
+    @include btn(30px, 30px, #5db39d, 8px);
+    margin-right: 10px;
+}
+
+.btn2 {
+    // call mixin
+    @include btn(34px, 34px, purple, 50%);
+    color: #fff;
+}

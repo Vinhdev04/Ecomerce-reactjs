@@ -9,3 +9,14 @@
     -ms-border-radius: $radius;
     -o-border-radius: $radius;
 }
+
+@mixin btn($w, $h, $color, $radius) {
+    width: $w;
+    height: $h;
+    background-color: $color;
+    border: 1px solid #e1e1e1;
+    outline: 0;
+    cursor: pointer;
+
+    @include radius_base($radius);
+}
