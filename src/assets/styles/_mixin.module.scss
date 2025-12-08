@@ -20,3 +20,17 @@
 
     @include radius_base($radius);
 }
+
+@mixin flex_box ($x,$y,$gap: 10px){
+    display: flex;
+    justify-content: $x;
+    align-items: $y;
+    gap: $gap;
+}
+
+
+@mixin size_img ($w,$h,$obj:cover){
+    width: $w;
+    height: $h;
+    object-fit: $obj;
+}
