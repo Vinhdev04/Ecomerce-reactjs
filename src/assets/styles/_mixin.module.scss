@@ -1,5 +1,6 @@
+@use '@styles/variable.module.scss' as *;
 /* ==============================
-     Mixin
+     Mixin radius
  ============================== */
 
 @mixin radius_base($radius: 10px) {
@@ -10,6 +11,9 @@
     -o-border-radius: $radius;
 }
 
+/* ==============================
+    Mixin button
+ ============================== */
 @mixin btn($w, $h, $color, $radius) {
     width: $w;
     height: $h;
@@ -21,16 +25,72 @@
     @include radius_base($radius);
 }
 
-@mixin flex_box ($x,$y,$gap: 10px){
+/* ==============================
+    Mixin flexbox
+ ============================== */
+
+@mixin flex_box($x, $y, $gap: 10px) {
     display: flex;
     justify-content: $x;
     align-items: $y;
     gap: $gap;
 }
 
-
-@mixin size_img ($w,$h,$obj:cover){
+/* ==============================
+    Mixin size image
+ ============================== */
+@mixin size_img($w, $h, $obj: cover) {
     width: $w;
     height: $h;
     object-fit: $obj;
+}
+
+/* ==============================
+    Mixin position 
+ ============================== */
+@mixin position_sticky($top, $right, $bottom, $left) {
+    position: sticky;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+}
+
+/* ==============================
+    Mixin Breakpoints
+ ============================== */
+@mixin responsive($device) {
+    @if $device == mobile {
+        @media (max-width: #{$mobile}) {
+            @content;
+        }
+    } @else if $device == tablet {
+        @media (max-width: #{$tablet}) {
+            @content;
+        }
+    } @else if $device == laptop {
+        @media (max-width: #{$laptop}) {
+            @content;
+        }
+    } @else if $device == desktop {
+        @media (max-width: #{$desktop}) {
+            @content;
+        }
+    }
+}
+
+@mixin container {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1200px;
+
+    @include responsive(laptop) {
+        max-width: 960px;
+    }
+    @include responsive(tablet) {
+        max-width: 720px;
+    }
+    @include responsive(mobile) {
+        max-width: 540px;
+    }
 }

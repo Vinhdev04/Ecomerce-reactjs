@@ -10,13 +10,20 @@
     height: 26px;
 }
 
+.container {
+    @include flex_box(center, center, 0px);
+    background: #88c7c9;
+    position: sticky;
+    top: 2px;
+}
+
 .containerHeader {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 
+    @include container;
     height: 80px;
-    background: #d7d7d7;
 }
 
 .containerBox {
@@ -24,15 +31,19 @@
 }
 
 .containerItem {
-    @include flex_box(center, center, 20px);
+    @include flex_box(center, center, 40px);
 }
 
 .navLogo {
-    @include size_img(153px, 53px, cover);
+    @include size_img(24px, 24px, cover);
 }
 
 .navItem {
     cursor: pointer;
+    padding-top: 8px;
+    font-size: 14px;
+
+    color: $primary_color;
 }
 
 .navItem::after {
@@ -63,4 +74,35 @@
     -ms-transform: scale(1);
     -o-transform: scale(1);
     opacity: 1;
+}
+.headerContent {
+    display: flex;
+    align-items: center;
+}
+
+.titleBox {
+    @include flex_box(center, center, 0px);
+    flex-direction: column;
+    margin-top: -10px;
+    @include responsive(mobile) {
+        display: none;
+    }
+    @include responsive(tablet) {
+        display: none;
+    }
+}
+
+.titleRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logoFont {
+    font-size: 22px;
+}
+
+.descLogo {
+    color: $secondary_color;
+    margin-top: -4px;
 }
