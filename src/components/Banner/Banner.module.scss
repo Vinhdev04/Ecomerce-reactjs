@@ -1,0 +1,43 @@
+@use '@styles/mixin.module.scss' as *;
+.container {
+    @include flex_box(start, center, 0px);
+
+    background-image: url(../../assets/images/bannerX.jpeg);
+    object-fit: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    min-height: 800px;
+}
+
+.bannerInform {
+    @include margin(0, 200px, 0, 200px);
+    @include flex_box(center, center, 0px);
+
+    flex-direction: column;
+    & h1 {
+        color: #fff;
+        font-size: 50px;
+        margin-bottom: 0;
+        max-width: 700px;
+    }
+
+    & p {
+        @include margin(20px, 0px, 20px, 0px);
+        @include text_ps(justify);
+
+        color: #bdb8b8;
+        font-size: 18px;
+        white-space: break-spaces;
+        max-width: 720px;
+    }
+
+    & button {
+        &:hover {
+            background-color: #ff3b1f;
+        }
+    }
+
+    span {
+        color: #ff6a3d;
+    }
+}

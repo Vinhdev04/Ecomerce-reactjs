@@ -14,9 +14,9 @@
 /* ==============================
     Mixin button
  ============================== */
-@mixin btn($w, $h, $color, $radius) {
-    width: $w;
-    height: $h;
+@mixin btn($radius, $color: #fff) {
+    @include padding(10px, 40px, 10px, 40px);
+
     background-color: $color;
     border: 1px solid #e1e1e1;
     outline: 0;
@@ -54,6 +54,33 @@
     right: $right;
     bottom: $bottom;
     left: $left;
+}
+
+/* ==============================
+    Mixin margin
+ ============================== */
+@mixin margin($t, $r, $b, $l) {
+    margin-top: $t;
+    margin-right: $r;
+    margin-bottom: $b;
+    margin-left: $l;
+}
+
+/* ==============================
+    Mixin padding
+ ============================== */
+@mixin padding($t, $r, $b, $l) {
+    padding-top: $t;
+    padding-right: $r;
+    padding-bottom: $b;
+    padding-left: $l;
+}
+
+/* ==============================
+    Mixin text
+ ============================== */
+@mixin text_ps($type) {
+    text-align: $type;
 }
 
 /* ==============================

@@ -1,15 +1,16 @@
-/* @use '@styles/mixin.module.scss' as mixin; */
 @use '@styles/mixin.module.scss' as *;
+@use '@styles/variable.module.scss' as *;
 
 .btn {
-    // call mixin
-    /* @include mixin.btn(30px, 30px, #5db39d, 8px); */
-    @include btn(30px, 30px, #5db39d, 8px);
-    margin-right: 10px;
-}
+    @include btn(8px, $btn_color);
 
-.btn2 {
-    // call mixin
-    @include btn(34px, 34px, purple, 50%);
-    color: #fff;
+    color: $white_color;
+    font-weight: 400;
+    cursor: pointer;
+
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        background-color: $btn_color;
+        color: $white_color;
+    }
 }

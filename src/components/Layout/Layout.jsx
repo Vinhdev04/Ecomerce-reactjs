@@ -1,21 +1,17 @@
 import React from 'react';
-import Header from '../Header/Header.jsx';
-import Footer from '../Footer/Footer.jsx';
-import BackToTop from '../BackToTop/BackToTop.jsx';
+
 import styles from './Layout.module.scss';
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
+import BackToTop from '@/components/BackToTop/BackToTop';
+
 function Layout({ children }) {
     const { wrapperLayout, containerLayout } = styles;
     return (
         <>
-            <Header />
-
             <main className={wrapperLayout}>
                 <div className={containerLayout}>{children}</div>
             </main>
-
-            <BackToTop />
-
-            <Footer />
         </>
     );
 }

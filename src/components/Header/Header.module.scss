@@ -12,9 +12,11 @@
 
 .container {
     @include flex_box(center, center, 0px);
-    background: #88c7c9;
-    position: sticky;
-    top: 2px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
 .containerHeader {
