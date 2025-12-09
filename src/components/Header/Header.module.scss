@@ -17,6 +17,7 @@
     top: 0;
     left: 0;
     right: 0;
+    z-index: 100;
 }
 
 .containerHeader {
@@ -26,26 +27,110 @@
 
     @include container;
     height: 80px;
+
+    @include responsive(laptop) {
+        @include padding(0, 20px, 0, 20px);
+    }
+
+    @include responsive(tablet) {
+        height: 70px;
+        @include padding(0, 15px, 0, 15px);
+    }
+
+    @include responsive(mobile) {
+        height: 60px;
+        @include padding(0, 10px, 0, 10px);
+    }
 }
 
 .containerBox {
     @include flex_box(center, center, 10px);
+
+    @include responsive(laptop) {
+        gap: 8px;
+    }
+
+    @include responsive(tablet) {
+        gap: 6px;
+    }
+
+    @include responsive(mobile) {
+        gap: 8px;
+    }
+
+    img {
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+
+        @include responsive(tablet) {
+            width: 22px;
+            height: 22px;
+        }
+
+        @include responsive(mobile) {
+            width: 20px;
+            height: 20px;
+        }
+    }
 }
 
 .containerItem {
     @include flex_box(center, center, 40px);
+
+    @include responsive(laptop) {
+        gap: 30px;
+    }
+
+    @include responsive(tablet) {
+        gap: 20px;
+    }
+
+    @include responsive(mobile) {
+        gap: 15px;
+
+        &:nth-child(1) {
+            gap: 10px;
+        }
+    }
 }
 
 .navLogo {
     @include size_img(24px, 24px, cover);
+
+    @include responsive(tablet) {
+        width: 20px;
+        height: 20px;
+    }
+
+    @include responsive(mobile) {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 .navItem {
     cursor: pointer;
     padding-top: 8px;
     font-size: 14px;
-
     color: $primary_color;
+    white-space: nowrap;
+
+    @include responsive(laptop) {
+        font-size: 13px;
+    }
+
+    @include responsive(tablet) {
+        font-size: 12px;
+        padding-top: 6px;
+    }
+
+    @include responsive(mobile) {
+        display: none;
+    }
 }
 
 .navItem::after {
@@ -77,19 +162,31 @@
     -o-transform: scale(1);
     opacity: 1;
 }
+
 .headerContent {
     display: flex;
     align-items: center;
+
+    @include responsive(laptop) {
+        flex: 1;
+        justify-content: center;
+    }
 }
 
 .titleBox {
     @include flex_box(center, center, 0px);
     flex-direction: column;
     margin-top: -10px;
-    @include responsive(mobile) {
+
+    @include responsive(laptop) {
+        margin-top: 0;
+    }
+
+    @include responsive(tablet) {
         display: none;
     }
-    @include responsive(tablet) {
+
+    @include responsive(mobile) {
         display: none;
     }
 }
@@ -102,9 +199,19 @@
 
 .logoFont {
     font-size: 22px;
+    white-space: nowrap;
+
+    @include responsive(laptop) {
+        font-size: 18px;
+    }
 }
 
 .descLogo {
     color: $secondary_color;
     margin-top: -4px;
+    font-size: 14px;
+
+    @include responsive(laptop) {
+        font-size: 12px;
+    }
 }

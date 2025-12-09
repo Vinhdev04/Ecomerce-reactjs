@@ -10,12 +10,14 @@ import HomePage from '@pages/Home/HomePage.jsx';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import BackToTop from '@/components/BackToTop/BackToTop';
+import Info from '@/components/Info/Info';
 initVisibilityHandler();
 
 function App() {
     return (
         <>
             <HomePage />
+            <Info />
             <BackToTop />
             <Footer />
         </>

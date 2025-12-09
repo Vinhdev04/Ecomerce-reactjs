@@ -1,0 +1,64 @@
+@use '@styles/mixin.module.scss' as *;
+@use '@styles/variable.module.scss' as *;
+
+.containerBox {
+    @include flex_box(space-between, center, 10px);
+    @include background(#f7f1f1);
+    @include padding(20px, 20px, 20px, 20px);
+
+    height: 140px;
+    margin-top: -70px;
+
+    @include responsive(laptop) {
+        height: auto;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    @include responsive(tablet) {
+        @include flex_box(center, center, 12px);
+        flex-direction: column;
+        @include padding(30px, 15px, 30px, 15px);
+        margin-top: -50px;
+    }
+
+    @include responsive(mobile) {
+        @include padding(20px, 10px, 20px, 10px);
+        margin-top: -40px;
+        gap: 10px;
+    }
+}
+
+.card {
+    flex: 1;
+    min-width: 250px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background-color: $white_color;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    img {
+        flex-shrink: 0;
+        object-fit: cover;
+    }
+
+    @include responsive(laptop) {
+        flex: 1 1 calc(50% - 10px);
+        min-width: 200px;
+    }
+
+    @include responsive(tablet) {
+        flex: 1 1 100%;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    @include responsive(mobile) {
+        min-width: auto;
+        width: 100%;
+    }
+}

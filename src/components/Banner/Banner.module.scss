@@ -1,4 +1,5 @@
 @use '@styles/mixin.module.scss' as *;
+
 .container {
     @include flex_box(start, center, 0px);
 
@@ -6,7 +7,23 @@
     object-fit: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    background-size: cover;
     min-height: 800px;
+    position: relative;
+
+    @include responsive(laptop) {
+        min-height: 700px;
+        @include flex_box(center, center, 0px);
+    }
+
+    @include responsive(tablet) {
+        min-height: 600px;
+    }
+
+    @include responsive(mobile) {
+        min-height: 100vh;
+        background-position: 60% center;
+    }
 }
 
 .bannerInform {
@@ -14,26 +31,87 @@
     @include flex_box(center, center, 0px);
 
     flex-direction: column;
+
+    @include responsive(laptop) {
+        @include margin(0, 100px, 0, 100px);
+        max-width: 600px;
+    }
+
+    @include responsive(tablet) {
+        @include margin(0, 60px, 0, 60px);
+        max-width: 500px;
+    }
+
+    @include responsive(mobile) {
+        @include margin(0, 20px, 0, 20px);
+        max-width: 100%;
+    }
+
     & h1 {
         color: #fff;
         font-size: 50px;
         margin-bottom: 0;
         max-width: 700px;
+        text-align: center;
+
+        @include responsive(laptop) {
+            font-size: 42px;
+            max-width: 600px;
+        }
+
+        @include responsive(tablet) {
+            font-size: 36px;
+            max-width: 500px;
+        }
+
+        @include responsive(mobile) {
+            font-size: 28px;
+            max-width: 100%;
+            line-height: 1.3;
+        }
     }
 
     & p {
         @include margin(20px, 0px, 20px, 0px);
-        @include text_ps(justify);
+        @include text_ps(center);
 
         color: #bdb8b8;
         font-size: 18px;
-        white-space: break-spaces;
+        white-space: normal;
         max-width: 720px;
+        line-height: 1.6;
+
+        @include responsive(laptop) {
+            font-size: 16px;
+            max-width: 600px;
+        }
+
+        @include responsive(tablet) {
+            font-size: 15px;
+            max-width: 500px;
+            @include margin(15px, 0px, 20px, 0px);
+        }
+
+        @include responsive(mobile) {
+            font-size: 14px;
+            max-width: 100%;
+            @include margin(15px, 0px, 25px, 0px);
+            line-height: 1.5;
+        }
     }
 
     & button {
+        transition: all 0.3s ease;
+
         &:hover {
+            cursor: pointer;
             background-color: #ff3b1f;
+            transform: translateY(-2px);
+        }
+
+        @include responsive(mobile) {
+            width: 100%;
+            max-width: 200px;
         }
     }
 
