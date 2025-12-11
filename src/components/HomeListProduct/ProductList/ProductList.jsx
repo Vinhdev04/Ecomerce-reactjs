@@ -21,14 +21,16 @@ function ProductList() {
             image: img04,
             title: 'Wireless Headphones',
             description: 'Active noise cancellation, 30h battery life',
-            price: 4990000
+            price: 4990000,
+            badge: 'Hot'
         },
         {
             id: 4,
             image: img05,
             title: 'Smart Fitness Watch',
             description: 'Heart rate monitor, GPS tracking, waterproof',
-            price: 3490000
+            price: 3490000,
+            badge: 'Sale'
         },
         {
             id: 5,
@@ -36,37 +38,53 @@ function ProductList() {
             title: 'Leather Backpack',
             description:
                 'Genuine leather, laptop compartment, USB charging port',
-            price: 2990000
+            price: 2990000,
+            badge: 'New'
         },
         {
             id: 6,
             image: img07,
             title: 'Mechanical Keyboard',
             description: 'RGB backlight, Cherry MX switches, aluminum frame',
-            price: 3290000
+            price: 3290000,
+            badge: 'New'
         },
         {
             id: 7,
             image: img08,
             title: 'Wireless Mouse',
             description: 'Ergonomic design, 2400 DPI, rechargeable battery',
-            price: 890000
+            price: 890000,
+            badge: 'Best Seller'
         },
         {
             id: 8,
             image: img09,
             title: 'USB-C Hub Adapter',
             description: '7-in-1 hub with HDMI, USB 3.0, SD card reader',
-            price: 790000
+            price: 790000,
+            badge: 'New'
         }
     ];
 
+    // Handlers
     const handleDetail = (product) => {
         console.log('View detail:', product);
+        // TODO: Navigate to detail page
+        // window.location.href = `/product/${product.id}`;
     };
 
     const handleBuy = (product) => {
-        console.log('Buy now:', product);
+        console.log('Add to cart:', product);
+        // TODO: Add to cart logic
+        // dispatch(addToCart(product));
+        alert(`Đã thêm "${product.title}" vào giỏ hàng!`);
+    };
+
+    const handleQuickView = (product) => {
+        console.log('Quick view:', product);
+        // TODO: Show modal with product details
+        alert(`Xem nhanh: ${product.title}`);
     };
 
     return (
@@ -76,7 +94,7 @@ function ProductList() {
                     <div className='container'>
                         <div className={styles.countdownWrapper}>
                             <h2 className={styles.sectionTitle}>
-                                ⚡ The Classics Make A Comeback
+                                The Classics Make A Comeback
                             </h2>
                             <CalculatorTimer
                                 endTime={new Date('2025-12-31T23:59:59')}
@@ -106,7 +124,7 @@ function ProductList() {
                                         <h3>Premium Collection</h3>
                                         <p>Exclusive deals on luxury items</p>
                                         <button className={styles.shopNowBtn}>
-                                            Shop Now →
+                                            Shop Now
                                         </button>
                                     </div>
                                 </div>
@@ -126,7 +144,7 @@ function ProductList() {
                                         <h3>Premium Collection</h3>
                                         <p>Exclusive deals on luxury items</p>
                                         <button className={styles.shopNowBtn}>
-                                            Shop Now →
+                                            Shop Now
                                         </button>
                                     </div>
                                 </div>
@@ -136,6 +154,7 @@ function ProductList() {
 
                     <div className={styles.regularSection}>
                         <h2 className={styles.sectionTitle}>Best Sellers</h2>
+
                         <div className='row g-4'>
                             {regularProducts.map((product) => (
                                 <div
@@ -147,8 +166,12 @@ function ProductList() {
                                         title={product.title}
                                         description={product.description}
                                         price={product.price}
+                                        badge={product.badge}
                                         onDetail={() => handleDetail(product)}
                                         onBuy={() => handleBuy(product)}
+                                        onQuickView={() =>
+                                            handleQuickView(product)
+                                        }
                                     />
                                 </div>
                             ))}
