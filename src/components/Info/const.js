@@ -12,7 +12,7 @@ const data = [
 
     {
         title: '100% Safe Payment',
-        desc: 'We ensure secure payment',
+        desc: 'Ensure secure payment',
         src: card
     },
     {
@@ -22,7 +22,7 @@ const data = [
     },
     {
         title: '24/7 Support',
-        desc: 'Supported online 24 hours',
+        desc: 'Supported online ',
         src: message
     }
 ];

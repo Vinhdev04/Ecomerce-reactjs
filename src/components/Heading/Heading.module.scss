@@ -1,0 +1,35 @@
+@use '@styles/mixin.module.scss' as *;
+@use '@styles/variable.module.scss' as *;
+
+.containerX {
+    @include flex_box(center, center, 10px);
+    @include margin(65px, 0px, 0px, 20px);
+}
+
+.desc {
+    font-size: 14px;
+    color: $third_color;
+    text-transform: uppercase;
+}
+
+.title {
+    font-size: 24px;
+    color: $primary_color;
+}
+
+.headline {
+    width: 100%;
+    height: 2px;
+    border-top: 1px solid #e1e1e1;
+    border-top: 1px solid #e1e1e1;
+}
+
+.containerBox {
+    @include flex_box(center, center, 0px);
+    @include padding(0px, 50px, 0px, 50px);
+
+    width: 75%;
+
+    flex-direction: column;
+    line-height: 0px;
+}

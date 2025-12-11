@@ -1,0 +1,321 @@
+// Variables
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$danger-color: #e74c3c;
+$text-dark: #2c3e50;
+$text-light: #7f8c8d;
+$border-color: #ecf0f1;
+$bg-white: #ffffff;
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$border-radius: 12px;
+
+// Card Container
+.card {
+    background: $bg-white;
+    border-radius: $border-radius;
+    overflow: hidden;
+    box-shadow: $shadow-sm;
+    transition: $transition;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $border-color;
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: $shadow-lg;
+        border-color: $primary-color;
+
+        .cardImg img {
+            transform: scale(1.1);
+        }
+
+        .badge {
+            transform: scale(1.1);
+        }
+    }
+}
+
+// Card Body
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+// Card Image
+.cardImg {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: $transition;
+    }
+
+    // Badge
+    .badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: linear-gradient(135deg, $danger-color 0%, #c0392b 100%);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+        transition: $transition;
+    }
+}
+
+// Card Content
+.cardContent {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+// Card Title
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: $transition;
+
+    &:hover {
+        color: $primary-color;
+    }
+}
+
+// Card Text
+.cardText {
+    font-size: 0.875rem;
+    color: $text-light;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+// Card Price
+.cardPrice {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 8px;
+}
+
+.currentPrice {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: $danger-color;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.oldPrice {
+    font-size: 1rem;
+    color: $text-light;
+    text-decoration: line-through;
+    font-weight: 500;
+}
+
+// Card Footer
+.cardFooter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 20px;
+    border-top: 1px solid $border-color;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.02) 100%
+    );
+}
+
+// Base Button Style
+%btn-base {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: $transition;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    &:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+// Detail Button
+.btnDetail {
+    @extend %btn-base;
+    background: $bg-white;
+    color: $primary-color;
+    border: 2px solid $primary-color;
+
+    &:hover {
+        background: $primary-color;
+        color: white;
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+    }
+}
+
+// Buy Button
+.btnBuy {
+    @extend %btn-base;
+    background: linear-gradient(135deg, $secondary-color 0%, #27ae60 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+
+    &:hover {
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        box-shadow: 0 6px 16px rgba(46, 204, 113, 0.5);
+        transform: translateY(-2px);
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .cardImg {
+        height: 180px;
+    }
+
+    .cardTitle {
+        font-size: 1.1rem;
+    }
+
+    .cardText {
+        font-size: 0.813rem;
+    }
+
+    .currentPrice {
+        font-size: 1.3rem;
+    }
+
+    .cardFooter {
+        padding: 16px;
+        gap: 10px;
+    }
+
+    .btnDetail,
+    .btnBuy {
+        padding: 10px 16px;
+        font-size: 0.813rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cardFooter {
+        grid-template-columns: 1fr;
+    }
+
+    .btnBuy {
+        order: -1; // Move "Mua Ngay" to top on mobile
+    }
+}
+
+// Loading State
+.card.loading {
+    .cardImg {
+        background: linear-gradient(
+            90deg,
+            #f0f0f0 25%,
+            #e0e0e0 50%,
+            #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+// Out of Stock State
+.card.outOfStock {
+    opacity: 0.7;
+
+    .cardImg::after {
+        content: 'HẾT HÀNG';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+    }
+
+    .btnBuy {
+        background: #95a5a6;
+        cursor: not-allowed;
+
+        &:hover {
+            background: #95a5a6;
+            transform: none;
+        }
+    }
+}

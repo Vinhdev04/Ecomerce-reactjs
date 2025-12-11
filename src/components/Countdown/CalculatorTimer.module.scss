@@ -1,0 +1,189 @@
+// Variables
+$purple: #9b59b6;
+$blue: #3498db;
+$orange: #e67e22;
+$gray: #7f8c8d;
+$text-dark: #2c3e50;
+$text-light: #95a5a6;
+$bg-white: #ffffff;
+$shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+$transition: all 0.3s ease;
+
+// Container
+.countdownContainer {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// Timer Wrapper
+.timerWrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    @media (max-width: 768px) {
+        gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+// Time Box Base
+.timeBox {
+    position: relative;
+    background: $bg-white;
+    border-radius: 4px;
+    padding: 12px 16px;
+    min-width: 80px;
+    text-align: center;
+    box-shadow: $shadow;
+    transition: $transition;
+    border-top: 3px solid transparent;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        min-width: 70px;
+        padding: 10px 12px;
+    }
+
+    @media (max-width: 480px) {
+        min-width: 65px;
+        padding: 8px 10px;
+    }
+}
+
+// Triangle Pointer at bottom
+.trianglePointer {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid;
+    border-top-color: inherit;
+
+    @media (max-width: 480px) {
+        bottom: -6px;
+        border-left-width: 6px;
+        border-right-width: 6px;
+        border-top-width: 6px;
+    }
+}
+
+// Time Value
+.timeValue {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-dark;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    @media (max-width: 768px) {
+        font-size: 1.6rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.4rem;
+    }
+}
+
+// Time Label
+.timeLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $text-light;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+
+    @media (max-width: 480px) {
+        font-size: 0.65rem;
+    }
+}
+
+// Color Variants
+.purple {
+    border-top-color: $purple;
+
+    .trianglePointer {
+        border-top-color: $bg-white;
+        filter: drop-shadow(0 2px 1px $purple);
+    }
+
+    &:hover {
+        border-top-color: darken($purple, 10%);
+    }
+}
+
+.blue {
+    border-top-color: $blue;
+
+    .trianglePointer {
+        border-top-color: $bg-white;
+        filter: drop-shadow(0 2px 1px $blue);
+    }
+
+    &:hover {
+        border-top-color: darken($blue, 10%);
+    }
+}
+
+.orange {
+    border-top-color: $orange;
+
+    .trianglePointer {
+        border-top-color: $bg-white;
+        filter: drop-shadow(0 2px 1px $orange);
+    }
+
+    &:hover {
+        border-top-color: darken($orange, 10%);
+    }
+}
+
+.gray {
+    border-top-color: $gray;
+
+    .trianglePointer {
+        border-top-color: $bg-white;
+        filter: drop-shadow(0 2px 1px $gray);
+    }
+
+    &:hover {
+        border-top-color: darken($gray, 10%);
+    }
+}
+
+// Animation when countdown is active
+@keyframes countPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.timeValue {
+    animation: countPulse 1s ease-in-out infinite;
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+    .countdownContainer {
+        padding: 20px 10px;
+    }
+}
