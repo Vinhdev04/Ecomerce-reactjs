@@ -13,8 +13,9 @@ import img06 from '@images/home_img_list-products.jpg';
 import img07 from '@images/home_img_list-products-02.jpg';
 import img08 from '@images/DARE-U H101X.webp';
 import img09 from '@images/8BitDoUltimate.webp';
-
+import { getAllProducts } from '@api/productsService.js';
 function ProductList() {
+    getAllProducts();
     const regularProducts = [
         {
             id: 3,
