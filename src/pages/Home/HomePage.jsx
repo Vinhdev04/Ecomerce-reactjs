@@ -4,7 +4,7 @@ import Header from '@/components/Header/Header';
 import styles from './HomePage.module.scss';
 import Heading from '@/components/Heading/Heading';
 import Info from '@/components/Info/Info';
-import ProductList from '@/components/HomeListProduct/ProductList/ProductList.jsx';
+import HomeListProduct from '@/components/HomeListProduct/HomeListProduct';
 
 function HomePage() {
     const { container } = styles;
@@ -15,7 +15,7 @@ function HomePage() {
                 <Banner />
                 <Info />
                 <Heading />
-                <ProductList />
+                <HomeListProduct />
             </div>
         </>
     );

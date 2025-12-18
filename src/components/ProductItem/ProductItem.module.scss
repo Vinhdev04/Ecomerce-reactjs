@@ -1,4 +1,3 @@
-// Variables
 $primary-color: #3498db;
 $secondary-color: #2ecc71;
 $danger-color: #e74c3c;
@@ -12,7 +11,6 @@ $shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
 $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 $border-radius: 12px;
 
-// Card Container
 .card {
     background: $bg-white;
     border-radius: $border-radius;
@@ -40,18 +38,20 @@ $border-radius: 12px;
         .iconOverlay {
             opacity: 1;
             transform: translateX(0);
-        }
+            -webkit-transform: translateX(0);
+            -moz-transform: translateX(0);
+            -ms-transform: translateX(0);
+            -o-transform: translateX(0);
+}
     }
 }
 
-// Card Body
 .cardBody {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-// Card Image - Fixed height
 .cardImg {
     position: relative;
     width: 100%;
@@ -68,7 +68,6 @@ $border-radius: 12px;
     }
 }
 
-// Badge
 .badge {
     position: absolute;
     top: 12px;
@@ -86,7 +85,6 @@ $border-radius: 12px;
     z-index: 2;
 }
 
-// Icon Overlay
 .iconOverlay {
     position: absolute;
     top: 12px;
@@ -130,24 +128,22 @@ $border-radius: 12px;
     }
 }
 
-// Card Content - Fixed layout
 .cardContent {
     padding: 20px;
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    min-height: 0; // Allow flex children to shrink
+    min-height: 0;
 }
 
-// Card Title - Fixed 2 lines
 .cardTitle {
     font-size: 1.125rem;
     font-weight: 700;
     color: $text-dark;
     margin: 0;
     line-height: 1.4;
-    height: calc(1.125rem * 1.4 * 2); // Exactly 2 lines
+    height: calc(1.125rem * 1.4 * 2);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -160,13 +156,12 @@ $border-radius: 12px;
     }
 }
 
-// Card Text - Fixed 3 lines
 .cardText {
     font-size: 0.875rem;
     color: $text-light;
     line-height: 1.5;
     margin: 0;
-    height: calc(0.875rem * 1.5 * 3); // Exactly 3 lines
+    height: calc(0.875rem * 1.5 * 3);
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -174,14 +169,13 @@ $border-radius: 12px;
     text-overflow: ellipsis;
 }
 
-// Card Price - Fixed height
 .cardPrice {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-top: auto;
     padding-top: 8px;
-    height: 36px; // Fixed height for price section
+    height: 36px;
 }
 
 .currentPrice {
@@ -199,16 +193,14 @@ $border-radius: 12px;
     line-height: 1;
 }
 
-// Card Footer
 .cardFooter {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
     padding: 0 20px 20px 20px;
-    flex-shrink: 0; // Prevent footer from shrinking
+    flex-shrink: 0;
 }
 
-// Base Button Style
 %btn-base {
     padding: 12px 20px;
     border: none;
@@ -221,7 +213,7 @@ $border-radius: 12px;
     letter-spacing: 0.5px;
     position: relative;
     overflow: hidden;
-    white-space: nowrap; // Prevent text wrapping
+    white-space: nowrap;
 
     &::before {
         content: '';
@@ -251,7 +243,6 @@ $border-radius: 12px;
     }
 }
 
-// Detail Button
 .btnDetail {
     @extend %btn-base;
     background: $bg-white;
@@ -265,7 +256,6 @@ $border-radius: 12px;
     }
 }
 
-// Buy Button
 .btnBuy {
     @extend %btn-base;
     background: linear-gradient(135deg, $secondary-color 0%, #27ae60 100%);
@@ -279,7 +269,6 @@ $border-radius: 12px;
     }
 }
 
-// Responsive Design
 @media (max-width: 991px) {
     .cardImg {
         height: 240px;
@@ -305,7 +294,6 @@ $border-radius: 12px;
         height: 220px;
     }
 
-    // Show icons on mobile
     .iconOverlay {
         opacity: 1;
         transform: translateX(0);
@@ -342,7 +330,6 @@ $border-radius: 12px;
     }
 }
 
-// Loading State
 .card.loading {
     .cardImg {
         background: linear-gradient(
@@ -365,7 +352,6 @@ $border-radius: 12px;
     }
 }
 
-// Out of Stock State
 .card.outOfStock {
     opacity: 0.7;
 

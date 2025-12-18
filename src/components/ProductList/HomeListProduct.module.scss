@@ -18,7 +18,7 @@ $border-radius: 12px;
 }
 
 .countdownSection {
-    background-image: url(../../../assets/images/home_img_list-products.jpg);
+    background-image: url(../../assets/images/home_img_list-products.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -234,14 +234,11 @@ $border-radius: 12px;
 
 // Bootstrap Grid Enhancements
 .row {
-    // Add extra spacing between rows
     & + & {
         margin-top: 30px;
     }
 }
 
-// Responsive gap utilities (g-4 = gap 1.5rem)
-// This is handled by Bootstrap, but we can add custom spacing if needed
 @media (max-width: 576px) {
     .featuredSection,
     .regularSection {
@@ -262,7 +259,6 @@ $border-radius: 12px;
     }
 }
 
-// Empty State
 .emptyState {
     text-align: center;
     padding: 80px 20px;
@@ -279,7 +275,6 @@ $border-radius: 12px;
     }
 }
 
-// Animations
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -300,7 +295,6 @@ $border-radius: 12px;
     animation-delay: 0.2s;
 }
 
-// Print Styles
 @media print {
     .countdownSection,
     .buyNowBtn,

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './HomeListProduct.module.scss';
 import Layout from '@/components/Layout/Layout';
 import CalculatorTimer from '@/components/Countdown/CalculatorTimer.jsx';
-import ProductCard from '@/components/HomeListProduct/ProductCard/ProductCard.jsx';
+import ProductCard from '@/components/ProductItem/ProductItem.jsx';
 
 import img01 from '@images/8BitDoUltimate 3-mode.webp';
 import img02 from '@images/Xbox Series X.webp';

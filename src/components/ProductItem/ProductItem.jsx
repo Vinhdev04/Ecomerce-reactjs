@@ -1,46 +1,16 @@
 import React from 'react';
-import styles from './ProductCard.module.scss';
-import { Heart, Eye, ShoppingCart } from 'lucide-react';
-
-// Icon Components
-export const FavoriteIcon = ({ isFavorite, className = '' }) => (
-    <button
-        className={`${styles.iconBtn} ${
-            isFavorite ? styles.active : ''
-        } ${className}`}
-        aria-label='Thêm vào yêu thích'
-        type='button'
-    >
-        <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} />
-    </button>
-);
-
-export const QuickViewIcon = ({ className = '' }) => (
-    <button
-        className={`${styles.iconBtn} ${className}`}
-        aria-label='Xem nhanh'
-        type='button'
-    >
-        <Eye size={20} />
-    </button>
-);
-
-export const AddToCartIcon = ({ className = '' }) => (
-    <button
-        className={`${styles.iconBtn} ${styles.cartBtn} ${className}`}
-        aria-label='Thêm vào giỏ'
-        type='button'
-    >
-        <ShoppingCart size={20} />
-    </button>
-);
+import styles from './ProductItem.module.scss';
+import {
+    FavoriteIcon,
+    QuickViewIcon,
+    AddToCartIcon
+} from '@/components/ProductIcons/ProductIcon.jsx';
 
 export default function ProductCard({
     image,
     title,
     description,
     price,
-
     badge = 'New',
     className = ''
 }) {
