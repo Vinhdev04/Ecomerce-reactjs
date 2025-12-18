@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './ProductCard.module.scss';
 import { Heart, Eye, ShoppingCart } from 'lucide-react';
 
 // Icon Components
-export const FavoriteIcon = ({ onClick, isFavorite, className = '' }) => (
+export const FavoriteIcon = ({ isFavorite, className = '' }) => (
     <button
-        onClick={onClick}
         className={`${styles.iconBtn} ${
             isFavorite ? styles.active : ''
         } ${className}`}
@@ -16,9 +15,8 @@ export const FavoriteIcon = ({ onClick, isFavorite, className = '' }) => (
     </button>
 );
 
-export const QuickViewIcon = ({ onClick, className = '' }) => (
+export const QuickViewIcon = ({ className = '' }) => (
     <button
-        onClick={onClick}
         className={`${styles.iconBtn} ${className}`}
         aria-label='Xem nhanh'
         type='button'
@@ -27,9 +25,8 @@ export const QuickViewIcon = ({ onClick, className = '' }) => (
     </button>
 );
 
-export const AddToCartIcon = ({ onClick, className = '' }) => (
+export const AddToCartIcon = ({ className = '' }) => (
     <button
-        onClick={onClick}
         className={`${styles.iconBtn} ${styles.cartBtn} ${className}`}
         aria-label='Thêm vào giỏ'
         type='button'
@@ -43,50 +40,10 @@ export default function ProductCard({
     title,
     description,
     price,
-    onDetail,
-    onBuy,
-    onQuickView,
+
     badge = 'New',
     className = ''
 }) {
-    const [isFavorite, setIsFavorite] = useState(false);
-
-    const handleFavoriteClick = (e) => {
-        e.stopPropagation();
-        setIsFavorite(!isFavorite);
-        console.log('Favorite toggled:', title);
-    };
-
-    const handleQuickViewClick = (e) => {
-        e.stopPropagation();
-        if (onQuickView) {
-            onQuickView();
-        }
-        console.log('Quick view:', title);
-    };
-
-    const handleAddToCartClick = (e) => {
-        e.stopPropagation();
-        if (onBuy) {
-            onBuy();
-        }
-        console.log('Add to cart:', title);
-    };
-
-    const handleDetailClick = () => {
-        if (onDetail) {
-            onDetail();
-        }
-        console.log('View detail:', title);
-    };
-
-    const handleBuyClick = () => {
-        if (onBuy) {
-            onBuy();
-        }
-        console.log('Buy now:', title);
-    };
-
     return (
         <div className={`${styles.card} ${className}`}>
             <div className={styles.cardBody}>
@@ -102,12 +59,9 @@ export default function ProductCard({
                     {badge && <div className={styles.badge}>{badge}</div>}
 
                     <div className={styles.iconOverlay}>
-                        <FavoriteIcon
-                            onClick={handleFavoriteClick}
-                            isFavorite={isFavorite}
-                        />
-                        <QuickViewIcon onClick={handleQuickViewClick} />
-                        <AddToCartIcon onClick={handleAddToCartClick} />
+                        <FavoriteIcon />
+                        <QuickViewIcon />
+                        <AddToCartIcon />
                     </div>
                 </div>
 
@@ -133,18 +87,10 @@ export default function ProductCard({
                 </div>
 
                 <div className={styles.cardFooter}>
-                    <button
-                        className={styles.btnDetail}
-                        onClick={handleDetailClick}
-                        type='button'
-                    >
+                    <button className={styles.btnDetail} type='button'>
                         Chi tiết
                     </button>
-                    <button
-                        className={styles.btnBuy}
-                        onClick={handleBuyClick}
-                        type='button'
-                    >
+                    <button className={styles.btnBuy} type='button'>
                         Mua Ngay
                     </button>
                 </div>

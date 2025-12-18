@@ -67,26 +67,6 @@ function ProductList() {
         }
     ];
 
-    // Handlers
-    const handleDetail = (product) => {
-        console.log('View detail:', product);
-        // TODO: Navigate to detail page
-        // window.location.href = `/product/${product.id}`;
-    };
-
-    const handleBuy = (product) => {
-        console.log('Add to cart:', product);
-        // TODO: Add to cart logic
-        // dispatch(addToCart(product));
-        alert(`Đã thêm "${product.title}" vào giỏ hàng!`);
-    };
-
-    const handleQuickView = (product) => {
-        console.log('Quick view:', product);
-        // TODO: Show modal with product details
-        alert(`Xem nhanh: ${product.title}`);
-    };
-
     return (
         <Layout>
             <div className={styles.homeListProduct}>
@@ -167,11 +147,6 @@ function ProductList() {
                                         description={product.description}
                                         price={product.price}
                                         badge={product.badge}
-                                        onDetail={() => handleDetail(product)}
-                                        onBuy={() => handleBuy(product)}
-                                        onQuickView={() =>
-                                            handleQuickView(product)
-                                        }
                                     />
                                 </div>
                             ))}
