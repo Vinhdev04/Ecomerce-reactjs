@@ -1,3 +1,4 @@
+// components/ProductItem/ProductItem.jsx
 import React from 'react';
 import styles from './ProductItem.module.scss';
 import {
@@ -8,10 +9,13 @@ import {
 
 export default function ProductCard({
     image,
+    images = [],
     title,
     description,
     price,
     badge = 'New',
+    rating,
+    stock,
     className = ''
 }) {
     return (
@@ -26,7 +30,18 @@ export default function ProductCard({
                         alt={title || 'Product'}
                         loading='lazy'
                     />
+
                     {badge && <div className={styles.badge}>{badge}</div>}
+
+                    {stock !== undefined && stock < 10 && stock > 0 && (
+                        <div className={styles.stockWarning}>
+                            Chỉ còn {stock} sản phẩm
+                        </div>
+                    )}
+
+                    {stock === 0 && (
+                        <div className={styles.outOfStock}>Hết hàng</div>
+                    )}
 
                     <div className={styles.iconOverlay}>
                         <FavoriteIcon />
@@ -39,10 +54,31 @@ export default function ProductCard({
                     <h3 className={styles.cardTitle}>
                         {title || 'Tên sản phẩm'}
                     </h3>
+
                     <p className={styles.cardText}>
                         {description ||
                             'Mô tả ngắn gọn về sản phẩm, tính năng nổi bật và ưu điểm của sản phẩm này'}
                     </p>
+
+                    {rating && (
+                        <div className={styles.rating}>
+                            {[...Array(5)].map((_, index) => (
+                                <span
+                                    key={index}
+                                    className={
+                                        index < rating
+                                            ? styles.starFilled
+                                            : styles.starEmpty
+                                    }
+                                >
+                                    ★
+                                </span>
+                            ))}
+                            <span className={styles.ratingText}>
+                                ({rating}/5)
+                            </span>
+                        </div>
+                    )}
 
                     {price && (
                         <div className={styles.cardPrice}>
@@ -60,8 +96,12 @@ export default function ProductCard({
                     <button className={styles.btnDetail} type='button'>
                         Chi tiết
                     </button>
-                    <button className={styles.btnBuy} type='button'>
-                        Mua Ngay
+                    <button
+                        className={styles.btnBuy}
+                        type='button'
+                        disabled={stock === 0}
+                    >
+                        {stock === 0 ? 'Hết hàng' : 'Mua Ngay'}
                     </button>
                 </div>
             </div>

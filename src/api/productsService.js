@@ -5,10 +5,10 @@ const getAllProducts = async (page = 1, limit = 10) => {
         const res = await axiosClient.get('/products', {
             params: { page, limit }
         });
-        console.log('Products:', res);
+        console.log('Danh sách sản phẩm từ API', res);
         return res;
     } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Lỗi trong quá trình lấy dữ liệu từ API', error);
         throw error;
     }
 };

@@ -7,10 +7,10 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.response.use(
     (response) => {
-        return response.data; // Trả về data luôn
+        return response.data;
     },
     (error) => {
-        console.error('API Error:', error);
+        console.error('Lỗi khi truy vấn API', error);
         return Promise.reject(error);
     }
 );

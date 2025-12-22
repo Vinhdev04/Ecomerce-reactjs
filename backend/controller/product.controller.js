@@ -5,30 +5,63 @@ import prisma from '../lib/prisma.lib.js';
 
 const getAllProducts = async (req, res) => {
     try {
+        // Lấy thông tin phân trang từ query
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        // Truy vấn dữ liệu với phân trang
+        const [data, total] = await Promise.all([
+            prisma.product.findMany({
+                skip,
+                take: limit
+            }),
+            prisma.product.count()
+        ]);
+
+        console.log(`Total products: ${total}`);
+
         res.status(200).json({
-            success: true
+            success: true,
+            data: data,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit)
+            }
         });
     } catch (error) {
-        console.error('Database Error:', error);
+        console.error('Đã xảy ra lỗi khi truy vấn dữ liệu từ API', error);
         res.status(500).json({
             success: false,
-            message: 'Error fetching products',
+            message: 'Lỗi khi truy vấn dữ liệu từ API',
             error: error.message
         });
     }
 };
-
 const getProductByID = async (req, res) => {
     try {
         const { id } = req.params;
+        const product = await prisma.product.findUnique({
+            where: { id }
+        });
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: `Không tìm thấy sản phẩm có ${product}`
+            });
+        }
 
         res.status(200).json({
-            success: true
+            success: true,
+            data: product
         });
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Error fetching product',
+            message: 'Lỗi khi truy vấn dữ liệu từ API',
             error: error.message
         });
     }
