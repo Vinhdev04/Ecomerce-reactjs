@@ -131,3 +131,29 @@ Repeat flow from step 4
 ```
 
 ---
+
+# OVERVIEW(CODE HANDLE SHOW PRODUCTS)
+
+## 🚀 Pagination & Product Hook – Code Improvements (Before / After)
+
+Tài liệu này ghi lại **các thay đổi quan trọng** được áp dụng cho logic **Product List + Pagination** trong React, kèm theo **mô tả ngắn gọn** và **code so sánh TRƯỚC / SAU** để dễ đọc và dễ review.
+
+---
+
+## 1️⃣ Memo hóa `handlePageChange` bằng `useCallback`
+
+### 📌 Mô tả thay đổi
+
+-   Tránh tạo lại function mỗi lần render
+-   Giúp `React.memo(Pagination)` hoạt động hiệu quả
+-   Giảm re-render không cần thiết
+
+### ❌ Trước
+
+```js
+const handlePageChange = (page) => {
+    fetchProducts(page, pagination.limit);
+};
+```
+
+---

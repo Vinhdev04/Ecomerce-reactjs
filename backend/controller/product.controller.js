@@ -24,6 +24,7 @@ const getAllProducts = async (req, res) => {
         res.status(200).json({
             success: true,
             data: data,
+
             pagination: {
                 page,
                 limit,
