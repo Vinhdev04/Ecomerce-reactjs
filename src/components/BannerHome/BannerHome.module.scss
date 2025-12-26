@@ -3,7 +3,7 @@
     padding: 60px 0;
     position: relative;
     overflow: hidden;
-    
+
     // Animated background
     &::before {
         content: '';
@@ -12,10 +12,21 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: 
-            radial-gradient(2px 2px at 20% 30%, rgba(0, 255, 255, 0.2), transparent),
-            radial-gradient(2px 2px at 60% 70%, rgba(102, 126, 234, 0.2), transparent),
-            radial-gradient(1px 1px at 50% 50%, rgba(0, 255, 255, 0.1), transparent);
+        background-image: radial-gradient(
+                2px 2px at 20% 30%,
+                rgba(0, 255, 255, 0.2),
+                transparent
+            ),
+            radial-gradient(
+                2px 2px at 60% 70%,
+                rgba(102, 126, 234, 0.2),
+                transparent
+            ),
+            radial-gradient(
+                1px 1px at 50% 50%,
+                rgba(0, 255, 255, 0.1),
+                transparent
+            );
         background-size: 200% 200%;
         animation: particleMove 20s ease-in-out infinite;
         pointer-events: none;
@@ -23,7 +34,8 @@
 }
 
 @keyframes particleMove {
-    0%, 100% {
+    0%,
+    100% {
         background-position: 0% 0%;
     }
     50% {
@@ -36,46 +48,46 @@
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 255, 255, 0.2);
-    
+
     :global(.ant-carousel) {
         .slick-dots {
             bottom: 20px;
-            
+
             li {
                 button {
                     background: rgba(255, 255, 255, 0.3);
                     height: 4px;
                     border-radius: 2px;
                 }
-                
+
                 &.slick-active button {
                     background: #00ffff;
                     width: 30px;
                 }
             }
         }
-        
+
         .slick-prev,
         .slick-next {
             width: 50px;
             height: 50px;
             z-index: 10;
-            
+
             &::before {
                 font-size: 50px;
                 color: #00ffff;
                 opacity: 0.7;
             }
-            
+
             &:hover::before {
                 opacity: 1;
             }
         }
-        
+
         .slick-prev {
             left: 20px;
         }
-        
+
         .slick-next {
             right: 20px;
         }
@@ -90,7 +102,7 @@
     display: flex !important;
     align-items: center;
     justify-content: center;
-    
+
     &::before {
         content: '';
         position: absolute;
@@ -98,16 +110,20 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(0, 255, 255, 0.1) 0%,
+            rgba(102, 126, 234, 0.1) 100%
+        );
     }
-    
+
     .slideContent {
         position: relative;
         z-index: 2;
         text-align: center;
         color: #fff;
         padding: 2rem;
-        
+
         h3 {
             font-size: 48px;
             font-weight: 700;
@@ -140,7 +156,11 @@
 .badge {
     display: inline-block;
     padding: 8px 20px;
-    background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(102, 126, 234, 0.2) 100%);
+    background: linear-gradient(
+        135deg,
+        rgba(0, 255, 255, 0.2) 0%,
+        rgba(102, 126, 234, 0.2) 100%
+    );
     border: 1px solid rgba(0, 255, 255, 0.5);
     border-radius: 50px;
     color: #00ffff;
@@ -162,7 +182,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: gradientFlow 3s linear infinite;
-    
+
     .highlight {
         color: #00ffff;
         display: block;
@@ -206,7 +226,7 @@
     transition: all 0.3s ease !important;
     position: relative;
     overflow: hidden;
-    
+
     &::before {
         content: '';
         position: absolute;
@@ -214,15 +234,20 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
         transition: left 0.5s;
     }
-    
+
     &:hover {
         transform: translateY(-3px) !important;
         box-shadow: 0 6px 25px rgba(0, 255, 255, 0.5) !important;
         color: #0a1628 !important;
-        
+
         &::before {
             left: 100%;
         }
@@ -239,7 +264,7 @@
     background: transparent !important;
     color: #00ffff !important;
     transition: all 0.3s ease !important;
-    
+
     &:hover {
         background: rgba(0, 255, 255, 0.1) !important;
         transform: translateY(-3px) !important;
@@ -260,19 +285,23 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    
+
     .featureIcon {
         width: 48px;
         height: 48px;
         border-radius: 12px;
-        background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(102, 126, 234, 0.2) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(0, 255, 255, 0.2) 0%,
+            rgba(102, 126, 234, 0.2) 100%
+        );
         display: flex;
         align-items: center;
         justify-content: center;
         color: #00ffff;
         font-size: 24px;
     }
-    
+
     .featureText {
         .featureTitle {
             font-size: 16px;
@@ -280,7 +309,7 @@
             color: #fff;
             margin-bottom: 0.25rem;
         }
-        
+
         .featureDesc {
             font-size: 14px;
             color: #a0aec0;
@@ -294,24 +323,24 @@
     .contentWrapper {
         padding: 40px 20px;
         text-align: center;
-        
+
         .description {
             max-width: 100%;
         }
-        
+
         .buttonGroup {
             justify-content: center;
         }
-        
+
         .features {
             justify-content: center;
         }
     }
-    
+
     .mainTitle {
         font-size: 40px;
     }
-    
+
     .slideItem {
         height: 400px;
     }
@@ -321,23 +350,23 @@
     .bannerSection {
         padding: 40px 0;
     }
-    
+
     .mainTitle {
         font-size: 32px;
     }
-    
+
     .description {
         font-size: 16px;
     }
-    
+
     .slideItem {
         height: 300px;
-        
+
         .slideContent h3 {
             font-size: 32px;
         }
     }
-    
+
     .features {
         flex-direction: column;
         gap: 1rem;
@@ -348,14 +377,14 @@
     .contentWrapper {
         padding: 30px 15px;
     }
-    
+
     .mainTitle {
         font-size: 28px;
     }
-    
+
     .buttonGroup {
         flex-direction: column;
-        
+
         button {
             width: 100%;
         }

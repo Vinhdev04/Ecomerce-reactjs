@@ -9,6 +9,7 @@ function HomeListProduct() {
 
     return (
         <Layout>
+        
             <ProductList
                 products={products}
                 loading={loading}

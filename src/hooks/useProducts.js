@@ -31,14 +31,15 @@ export const useProducts = (initialLimit = 6) => {
                     });
                 } else {
                     throw new Error(
-                        response?.message || 'Không thể tải sản phẩm'
+                        response?.message ||
+                            'Không thể tải dữ liệu các sản phẩm!'
                     );
                 }
             } catch (err) {
                 setError(
                     err.response?.data?.message ||
                         err.message ||
-                        'Không thể tải sản phẩm'
+                        'Không thể tải dữ liệu các sản phẩm!'
                 );
                 setProducts([]);
             } finally {
