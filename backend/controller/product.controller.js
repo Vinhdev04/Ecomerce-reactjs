@@ -16,10 +16,11 @@ const getAllProducts = async (req, res) => {
                 skip,
                 take: limit
             }),
+
             prisma.product.count()
         ]);
 
-        console.log(`Total products: ${total}`);
+        console.log(`Tống số sản phẩm hiện có: ${total}`);
 
         res.status(200).json({
             success: true,
@@ -33,7 +34,6 @@ const getAllProducts = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Đã xảy ra lỗi khi truy vấn dữ liệu từ API', error);
         res.status(500).json({
             success: false,
             message: 'Lỗi khi truy vấn dữ liệu từ API',

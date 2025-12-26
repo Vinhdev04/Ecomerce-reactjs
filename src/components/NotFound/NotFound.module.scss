@@ -1,0 +1,431 @@
+.notFoundContainer {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #0a1628 0%, #050c16 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+
+    // Animated background particles
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(
+                2px 2px at 20% 30%,
+                rgba(0, 255, 255, 0.3),
+                transparent
+            ),
+            radial-gradient(
+                2px 2px at 60% 70%,
+                rgba(102, 126, 234, 0.3),
+                transparent
+            ),
+            radial-gradient(
+                1px 1px at 50% 50%,
+                rgba(0, 255, 255, 0.2),
+                transparent
+            ),
+            radial-gradient(
+                1px 1px at 80% 10%,
+                rgba(102, 126, 234, 0.2),
+                transparent
+            );
+        background-size: 200% 200%;
+        animation: particleFloat 15s ease-in-out infinite;
+        pointer-events: none;
+    }
+}
+
+@keyframes particleFloat {
+    0%,
+    100% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+}
+
+.content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 800px;
+}
+
+.glitchWrapper {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.errorCode {
+    font-size: 180px;
+    font-weight: 900;
+    line-height: 1;
+    margin: 0;
+    background: linear-gradient(90deg, #00ffff 0%, #667eea 50%, #00ffff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s linear infinite, float 3s ease-in-out infinite;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5),
+        0 0 40px rgba(0, 255, 255, 0.3), 0 0 60px rgba(0, 255, 255, 0.2);
+
+    // Glitch effect layers
+    &::before,
+    &::after {
+        content: '404';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            #00ffff 0%,
+            #667eea 50%,
+            #00ffff 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    &::before {
+        animation: glitch1 2s infinite;
+        clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        transform: translate(-2px, -2px);
+        opacity: 0.8;
+    }
+
+    &::after {
+        animation: glitch2 3s infinite;
+        clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        transform: translate(2px, 2px);
+        opacity: 0.8;
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes glitch1 {
+    0%,
+    100% {
+        transform: translate(0);
+        opacity: 0.8;
+    }
+    20% {
+        transform: translate(-3px, 3px);
+        opacity: 1;
+    }
+    40% {
+        transform: translate(-3px, -3px);
+        opacity: 0.8;
+    }
+    60% {
+        transform: translate(3px, 3px);
+        opacity: 1;
+    }
+    80% {
+        transform: translate(3px, -3px);
+        opacity: 0.8;
+    }
+}
+
+@keyframes glitch2 {
+    0%,
+    100% {
+        transform: translate(0);
+        opacity: 0.8;
+    }
+    30% {
+        transform: translate(3px, -3px);
+        opacity: 1;
+    }
+    55% {
+        transform: translate(-3px, 3px);
+        opacity: 0.8;
+    }
+    75% {
+        transform: translate(-3px, -3px);
+        opacity: 1;
+    }
+}
+
+.title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+
+    .highlight {
+        color: #00ffff;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+}
+
+.subtitle {
+    font-size: 20px;
+    color: #a0aec0;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.primaryButton {
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #00ffff 0%, #667eea 100%);
+    color: #0a1628;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        transition: left 0.5s;
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 25px rgba(0, 255, 255, 0.5);
+        color: #0a1628;
+
+        &::before {
+            left: 100%;
+        }
+    }
+
+    &:active {
+        transform: translateY(-1px);
+    }
+}
+
+.secondaryButton {
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+    background: transparent;
+    color: #00ffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(0, 255, 255, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 25px rgba(0, 255, 255, 0.2);
+        color: #00ffff;
+    }
+
+    &:active {
+        transform: translateY(-1px);
+    }
+}
+
+.quickLinks {
+    margin-top: 4rem;
+    animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.quickLinksTitle {
+    font-size: 18px;
+    color: #00ffff;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.linkGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.linkCard {
+    padding: 1.5rem;
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: rgba(0, 255, 255, 0.1);
+        border-color: rgba(0, 255, 255, 0.4);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+    }
+
+    i {
+        font-size: 32px;
+        color: #00ffff;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .linkTitle {
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 0.25rem;
+    }
+
+    .linkDesc {
+        font-size: 14px;
+        color: #a0aec0;
+        margin: 0;
+    }
+}
+
+.gameController {
+    position: absolute;
+    opacity: 0.03;
+    pointer-events: none;
+
+    &.left {
+        left: 5%;
+        top: 20%;
+        font-size: 150px;
+        color: #00ffff;
+        animation: floatLeft 8s ease-in-out infinite;
+    }
+
+    &.right {
+        right: 5%;
+        bottom: 20%;
+        font-size: 150px;
+        color: #667eea;
+        animation: floatRight 8s ease-in-out infinite;
+    }
+}
+
+@keyframes floatLeft {
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+        transform: translate(-20px, -30px) rotate(-10deg);
+    }
+}
+
+@keyframes floatRight {
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+        transform: translate(20px, 30px) rotate(10deg);
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .errorCode {
+        font-size: 120px;
+    }
+
+    .title {
+        font-size: 32px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .buttonGroup {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .linkGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .gameController {
+        font-size: 80px;
+
+        &.left {
+            left: -10%;
+        }
+
+        &.right {
+            right: -10%;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .errorCode {
+        font-size: 80px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+}

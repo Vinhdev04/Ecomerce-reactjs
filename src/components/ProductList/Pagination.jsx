@@ -51,7 +51,7 @@ export const Pagination = React.memo(({ pagination, onPageChange }) => {
 
 const PaginationInfo = ({ pagination }) => (
     <div className={styles.paginationInfo}>
-        Hiển thị {pagination.limit} trên {pagination.total} sản phẩm (Trang{' '}
+        Đang hiển thị {pagination.limit} trên {pagination.total} sản phẩm (Trang{' '}
         {pagination.page}/{pagination.totalPages})
     </div>
 );
