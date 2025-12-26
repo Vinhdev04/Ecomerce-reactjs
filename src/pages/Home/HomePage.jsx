@@ -10,10 +10,11 @@ function HomePage() {
     const { container } = styles;
     return (
         <>
+            {' '}
             <div className={container}>
                 <Header />
-                <Banner />
                 <Info />
+                <BannerHome />
                 <Heading />
                 <HomeListProduct />
                 <BannerHome />

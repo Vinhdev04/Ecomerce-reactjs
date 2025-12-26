@@ -1,9 +1,7 @@
-
 import React from 'react';
 import styles from './HomeListProduct.module.scss';
 import Layout from '@/components/Layout/Layout';
 import CalculatorTimer from '@/components/Countdown/CalculatorTimer.jsx';
-
 
 import { ProductGrid } from '@/components/ProductList/ProductGrid.jsx';
 import { Pagination } from '@/components/ProductList/Pagination.jsx';
@@ -12,7 +10,6 @@ import {
     ErrorState,
     EmptyState
 } from '@/components/ProductList/ProductStates.jsx';
-
 
 import img01 from '@images/8BitDoUltimate 3-mode.webp';
 import img03 from '@images/8BitDoUltimate.webp';
