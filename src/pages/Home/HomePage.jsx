@@ -6,6 +6,7 @@ import Heading from '@/components/Heading/Heading';
 import Info from '@/components/Info/Info';
 import HomeListProduct from '@/components/HomeListProduct/HomeListProduct';
 import BannerHome from '@/components/BannerHome/BannerHome';
+import Footer from '@/components/Footer/Footer';
 function HomePage() {
     const { container } = styles;
     return (
@@ -14,10 +15,10 @@ function HomePage() {
                 <Header />
                 <Banner />
                 <Info />
-             
                 <Heading />
                 <HomeListProduct />
                 <BannerHome />
+                <Footer />
             </div>
         </>
     );

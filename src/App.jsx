@@ -1,25 +1,29 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Typed from 'typed.js';
 import 'normalize.css';
 import '@styles/app.module.scss';
-import { initVisibilityHandler } from '@utils/changeFavicon';
 
-import HomePage from '@pages/Home/HomePage.jsx';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import BackToTop from '@/components/BackToTop/BackToTop';
-import Layout from '@/components/Layout/Layout';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import routers from '@routes/index';
+import { initVisibilityHandler } from '@utils/changeFavicon';
+import { Suspense } from 'react';
 initVisibilityHandler();
 
 function App() {
     return (
-        <>
-            <HomePage />
-
-            <BackToTop />
-            <Footer />
-        </>
+        <BrowserRouter>
+            <Suspense fallback={<div>Loading...</div>}>
+                <Routes>
+                    {routers?.map((item, idx) => (
+                        <Route
+                            key={idx}
+                            path={item.path}
+                            element={<item.component />}
+                        />
+                    ))}
+                </Routes>
+            </Suspense>
+        </BrowserRouter>
     );
 }
 
