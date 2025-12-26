@@ -23,12 +23,12 @@ export const useProducts = (initialLimit = 6) => {
                 if (response && response.success) {
                     setProducts(response.data || []);
 
-                    // setPagination({
-                    //     page,
-                    //     limit,
-                    //     total: response.pagination?.total || 0,
-                    //     totalPages: response.pagination?.totalPages || 1
-                    // });
+                    setPagination({
+                        page,
+                        limit,
+                        total: response.pagination?.total || 0,
+                        totalPages: response.pagination?.totalPages || 1
+                    });
                 } else {
                     throw new Error(
                         response?.message || 'Không thể tải sản phẩm'

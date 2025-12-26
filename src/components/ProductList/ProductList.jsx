@@ -1,13 +1,10 @@
-// pages/ProductList/ProductList.jsx
+
 import React from 'react';
 import styles from './HomeListProduct.module.scss';
 import Layout from '@/components/Layout/Layout';
 import CalculatorTimer from '@/components/Countdown/CalculatorTimer.jsx';
 
-// Import custom hook
-import useProducts from '@/hooks/useProducts';
 
-// Import components
 import { ProductGrid } from '@/components/ProductList/ProductGrid.jsx';
 import { Pagination } from '@/components/ProductList/Pagination.jsx';
 import {
@@ -16,7 +13,7 @@ import {
     EmptyState
 } from '@/components/ProductList/ProductStates.jsx';
 
-// Import images for featured section
+
 import img01 from '@images/8BitDoUltimate 3-mode.webp';
 import img03 from '@images/8BitDoUltimate.webp';
 

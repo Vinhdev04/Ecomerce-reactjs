@@ -116,7 +116,8 @@
     cursor: pointer;
     padding-top: 8px;
     font-size: 14px;
-    color: $primary_color;
+    // color: $primary_color;
+    color: #00ffff;
     white-space: nowrap;
 
     @include responsive(laptop) {
@@ -200,14 +201,15 @@
 .logoFont {
     font-size: 22px;
     white-space: nowrap;
-
+    color: #fff;
     @include responsive(laptop) {
         font-size: 18px;
     }
 }
 
 .descLogo {
-    color: $secondary_color;
+    // color: $secondary_color;
+    color: #59adad;
     margin-top: -4px;
     font-size: 14px;
 
