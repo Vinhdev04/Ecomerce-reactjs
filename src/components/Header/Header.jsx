@@ -1,12 +1,17 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import styles from './Header.module.scss';
 import { icons, navItem } from './constant.js';
 import NavIcon from './NavIcon/NavIcon.jsx';
 import MenuItem from './MenuItem/MenuItem.jsx';
+import useScrollHandling from '@hooks/useScrollHandling.js';
+import classNames from 'classnames';
 
 import cart from '@icons/svg/cart.svg';
 import reload from '@icons/svg/reload.svg';
 import heart from '@icons/svg/heart.svg';
+
+
+
 function Header() {
     const {
         containerBox,
@@ -18,10 +23,20 @@ function Header() {
         titleRow,
         logoFont,
         descLogo,
-        container
+        container,
+        topHeader,
+        fixedXHeader
     } = styles;
+
+    const{scrollPosition} = useScrollHandling();
+    const [fixedHeader,setFixedHeader] = useState(false);
+  
+
+    useEffect(()=>{
+        setFixedHeader(scrollPosition > 80);
+    },[scrollPosition])
     return (
-        <div className={container}>
+        <div className={classNames(container,topHeader,{[fixedXHeader]:fixedHeader})}>
             <div className={containerHeader}>
                 <div className={containerItem}>
                     <div className={containerBox}>
