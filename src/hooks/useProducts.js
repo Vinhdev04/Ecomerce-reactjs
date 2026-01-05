@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getAllProducts } from '@api/productsService.js';
 
+/* ==============================
+     HOOKS: SỬ DỤNG TRONG PRODUCTS
+ ============================== */
 export const useProducts = (initialLimit = 6) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -49,7 +52,9 @@ export const useProducts = (initialLimit = 6) => {
         [initialLimit]
     );
 
-    // #OVERVIEW: SỬ DỤNG UseCallback() -> chỉ render khi cần
+    /* ==============================
+         SỬ DỤNG UseCallback() -> chỉ render khi cần
+     ============================== */
     const handlePageChange = useCallback(
         (newPage) => {
             if (newPage < 1 || newPage > pagination.totalPages) {
@@ -67,13 +72,19 @@ export const useProducts = (initialLimit = 6) => {
         [pagination.totalPages, pagination.limit, fetchProducts]
     );
 
-    // NOTE: RETRY KHI GẶP LỖI
+     
+    /* ==============================
+         RETRY KHI GẶP LỖI
+     ============================== */
     const retry = () => {
         console.log('Retrying fetchProducts...');
         fetchProducts(pagination.page, pagination.limit);
     };
 
-    // NOTE: RESET VỀ ĐẦU PAGE
+   
+    /* ==============================
+         RESET VỀ ĐẦU PAGE
+     ============================== */
     const resetToFirstPage = () => {
         console.log('Reset to first page');
         fetchProducts(1, pagination.limit);
@@ -84,13 +95,19 @@ export const useProducts = (initialLimit = 6) => {
         fetchProducts(1, newLimit);
     };
 
-    // NOTE: TỰU ĐỘNG REFRESH PAGE
+  
+    /* ==============================
+         TỰ ĐỘNG REFRESH PAGE
+     ============================== */
     const refresh = () => {
         console.log('Refreshing current page...');
         fetchProducts(pagination.page, pagination.limit);
     };
 
-    // NOTE: TỰ ĐỘNG FETCH KHI COMPONENT MOUNT
+  
+    /* ==============================
+         TỰ ĐỘNG FETCH KHI COMPONENT MOUNT
+     ============================== */
     useEffect(() => {
         fetchProducts();
     }, [fetchProducts]);

@@ -8,6 +8,7 @@ import morgan from 'morgan';
 
 const app = express();
 
+
 // Config host & port
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';

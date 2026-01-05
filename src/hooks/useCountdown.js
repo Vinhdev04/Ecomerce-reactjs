@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 
-/**
- * Hook đếm ngược thời gian đến endTime
- * @param {string | Date} endTime - thời điểm kết thúc
- */
+
+/* ==============================
+     * @param {string | Date} endTime - thời điểm kết thúc
+ ============================== */
 export default function useCountdown(endTime) {
     const calculateTimeLeft = useCallback(() => {
         const target = new Date(endTime).getTime();

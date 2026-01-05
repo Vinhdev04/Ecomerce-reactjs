@@ -3,6 +3,9 @@
  ============================== */
 import prisma from '../lib/prisma.lib.js';
 
+/* ==============================
+     GET ALL PRODUCTS
+ ============================== */
 const getAllProducts = async (req, res) => {
     try {
         // Lấy thông tin phân trang từ query
@@ -41,6 +44,10 @@ const getAllProducts = async (req, res) => {
         });
     }
 };
+
+/* ==============================
+     GET PRODUCT BY ID
+ ============================== */
 const getProductByID = async (req, res) => {
     try {
         const { id } = req.params;
@@ -68,6 +75,10 @@ const getProductByID = async (req, res) => {
     }
 };
 
+
+/* ==============================
+     CREATE PRODUCT
+ ============================== */
 const createProduct = async (req, res) => {
     try {
         const {
@@ -94,6 +105,9 @@ const createProduct = async (req, res) => {
     }
 };
 
+/* ==============================
+     UPDATE PRODUCT
+ ============================== */
 const updatedProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -121,6 +135,10 @@ const updatedProduct = async (req, res) => {
     }
 };
 
+
+/* ==============================
+     DELETE PRODUCT
+ ============================== */
 const deletedProduct = async (req, res) => {
     try {
         res.status(200).json({
