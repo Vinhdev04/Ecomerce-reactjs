@@ -1,10 +1,11 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import styles from './Header.module.scss';
 import { icons, navItem } from './constant.js';
 import NavIcon from './NavIcon/NavIcon.jsx';
 import MenuItem from './MenuItem/MenuItem.jsx';
 import useScrollHandling from '@hooks/useScrollHandling.js';
 import classNames from 'classnames';
+import SideBarContext from '@contexts/SideBarContext.js';
 
 import cart from '@icons/svg/cart.svg';
 import reload from '@icons/svg/reload.svg';
@@ -30,7 +31,8 @@ function Header() {
 
     const{scrollPosition} = useScrollHandling();
     const [fixedHeader,setFixedHeader] = useState(false);
-  
+    const {isOpen} = useContext(SideBarContext);
+    console.log(isOpen);
 
     useEffect(()=>{
         setFixedHeader(scrollPosition > 80);
