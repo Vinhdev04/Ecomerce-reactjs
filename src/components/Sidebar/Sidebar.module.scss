@@ -1,3 +1,8 @@
+
+@use '@styles/mixin.module.scss' as *;
+@use '@styles/variable.module.scss' as *;
+
+
 .container {
     position: relative;
 
@@ -9,14 +14,14 @@
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 999;
-        //Thêm2dòngnàyđểẩnmặcđịnhopacity: 0;
+        
         visibility: hidden;
         transition: all 0.3s ease;
         -webkit-transition: all 0.3s ease;
         -moz-transition: all 0.3s ease;
         -ms-transition: all 0.3s ease;
         -o-transition: all 0.3s ease;
-}
+    }
 
     // Class bổ trợ để hiện Overlay
     .showOverlay {
@@ -28,7 +33,7 @@
         position: fixed;
         top: 0;
         right: 0;
-        width: 380px;
+        width: 320px;
         height: 100vh;
         background: #fff;
         z-index: 1000;
@@ -38,7 +43,7 @@
         -moz-transform: translateX(580px);
         -ms-transform: translateX(580px);
         -o-transform: translateX(580px);
-}
+    }
 
     .slideSideBar {
         transform: translateX(0px);
@@ -46,5 +51,38 @@
         -moz-transform: translateX(0px);
         -ms-transform: translateX(0px);
         -o-transform: translateX(0px);
-}
+    }
+
+    .wrapIcon{
+        @include flex_box(center,center,10px);
+
+        width: 35px;
+        height: 35px;
+        position: absolute;
+        top: 0;
+        left: -50px;
+        color: #fff;
+        border-radius: 50%;
+        opacity: 1;
+        transition: all 0.3s ease-in;
+        -webkit-transition: all 0.3s ease-in;
+        -moz-transition: all 0.3s ease-in;
+        -ms-transition: all 0.3s ease-in;
+        -o-transition: all 0.3s ease-in;
+        cursor: pointer;
+
+          &:hover{
+            opacity: 0.8;
+          }
+    }
+
+    .btnClose{
+        width: 30px;
+        height: 30px;
+        transition: all 0.3s ease-in;
+        -webkit-transition: all 0.3s ease-in;
+        -moz-transition: all 0.3s ease-in;
+        -ms-transition: all 0.3s ease-in;
+        -o-transition: all 0.3s ease-in;
+    }
 }

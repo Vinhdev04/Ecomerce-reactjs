@@ -157,3 +157,29 @@ const handlePageChange = (page) => {
 ```
 
 ---
+# Task: `05/1/2026`
+- Create hooks: 
+  - **useTranslateImage**
+  - **useScrollHandling**
+- Create components: 
+  - **Header**
+  - **Sidebar**
+  - **ProductList**
+---
+# Task: `06/1/2026`
+- Create contexts: 
+  - **SideBarContext**
+  - **SideBarProvider**
+- Create components: 
+  - **Sidebar**
+  - Responsive
+  - Hanlde logic show/hide sidebar
+  - Create component **Compare**
+---
+# Task: `07/1/2026`
+- Validate Form: 
+  - Create component **Form Login**
+  - Create **Toast Message**
+  - Validator Form Using **Yup and Formik**
+  - Call API get data from Form
+----

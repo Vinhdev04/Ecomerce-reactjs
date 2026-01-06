@@ -1,0 +1,32 @@
+@use '@styles/mixin.module.scss' as *;
+@use '@styles/variable.module.scss' as *;
+
+
+.formContainer{
+    @include padding(20px,20px,20px,20px);
+    font-family: 'Roboto Mono';
+
+    .formTitle{
+        font-size: 20px;
+        text-transform: uppercase;
+        text-align: center;
+        font-family: inherit;
+        margin-bottom: 20px;
+    }
+
+    .checkBoxItem {
+            font-size: 16px;
+    }
+    .forgotPass{
+        color: inherit;
+        text-decoration: none;
+        font-size: 16px;
+
+
+        &:hover{
+            text-decoration: underline; color: #349696;
+        }
+    }
+
+    
+}

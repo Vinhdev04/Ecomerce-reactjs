@@ -1,0 +1,30 @@
+.formControl{
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .error {
+        color: red;
+        font-size: 12px;  
+        margin-top: 4px;
+    }
+
+    .passwordIcon{
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 50%;
+        right: 4%;
+        cursor: pointer;
+    }
+
+    .showPIcon{
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 50%;
+        right: 4%;
+        cursor: pointer;
+
+    }

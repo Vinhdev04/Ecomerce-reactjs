@@ -1,16 +1,17 @@
 import { useContext } from "react";
 import styles from "./Sidebar.module.scss";
 import { SideBarContext } from "@/contexts/SideBarContext.js";
+import { AiFillCloseCircle } from "react-icons/ai";
 import classNames from "classnames";
-
+import Login from '@components/ContentSidebar/Login/Login.jsx';
 const Sidebar = () => {
-    const { container, overlay, sideBar, slideSideBar, showOverlay} = styles;
+    const { container, overlay, sideBar, slideSideBar, showOverlay,btnClose,wrapIcon} = styles;
     
   
     const { isOpen, setIsOpen } = useContext(SideBarContext);
 
    
-    const handleClose = () => {
+    const handleToggle = () => {
         setIsOpen(!isOpen);
     };
 
@@ -19,13 +20,18 @@ const Sidebar = () => {
      
             <div 
                 className={classNames(overlay, { [showOverlay]: isOpen })}
-                onClick={handleClose}
+                onClick={handleToggle}
             ></div>
 
             <div className={classNames(sideBar, { [slideSideBar]: isOpen })}>
-                <h2>Sidebar Content</h2>
+               
        
-                <button onClick={handleClose}>×</button>
+             
+               {isOpen &&  <div className={wrapIcon} onClick={handleToggle} >
+                    <AiFillCloseCircle className={btnClose} width={30} height={30}/>
+                </div>}
+
+                <Login/>
             </div>
         </div>
     );
