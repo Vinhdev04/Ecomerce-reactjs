@@ -1,25 +1,27 @@
 import React from 'react';
-import fb from '@icons/svg/facebook.svg';
-import ins from '@icons/svg/instagram.svg';
-import tiktok from '@icons/svg/tiktok.svg';
+
 import styles from '../Header.module.scss';
+import { FaTiktok } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+
 function NavIcon({ type, href }) {
     const { navIcons } = styles;
     const handleShowIcon = (type) => {
         switch (type) {
             case 'fb':
-                return fb;
+                return <FaFacebook />;
             case 'ins':
-                return ins;
+                return <FaInstagram />;
             case 'tiktok':
-                return tiktok;
+                return  <FaTiktok />;
             default:
                 throw new Error('Error when render icon');
         }
     };
     return (
         <div className={navIcons}>
-            <img src={handleShowIcon(type)} alt={type} />
+           {handleShowIcon(type)}
         </div>
     );
 }

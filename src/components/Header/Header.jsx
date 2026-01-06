@@ -7,11 +7,10 @@ import useScrollHandling from '@hooks/useScrollHandling.js';
 import classNames from 'classnames';
 import { SideBarContext } from '@contexts/SideBarContext.js';
 
-import cart from '@icons/svg/cart.svg';
-import reload from '@icons/svg/reload.svg';
-import heart from '@icons/svg/heart.svg';
 
-
+import { TfiReload } from "react-icons/tfi";
+import { FaRegHeart } from "react-icons/fa";
+import { BsCart } from "react-icons/bs";
 
 function Header() {
     const {
@@ -26,7 +25,7 @@ function Header() {
         descLogo,
         container,
         topHeader,
-        fixedXHeader
+        fixedXHeader,boxIcons
     } = styles;
 
     const{scrollPosition} = useScrollHandling();
@@ -78,9 +77,10 @@ function Header() {
                         })}
                     </div>
                     <div className={containerBox}>
-                        <img src={reload} width={26} height={26} />
-                        <img src={heart} width={26} height={26} />
-                        <img src={cart} width={26} height={26} />
+                        <TfiReload width={26} height={26} className={boxIcons}/>
+                        <FaRegHeart width={26} height={26} className={boxIcons}/>   
+                        <BsCart width={26} height={26} className={boxIcons}/>
+                       
                     </div>
                 </div>
             </div>

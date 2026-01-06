@@ -1,8 +1,10 @@
 import React  from 'react'
 import styles from './Login.module.scss'
 import { Checkbox, Form } from 'antd'
-
 import InputForm from '@components/InputForm/InputForm.jsx'
+import { TfiReload } from "react-icons/tfi";
+import { FaRegHeart } from "react-icons/fa";
+import { BsCart } from "react-icons/bs";
 function Login() {
     const { formContainer, formTitle,forgotPass,checkBoxItem } = styles
  

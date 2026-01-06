@@ -2,12 +2,24 @@
 @use '@styles/variable.module.scss' as *;
 
 .navIcons {
-    @include flex_box(center, center, 0px);
+    @include flex_box(center,center,0px);
     @include radius_base(50%);
 
     background-color: $primary_color;
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    cursor: pointer;
+    opacity: 1;
+    transition: hover 0.2s ease;
+    -webkit-transition: hover 0.2s ease;
+    -moz-transition: hover 0.2s ease;
+    -ms-transition: hover 0.2s ease;
+    -o-transition: hover 0.2s ease;
+
+    &:hover{
+        opacity: 0.8;
+    }
 }
 
 .container {
@@ -84,8 +96,11 @@
         gap: 8px;
     }
 
-    img {
+    .boxIcons {
+        width: 26px;
+        height: 26px;
         cursor: pointer;
+        color: #fff;
         transition: transform 0.2s ease;
 
         &:hover {
@@ -100,6 +115,19 @@
         @include responsive(mobile) {
             width: 20px;
             height: 20px;
+        }
+    }
+
+    
+    .NavIcon{
+        width: 26px;
+        height: 26px;
+        cursor: pointer;
+        color: #fff;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.1);
         }
     }
 }
@@ -141,8 +169,7 @@
 .navItem {
     cursor: pointer;
     padding-top: 8px;
-    font-size: 14px;
-    // color: $primary_color;
+    font-size: 16px;
     color: #00ffff;
     white-space: nowrap;
 
