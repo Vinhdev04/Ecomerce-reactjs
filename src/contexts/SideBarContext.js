@@ -1,3 +1,2 @@
 import { createContext } from 'react';
- const SideBarContext = createContext();
- export default SideBarContext;
+ export const SideBarContext = createContext();

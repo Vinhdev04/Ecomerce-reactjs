@@ -7,12 +7,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import routers from '@routes/index';
 import { initVisibilityHandler } from '@utils/changeFavicon';
 import { Suspense } from 'react';
-import { SideBarProvider } from '@contexts/SideBar.jsx';
-initVisibilityHandler();
+import { SideBarProvider } from '@contexts/SideBarProvider.jsx';
+import Sidebar from '@components/SideBar/SideBar.jsx';
+
+
 
 function App() {
     return (
         <SideBarProvider>
+            <Sidebar/>
             <BrowserRouter>
                 <Suspense fallback={<div>Loading...</div>}>
                     <Routes>
@@ -31,3 +34,4 @@ function App() {
 }
 
 export default App;
+initVisibilityHandler();

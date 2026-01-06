@@ -5,7 +5,7 @@ import NavIcon from './NavIcon/NavIcon.jsx';
 import MenuItem from './MenuItem/MenuItem.jsx';
 import useScrollHandling from '@hooks/useScrollHandling.js';
 import classNames from 'classnames';
-import SideBarContext from '@contexts/SideBarContext.js';
+import { SideBarContext } from '@contexts/SideBarContext.js';
 
 import cart from '@icons/svg/cart.svg';
 import reload from '@icons/svg/reload.svg';
@@ -32,7 +32,7 @@ function Header() {
     const{scrollPosition} = useScrollHandling();
     const [fixedHeader,setFixedHeader] = useState(false);
     const {isOpen} = useContext(SideBarContext);
-    console.log(isOpen);
+
 
     useEffect(()=>{
         setFixedHeader(scrollPosition > 80);
@@ -74,7 +74,7 @@ function Header() {
                     {' '}
                     <div className={containerItem}>
                         {navItem?.slice(3, navItem.length).map((item, idx) => {
-                            return <MenuItem key={idx} title={item.title} />;
+                            return <MenuItem key={idx} title={item.title} setIsOpen={isOpen}/>;
                         })}
                     </div>
                     <div className={containerBox}>

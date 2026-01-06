@@ -1,0 +1,50 @@
+.container {
+    position: relative;
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        //Thêm2dòngnàyđểẩnmặcđịnhopacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+}
+
+    // Class bổ trợ để hiện Overlay
+    .showOverlay {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .sideBar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 380px;
+        height: 100vh;
+        background: #fff;
+        z-index: 1000;
+        transform: translateX(580px);
+        transition: all 0.3s ease;
+        -webkit-transform: translateX(580px);
+        -moz-transform: translateX(580px);
+        -ms-transform: translateX(580px);
+        -o-transform: translateX(580px);
+}
+
+    .slideSideBar {
+        transform: translateX(0px);
+        -webkit-transform: translateX(0px);
+        -moz-transform: translateX(0px);
+        -ms-transform: translateX(0px);
+        -o-transform: translateX(0px);
+}
+}
