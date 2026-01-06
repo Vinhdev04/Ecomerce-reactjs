@@ -1,0 +1,46 @@
+@use '@styles/mixin.module.scss' as *;
+@use '@styles/variable.module.scss' as *;
+
+.favoritesBox{
+    font-family: inherit;
+
+    .favoritesIcon{
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            color: #3498db;
+            opacity: 1;
+        
+            animation: scaleIcon 1s linear infinite;
+            -webkit-animation: scaleIcon 1s linear infinite;
+            -webkit-transition:opacity 0.2s ease animation 1s linear infinite;
+            -moz-transition:opacity 0.2s ease animation 1s linear infinite;
+            -ms-transition: opacity 0.2s ease animation 1s linear infinite;
+            -o-transition:opacity 0.2s ease animation 1s linear infinite;
+            transition: opacity 0.2s ease animation 1s linear infinite;
+   
+            &:hover
+{
+                opacity: 0.8;
+            }
+            
+            @keyframes scaleIcon{
+                0%{
+                    transform: scale(1);
+                    -webkit-transform: scale(1);
+                    -moz-transform: scale(1);
+                    -ms-transform: scale(1);
+                    -o-transform: scale(1);
+}
+                100%{
+                    transform: scale(1.2);
+                    -webkit-transform: scale(1.2);
+                    -moz-transform: scale(1.2);
+                    -ms-transform: scale(1.2);
+                    -o-transform: scale(1.2);
+}
+            
+            }
+        
+    }
+}

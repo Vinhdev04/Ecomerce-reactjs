@@ -1,0 +1,96 @@
+@use '@styles/mixin.module.scss' as *;
+@use '@styles/variable.module.scss' as *;
+
+.productItemBox {
+    position: relative; // Cần thiết để icon con căn theo box này
+    margin-bottom: 12px;
+    padding: 0 10px;
+
+    .cardStyle {
+        position: relative; // Anchor cho nút close
+        @include flex_box(flex-start, center, 12px);
+        padding: 12px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e1e4e8;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+        margin-top: 30px;
+
+        &:hover {
+            border-color: #3498db;
+            background-color: #f0f7ff;
+
+            .closeIcon {
+                opacity: 1; // Hiện icon khi hover vào card
+            }
+        }
+
+        .closeIcon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 18px;
+            color: #adb5bd;
+            opacity: 0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            border-radius: 4px;
+
+            &:hover {
+                color: #e74c3c; 
+                background-color: #fceaea;
+            }
+        }
+
+        .imgWrapper {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            @include flex_box(center, center);
+            
+            .imgStyle {
+                width: 70%;
+                height: 70%;
+                object-fit: contain;
+            }
+        }
+
+        .contentInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding-right: 15px; // Tránh chữ đè lên nút close
+        }
+
+        .cardTitle {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .cardText {
+            margin: 0;
+            font-size: 11px;
+            color: #636e72;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .badgePrice {
+            width: fit-content;
+            font-size: 10px;
+            font-weight: bold;
+            color: #0984e3;
+        }
+    }
+}

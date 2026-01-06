@@ -1,0 +1,31 @@
+@use '@styles/mixin.module.scss' as *;
+@use '@styles/variable.module.scss' as *;
+
+.headerSidebar{
+    @include padding(20px,20px,20px,20px);
+  
+    font-family: inherit;
+
+    .wrapBox{
+        @include flex_box(center,center,0px);
+        @include padding(5px,0px,20px,0px);
+        flex-direction: row-reverse;
+        border-bottom: 1px solid #e1e1e1;
+
+      
+
+        .headerTitle{
+            @include margin(0,10px,0,0px);
+            font-size: 20px;
+            text-transform: uppercase;
+            text-align: center;
+            color: #3498db;
+           
+           
+        }
+
+
+    }
+
+   
+}

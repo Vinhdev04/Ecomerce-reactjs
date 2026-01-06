@@ -1,0 +1,33 @@
+@use '@styles/mixin.module.scss' as *;
+@use '@styles/variable.module.scss' as *;
+.compareBox{
+    font-family: inherit;
+
+    
+  .reloadIcon{
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            animation: spin 1s linear infinite;
+            color: #3498db;
+            opacity: 1;
+            animation: spin 1s linear infinite;
+            -webkit-animation: spin 1s linear infinite;
+
+            &:hover{   
+                opacity: 0.8;
+            }
+
+            
+            @keyframes spin{
+                0%{
+                    transform: rotate(0deg);
+                }
+                100%{
+                    transform: rotate(360deg);
+                }
+            
+            }
+        }
+}

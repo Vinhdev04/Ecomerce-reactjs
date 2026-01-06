@@ -30,8 +30,13 @@ function Header() {
 
     const{scrollPosition} = useScrollHandling();
     const [fixedHeader,setFixedHeader] = useState(false);
-    const {isOpen} = useContext(SideBarContext);
+    const {isOpen,setIsOpen,setType} = useContext(SideBarContext);
 
+    const handleShowSidebar = (type)=> {
+        setIsOpen(true);
+        setType(type);
+        
+    }
 
     useEffect(()=>{
         setFixedHeader(scrollPosition > 80);
@@ -76,10 +81,10 @@ function Header() {
                             return <MenuItem key={idx} title={item.title} setIsOpen={isOpen}/>;
                         })}
                     </div>
-                    <div className={containerBox}>
-                        <TfiReload width={26} height={26} className={boxIcons}/>
-                        <FaRegHeart width={26} height={26} className={boxIcons}/>   
-                        <BsCart width={26} height={26} className={boxIcons}/>
+                    <div className={containerBox} >
+                        <TfiReload width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("compare")}/>
+                        <FaRegHeart width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("favorites")}/>   
+                        <BsCart width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("cart")}/>
                        
                     </div>
                 </div>
