@@ -7,6 +7,11 @@ function Compare() {
   return (
     <div className={compareBox}>
       <HeaderSidebar title="Compare Product" icon={<TfiReload className={reloadIcon}/>} />
+      <div className="d-flex justify-content-center align-items-center">
+          <button className="mt-3 mb-2 btn btn-dark w-75">
+                    View Compare
+          </button>
+      </div>
     </div>
   )
 }
