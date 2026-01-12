@@ -38,6 +38,12 @@ function ProductItem() {
           <span className={badgePrice}>
             $10.00
           </span>
+          <span className={badgePrice}>
+            Size: M
+          </span>
+          <span className={badgePrice}>
+            Qty: 1
+          </span>
         </div>
       </div>
     </div>

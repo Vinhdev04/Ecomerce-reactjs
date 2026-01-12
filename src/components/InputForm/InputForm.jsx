@@ -7,15 +7,16 @@ import classNames from 'classnames'
 
 
 
-function InputForm({label,type,name,isRequired=false}) {
-
-  const{ formControl,passwordIcon } = styles
+function InputForm({label,type,name,isRequired=false,...props}) {
+  const {formik} = props
+  const{ formControl,passwordIcon,inputErr,error } = styles
   const [showPassword, setShowPassword] = useState(false)
   const isPassword = type === 'password'
   const showTextPassword = type === "password"&& showPassword ? "text" : type;
   const handleShowPassword = ()=>{
     setShowPassword(!showPassword)
   }
+  console.log(formik);
   return (
     <>
       <div className={classNames(formControl, 'input-group')}>
@@ -28,15 +29,17 @@ function InputForm({label,type,name,isRequired=false}) {
                         name={name}
                         />
                         {isPassword && 
-                          <div onClick={handleShowPassword}>
+                          <div onClick={handleShowPassword} className=''>
                             {
                               showPassword ? <AiFillEyeInvisible className={passwordIcon}/> : <AiFillEye className={passwordIcon} />
                             }
                          </div>
                         }
 
+
                     </label>
                 </div>
+                        <div className={error}>Error here!</div>
 
     </>
   )

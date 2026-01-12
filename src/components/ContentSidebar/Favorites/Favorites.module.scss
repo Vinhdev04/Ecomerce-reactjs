@@ -3,7 +3,11 @@
 
 .favoritesBox{
     font-family: inherit;
-
+     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    
     .favoritesIcon{
             width: 30px;
             height: 30px;

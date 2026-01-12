@@ -2,7 +2,10 @@
 @use '@styles/variable.module.scss' as *;
 .compareBox{
     font-family: inherit;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
     
   .reloadIcon{
             width: 30px;
@@ -30,4 +33,9 @@
             
             }
         }
+
+    .btnCompare{
+        color: #fff;
+        background-color: #000;
+    }
 }
