@@ -1,151 +1,213 @@
-# File Tree: Ecomerce-reactjs
+# 🎮 xPadGame – Gaming Controller E‑Commerce Website
 
-**Generated:** 12/19/2025, 1:42:13 AM
-**Root Path:** `c:\Ecomerce-reactjs`
+## 📌 Giới thiệu
+
+**xPadGame** là một website thương mại điện tử chuyên cung cấp **tay cầm chơi game (game controllers)** và phụ kiện gaming. Dự án được xây dựng theo mô hình **Full‑stack JavaScript**, hướng tới trải nghiệm mua sắm hiện đại, trực quan và hiệu năng cao, sẵn sàng triển khai trên môi trường thực tế.
+
+Website cho phép người dùng duyệt sản phẩm, đăng ký/đăng nhập tài khoản và tương tác với hệ thống thông qua các **RESTful APIs**.
+
+---
+
+## 🧩 Tính năng chính
+
+### 👤 Người dùng (User)
+
+* Đăng ký tài khoản
+* Đăng nhập / Đăng xuất
+* Mã hóa mật khẩu bằng **bcrypt**
+* Kiểm tra dữ liệu đầu vào (validation) bằng **Yup** & **Formik**
+* Bảo mật thông tin người dùng 
+
+
+### 🛒 Sản phẩm (Product)
+
+* Hiển thị danh sách tay cầm chơi game
+* Phân loại theo hãng / nền tảng (PC, PS, Xbox, Mobile)
+* Xem chi tiết sản phẩm
+* Giao diện thân thiện, responsive
+
+### 🔐 Bảo mật & API
+
+* Không trả về mật khẩu từ API
+* Chuẩn RESTful API
+* Xử lý lỗi tập trung
+
+
+###
+---
+
+## 🏗️ Công nghệ sử dụng
+
+### Frontend
+
+* **HTML5, SCSS/CSS**
+* **JavaScript (ES6+)**
+* **Bootstrap 5** (UI & Responsive)
+* **AOS (Animate On Scroll)** – animation khi cuộn trang
+* **Font Awesome / Remix Icon** – icon
+* **ReactJS** – routing, state management, hooks,context
+* **Formik** – form validation
+* **Yup** – form validation
+* **Axios** – API request
+* **ContextAPI** – context API
+* **React-Toastify** – toast notification
+* **Config Alias** - config alias
+* **Lazy Load** - lazy load
+  
+
+### Backend
+
+* **Node.js**
+* **Express.js**
+* **Prisma ORM**
+* **bcrypt** – hash & verify password
+* **dotenv** – quản lý biến môi trường
+
+### Database
+
+* **MongoDB Atlas**
+
+### DevOps & Tools
+
+* Git & GitHub
+* Postman (test API)
+* Environment Variables (`.env`)
+* Sẵn sàng deploy (Render / Railway / Vercel)
+
+---
+
+## 📂 Cấu trúc thư mục
+
+
+---
+
+## ⚙️ Cài đặt & chạy dự án
+
+### 1️⃣ Clone repository
+
+```bash
+git clone https://github.com/Vinhdev04/Ecomerce-reactjs.git
+cd xPadGame
+```
+
+### 2️⃣ Cài đặt backend
+
+```bash
+cd backend
+npm install
+```
+
+### 3️⃣ Cấu hình biến môi trường (`.env`)
+
+```env
+PORT
+DATABASE_URL
+```
+
+### 4️⃣ Đồng bộ database
+
+```bash
+npx prisma db push
+```
+
+### 5️⃣ Chạy server
+
+```bash
+npm run dev
+```
+
+Server chạy tại:
 
 ```
-├── 📁 backend
-│   ├── 📁 auth
-│   ├── 📁 controller
-│   │   └── 📄 product.controller.js
-│   ├── 📁 middleware
-│   ├── 📁 routes
-│   │   └── 📄 index.route.js
-│   ├── 📄 app.js
-│   ├── ⚙️ package-lock.json
-│   └── ⚙️ package.json
-├── 📁 public
-│   ├── 🖼️ favidark.png
-│   └── 🖼️ favilight.png
-├── 📁 routes
-│   └── 📄 index.toute.js
-├── 📁 src
-│   ├── 📁 api
-│   │   └── 📄 axiosClient.js
-│   ├── 📁 assets
-│   │   ├── 📁 icons
-│   │   │   ├── 📁 images
-│   │   │   │   ├── 🖼️ gamepad.png
-│   │   │   │   ├── 🖼️ logo.png
-│   │   │   │   ├── 🖼️ logos.png
-│   │   │   │   └── 🖼️ logoss.png
-│   │   │   └── 📁 svg
-│   │   │       ├── 🖼️ card.svg
-│   │   │       ├── 🖼️ cart.svg
-│   │   │       ├── 🖼️ check.svg
-│   │   │       ├── 🖼️ facebook.svg
-│   │   │       ├── 🖼️ gamepad.svg
-│   │   │       ├── 🖼️ heart.svg
-│   │   │       ├── 🖼️ instagram.svg
-│   │   │       ├── 🖼️ message.svg
-│   │   │       ├── 🖼️ reload.svg
-│   │   │       ├── 🖼️ tiktok.svg
-│   │   │       └── 🖼️ truck.svg
-│   │   ├── 📁 images
-│   │   │   ├── 🖼️ 8BitDo Ultimate Wired-02.webp
-│   │   │   ├── 🖼️ 8BitDo Ultimate Wired.webp
-│   │   │   ├── 🖼️ 8BitDoUltimate 3-mode-02.webp
-│   │   │   ├── 🖼️ 8BitDoUltimate 3-mode.webp
-│   │   │   ├── 🖼️ 8BitDoUltimate-02.webp
-│   │   │   ├── 🖼️ 8BitDoUltimate-03.webp
-│   │   │   ├── 🖼️ 8BitDoUltimate-04.webp
-│   │   │   ├── 🖼️ 8BitDoUltimate.webp
-│   │   │   ├── 🖼️ DARE-U H101X-02.webp
-│   │   │   ├── 🖼️ DARE-U H101X-03.webp
-│   │   │   ├── 🖼️ DARE-U H101X.webp
-│   │   │   ├── 🖼️ Microsoft Xbox One Elite Series 2-02.webp
-│   │   │   ├── 🖼️ Microsoft Xbox One Elite Series 2-03.webp
-│   │   │   ├── 🖼️ Microsoft Xbox One Elite Series 2.webp
-│   │   │   ├── 🖼️ Xbox Series X Controller - Electric-02.webp
-│   │   │   ├── 🖼️ Xbox Series X Controller - Electric-03.webp
-│   │   │   ├── 🖼️ Xbox Series X Controller - Electric.webp
-│   │   │   ├── 🖼️ Xbox Series X Controller-02.webp
-│   │   │   ├── 🖼️ Xbox Series X Controller-03.webp
-│   │   │   ├── 🖼️ Xbox Series X Controller.webp
-│   │   │   ├── 🖼️ Xbox Series X-02.webp
-│   │   │   ├── 🖼️ Xbox Series X-03.webp
-│   │   │   ├── 🖼️ Xbox Series X.webp
-│   │   │   ├── 🖼️ banner.jpg
-│   │   │   ├── 🖼️ bannerX.jpeg
-│   │   │   ├── 🖼️ flash-gaming-sale-banner-.jpg
-│   │   │   ├── 🖼️ home_img_list-products-02.jpg
-│   │   │   └── 🖼️ home_img_list-products.jpg
-│   │   ├── 📁 styles
-│   │   │   ├── 🎨 _global.module.scss
-│   │   │   ├── 🎨 _mixin.module.scss
-│   │   │   ├── 🎨 _variable.module.scss
-│   │   │   └── 🎨 app.module.scss
-│   │   └── 🖼️ react.svg
-│   ├── 📁 components
-│   │   ├── 📁 BackToTop
-│   │   │   └── 📄 BackToTop.jsx
-│   │   ├── 📁 Banner
-│   │   │   ├── 📁 hooks
-│   │   │   │   └── 📄 typedTitle.js
-│   │   │   ├── 📄 Banner.jsx
-│   │   │   └── 🎨 Banner.module.scss
-│   │   ├── 📁 Button
-│   │   │   ├── 📄 Button.jsx
-│   │   │   └── 🎨 Button.module.scss
-│   │   ├── 📁 Countdown
-│   │   │   ├── 📄 CalculatorTimer.jsx
-│   │   │   └── 🎨 CalculatorTimer.module.scss
-│   │   ├── 📁 Footer
-│   │   │   └── 📄 Footer.jsx
-│   │   ├── 📁 Header
-│   │   │   ├── 📁 MenuItem
-│   │   │   │   └── 📄 MenuItem.jsx
-│   │   │   ├── 📁 NavIcon
-│   │   │   │   └── 📄 NavIcon.jsx
-│   │   │   ├── 📄 Header.jsx
-│   │   │   ├── 🎨 Header.module.scss
-│   │   │   └── 📄 constant.js
-│   │   ├── 📁 Heading
-│   │   │   ├── 📄 Heading.jsx
-│   │   │   └── 🎨 Heading.module.scss
-│   │   ├── 📁 HomeListProduct
-│   │   │   ├── 📁 ProductCard
-│   │   │   │   ├── 📄 ProductCard.jsx
-│   │   │   │   └── 🎨 ProductCard.module.scss
-│   │   │   └── 📁 ProductList
-│   │   │       ├── 🎨 HomeListProduct.module.scss
-│   │   │       └── 📄 ProductList.jsx
-│   │   ├── 📁 Info
-│   │   │   ├── 📁 InfoCard
-│   │   │   │   └── 📄 InfoCard.jsx
-│   │   │   ├── 📄 Info.jsx
-│   │   │   ├── 🎨 Info.module.scss
-│   │   │   └── 📄 const.js
-│   │   ├── 📁 Layout
-│   │   │   ├── 📄 Layout.jsx
-│   │   │   └── 🎨 Layout.module.scss
-│   │   └── 📁 ProductIcons
-│   │       ├── 📄 ProductIcon.jsx
-│   │       └── 🎨 ProductIcons.module.scss
-│   ├── 📁 hooks
-│   │   └── 📄 useCountdown.js
-│   ├── 📁 pages
-│   │   └── 📁 Home
-│   │       ├── 📄 HomePage.jsx
-│   │       └── 🎨 HomePage.module.scss
-│   ├── 📁 utils
-│   │   └── 📄 changeFavicon.js
-│   ├── 🎨 App.css
-│   ├── 📄 App.jsx
-│   ├── 🎨 index.css
-│   └── 📄 main.jsx
-├── ⚙️ .gitignore
-├── ⚙️ .prettierrc
-├── 📝 README.md
-├── 📄 bun.lock
-├── 📄 eslint.config.js
-├── 🌐 index.html
-├── ⚙️ jsconfig.json
-├── ⚙️ package-lock.json
-├── ⚙️ package.json
-└── 📄 vite.config.js
+http://localhost:3000
 ```
 
 ---
 
-_Generated by FileTree Pro Extension_
+## 🧪 API mẫu
+
+### 👤 User APIs
+
+#### Đăng ký
+
+```
+POST /api/auth/register
+```
+
+```json
+{
+  "email": "user@gmail.com",
+  "password": "Password@123"
+}
+```
+
+#### Đăng nhập
+
+```
+POST /api/auth/login
+```
+
+```json
+{
+  "email": "user@gmail.com",
+  "password": "Password@123"
+}
+```
+
+---
+
+### 🛒 Product APIs
+
+#### Lấy danh sách sản phẩm
+
+```
+GET /api/products
+```
+
+#### Lấy chi tiết sản phẩm
+
+```
+GET /api/products/:id
+```
+
+---
+
+## 🚀 Deploy
+
+Dự án có thể deploy trên:
+
+* **Render**
+* **Railway**
+* **Vercel (Backend riêng)**
+
+Khi deploy cần:
+
+* Thiết lập biến môi trường `DATABASE_URL`
+* Không commit file `.env`
+
+---
+
+## 📈 Định hướng phát triển
+
+* Giỏ hàng & Thanh toán
+* JWT Authentication (Access / Refresh Token)
+* Quản lý sản phẩm (Admin)
+* Animation nâng cao cho UI
+* Tối ưu SEO
+
+---
+
+## 👨‍💻 Tác giả
+
+* **Phạm Công Vinh**
+* **Frontend Developer | Web Developer**
+
+---
+
+## 📄 Giấy phép
+
+Dự án được phát triển cho mục đích **học tập và demo kỹ năng**.
+
+---
+
+⭐ Nếu bạn thấy dự án hữu ích, hãy cho một **star** để ủng hộ!

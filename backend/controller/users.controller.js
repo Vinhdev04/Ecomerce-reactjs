@@ -118,7 +118,7 @@ const login = async (req, res) => {
         if (!user) {
             return res.status(401).json({ 
                 success: false,
-                message: 'Email hoặc mật khẩu không chính xác' 
+                message: 'Không tìm thấy người dùng!'
             });
         }
 
