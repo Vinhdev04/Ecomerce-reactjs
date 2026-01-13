@@ -1,20 +1,23 @@
-
-/* ==============================
-     Hook: UseLogin
- ============================== */
-import React from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-function useLogin() {
-   
-    const LoginSchema = Yup.object({
+
+function useAuthForm(isRegister) {
+  const validationSchema = Yup.object({
     email: Yup.string()
       .email('Invalid email!')
       .required('Email is Required!'),
+
     password: Yup.string()
       .min(6, 'Password must be at least 6 characters long!')
       .max(20, 'Password must be less than 20 characters long!')
       .required('Password is Required!'),
+
+    confirmPassword: isRegister
+      ? Yup.string()
+          .oneOf([Yup.ref('password')], 'Passwords must match!')
+          .required('Confirm Password is Required!')
+      : Yup.string().notRequired(),
+
     remember: Yup.boolean(),
   })
 
@@ -22,21 +25,17 @@ function useLogin() {
     initialValues: {
       email: '',
       password: '',
+      confirmPassword: '',
       remember: false,
     },
-    validationSchema: LoginSchema,
+    validationSchema,
+    enableReinitialize: true,
     onSubmit: (values) => {
-      console.log('Login data:', values)
-      // gọi API login ở đây
+      console.log(isRegister ? 'Sign Up' : 'Sign In', values)
     },
   })
 
-  return {
-    formik,
-    LoginSchema,
-    
-    
-  }
+  return { formik }
 }
 
-export default useLogin
+export default useAuthForm

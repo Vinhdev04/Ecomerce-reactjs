@@ -5,6 +5,8 @@
 .formContainer{
     @include padding(20px,20px,20px,20px);
     font-family: 'Roboto Mono';
+    transition: all 0.3s ease;
+    
 
     .formTitle{
         font-size: 20px;
@@ -29,4 +31,19 @@
     }
 
     
+}
+
+ .fade {
+        animation: fadeIn 0.3s ease;
+}
+ 
+@keyframes fadeIn {
+    from {
+            opacity: 0;
+            transform: translateY(10px);
+    }
+    to {
+            opacity: 1;
+            transform: translateY(0);
+    }
 }
