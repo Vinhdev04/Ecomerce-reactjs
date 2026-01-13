@@ -1,3 +1,6 @@
+/* ==============================
+     Hooks: useSidebar
+ ============================== */
 import { SideBarContext } from "@/contexts/SideBarContext.js";
 import { useContext } from "react";
 

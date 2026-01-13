@@ -1,47 +1,58 @@
-import React,{useState} from 'react'
-import styles from './InputForm.module.scss';
-import { Checkbox, Form } from 'antd'
+import React, { useState } from 'react'
+import styles from './InputForm.module.scss'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"
 import classNames from 'classnames'
 
-
-
-
-function InputForm({label,type,name,isRequired=false,...props}) {
-  const {formik} = props
-  const{ formControl,passwordIcon,inputErr,error } = styles
+function InputForm({
+  label,
+  type,
+  name,
+  id,
+  isRequired = false,
+  formik,
+  ...rest
+}) {
+  const { formControl, passwordIcon, errorMessage } = styles
   const [showPassword, setShowPassword] = useState(false)
   const isPassword = type === 'password'
-  const showTextPassword = type === "password"&& showPassword ? "text" : type;
-  const handleShowPassword = ()=>{
-    setShowPassword(!showPassword)
-  }
-  console.log(formik);
+  const inputType = isPassword && showPassword ? 'text' : type
+  const isError = formik.touched[id] && formik.errors[id]
+  
+
   return (
-    <>
-      <div className={classNames(formControl, 'input-group')}>
-                    <label className="form-label">
-                        {label} {isRequired && '*'}
-                        <input
-                        type={showTextPassword}
-                        className="mt-2 mb-2 form-control"
-                        required={isRequired}
-                        name={name}
-                        />
-                        {isPassword && 
-                          <div onClick={handleShowPassword} className=''>
-                            {
-                              showPassword ? <AiFillEyeInvisible className={passwordIcon}/> : <AiFillEye className={passwordIcon} />
-                            }
-                         </div>
-                        }
+    <div className={classNames(formControl)}>
+      <label htmlFor={id} className="form-label">
+        {label} {isRequired && '*'}
+      </label>
 
+      <div className="position-relative">
+        <input
+          id={id}
+          name={name}
+          type={inputType}
+          className="mt-2 mb-2 form-control"
+        
+          value={formik.values[id]}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          {...rest}
+        />
 
-                    </label>
-                </div>
-                        <div className={error}>Error here!</div>
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className={passwordIcon}
+          >
+            {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+          </button>
+        )}
+      </div>
 
-    </>
+      {isError && (
+        <span className={errorMessage}>{formik.errors[id]}</span>
+      )}
+    </div>
   )
 }
 

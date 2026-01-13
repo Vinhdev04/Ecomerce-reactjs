@@ -8,7 +8,7 @@ const useScrollHandling = () => {
     const scrollTracking = useCallback(() => {
         const currentYPosition = window.pageYOffset;
 
-        // Xác định hướng cuộn
+      
         if (currentYPosition > previousScrollPosition.current) {
             setScrollDirection("down");
         } else if (currentYPosition < previousScrollPosition.current) {

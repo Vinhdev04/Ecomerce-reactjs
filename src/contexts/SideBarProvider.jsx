@@ -1,3 +1,6 @@
+/* ==============================
+     Context: SideBarProvider
+ ============================== */
 import { SideBarContext } from './SideBarContext.js';
 import { useState } from 'react';
 
