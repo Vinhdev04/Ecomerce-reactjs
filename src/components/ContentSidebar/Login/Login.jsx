@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import styles from './Login.module.scss'
 import InputForm from '@components/InputForm/InputForm.jsx'
 import useAuthForm from '@hooks/useAuthForm'
+import { ToastContext } from '@contexts/ToastContext.js'
+
 
 function Login() {
   const { formContainer, formTitle, forgotPass, checkBoxItem, fade } = styles
   const [isRegister, setIsRegister] = useState(false)
   const { formik } = useAuthForm(isRegister)
-
+  const {toast} = useContext(ToastContext)
   const toggleMode = () => {
     setIsRegister(!isRegister)
     formik.resetForm()
@@ -47,8 +49,11 @@ function Login() {
           </label>
         )}
 
-        <button type="submit" className="mt-3 btn btn-primary w-100">
+        <button type="submit" className="mt-3 btn btn-primary w-100"
+          onClick={()=> toast.success('Logged in successfully!')}
+       >
           {isRegister ? 'Sign Up' : 'Sign In'}
+        
         </button>
 
         <button type="button" className="mt-2 btn btn-dark w-100" onClick={toggleMode}>

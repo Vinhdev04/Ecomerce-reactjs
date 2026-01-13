@@ -179,7 +179,7 @@ const handlePageChange = (page) => {
 # Task: `07/1/2026`
 - Validate Form: 
   - Create component **Form Login**
-  - Create **Toast Message**
-  - Validator Form Using **Yup and Formik**
+  - Create **Toast Message** -> React Toastify
+  - Validator Form Using **React Yup and Formik**
   - Call API get data from Form
 ----
