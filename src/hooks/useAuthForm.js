@@ -1,6 +1,6 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-
+import {register} from '@/api/authServices.js'
 function useAuthForm(isRegister) {
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -30,8 +30,20 @@ function useAuthForm(isRegister) {
     },
     validationSchema,
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: async(values) => {
       console.log(isRegister ? 'Sign Up' : 'Sign In', values)
+      // if(isRegister){
+      //   try {
+      //     const {email: username, password} = values
+      //     const res = await register({
+      //       username,
+      //       password,
+      //     });
+      //     console.log('Registration successful:', res);
+      //   } catch (error) {
+      //     console.error('Registration failed:', error);
+      //   }
+      // }
     },
   })
 
