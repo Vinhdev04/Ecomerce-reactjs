@@ -6,16 +6,17 @@ const router = express.Router();
 import { 
     register, 
     login, 
-    // getAllUsers, 
-    // getUserById 
+    logout,
+    getAllUsers, 
+    getUserById 
 } from '../controller/users.controller.js';
 
 // Auth routes
 router.post('/register', register);
 router.post('/login', login);
+router.post('/logout', logout);
 
-
-// router.get('/users', getAllUsers);
-// router.get('/users/:id', getUserById);
+router.get('/users', getAllUsers);
+router.get('/users/:id', getUserById);
 
 export default router;

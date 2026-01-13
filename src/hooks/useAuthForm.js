@@ -53,7 +53,7 @@ function useAuthForm(isRegister) {
             toast.error(res.message || 'Đăng ký thất bại!');
           }
         } else {
-          // Login
+         
           const res = await login({ username, password });
           
           if (res.success) {

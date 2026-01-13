@@ -150,8 +150,85 @@ const login = async (req, res) => {
     }
 };
 
+const getAllUsers = async (req, res) => {
+   try{
+     const users = await prisma.user.findMany({
+       select: {
+            id: true,
+            email: true,
+            name: true,
+            createdAt: true,
+            updatedAt: true
+       }
+    })
+
+    if(!users || users.length === 0){
+        return res.status(404).json({
+            success:false,
+            message:'Không có người dùng nào trong hệ thống!'
+        });
+    }
+
+     res.status(200).json({ 
+            success: true,
+            message: 'Lấy danh sách người dùng thành công!',
+            data: users,
+            total: users.length
+        });
+
+   }catch(error){
+        console.error('Lỗi lấy danh sách người dùng:', error);
+        res.status(500).json({ 
+            success: false,
+            message: 'Lỗi hệ thống, vui lòng thử lại sau!' 
+        });
+   }
+}
+
+const getUserById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                createdAt: true,
+                updatedAt: true
+            }
+        });
+
+        if (!user) {
+            return res.status(404).json({ 
+                success: false,
+                message: 'Không tìm thấy người dùng!' 
+            });
+        }
+
+        res.status(200).json({ 
+            success: true,
+            message: 'Lấy thông tin người dùng thành công',
+            data: user
+        });
+
+    } catch (error) {
+        console.error('❌ Lỗi lấy thông tin user:', error);
+        res.status(500).json({ 
+            success: false,
+            message: 'Lỗi hệ thống, vui lòng thử lại sau' 
+        });
+    }
+};
+
+
+const logout = async(req,res)=>{
+    console.log("Logout!");
+}
 export {
     register,
-    login
+    login,logout,
+    getAllUsers,getUserById
 };
 
