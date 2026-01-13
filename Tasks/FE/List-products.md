@@ -183,3 +183,10 @@ const handlePageChange = (page) => {
   - Validator Form Using **React Yup and Formik**
   - Call API get data from Form
 ----
+
+# Task: ``
+- Handle login/logout
+- Handle error
+- Handle getAllUser/ getUserByID
+- Using bcrypt/jwt/cookie to store user data
+- Testing in UI and Test in API using Postman

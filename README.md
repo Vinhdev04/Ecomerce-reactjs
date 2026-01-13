@@ -53,6 +53,7 @@ Website cho phép người dùng duyệt sản phẩm, đăng ký/đăng nhập 
 * **React-Toastify** – toast notification
 * **Config Alias** - config alias
 * **Lazy Load** - lazy load
+* **React Router | React Lazy** - routing, lazy load
   
 
 ### Backend

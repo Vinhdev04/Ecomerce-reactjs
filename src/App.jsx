@@ -10,7 +10,7 @@ import { Suspense } from 'react';
 import { SideBarProvider } from '@contexts/SideBarProvider.jsx';
 import Sidebar from '@components/SideBar/SideBar.jsx';
 import { ToastProvider } from '@contexts/ToastProvider.jsx';
-
+import Loading from '@components/Loading/Loading.jsx';
 
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
             <SideBarProvider>
                 <Sidebar/>
                 <BrowserRouter>
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<Loading/>}>
                         <Routes>
                             {routers?.map((item, idx) => (
                                 <Route
