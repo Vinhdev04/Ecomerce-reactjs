@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Product {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   image       String[]
@@ -20,4 +19,15 @@ model Product {
   badge       String?
 
   @@map("products")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
 }

@@ -2,18 +2,29 @@ import axiosClient from '../api/axiosClient';
 
 
 const register = async (body) => {
-    console.log(body);
-    // try {
-    //     const res = await axiosClient.get('/regsiter', {
-           
-    //     });
-
-    //     return res;
-    // } catch (error) {
-    //     console.error('Lỗi trong quá trình lấy dữ liệu từ API', error);
-    //     throw error;
-    // }
+     console.log('📤 Đăng ký tài khoản:', body);
+    try {
+        const res = await axiosClient.post('/register', body);
+        console.log('✅ Đăng ký tài khoản thành công:', res);
+        return res;
+    } catch (error) {
+        console.error(' Đăng ký tài khoản thất bại:', error.response?.data || error.message);
+        throw error;
+    }
 };
-export { register };
+
+const login = async (body) => {
+    console.log('📤 Đăng nhập:', body);
+
+    try{
+        const res = await axiosClient.post('/login', body);
+        console.log('✅ Đăng nhập thành công:', res);
+        return res;
+    }catch(error){
+        console.error('Đăng nhập thất bại:', error.response?.data || error.message);
+        throw error;
+    }
+}
+export { register ,login};
 
 // NOTE:

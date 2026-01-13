@@ -20,12 +20,10 @@ app.use(morgan('dev'));
 
 // Import routes
 import productsRouter from './routes/products.route.js';
-
+import userRouter from './routes/users.route.js';
 // Routes
 app.use('/api/products', productsRouter);
-app.use('/', (req, res) => {
-    res.send('Hello World!');
-});
+app.use('/api',userRouter);
 
 // Kết nối database trước khi start server
 connectDatabase().then(() => {
