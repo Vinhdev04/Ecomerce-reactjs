@@ -3,7 +3,7 @@
  ============================== */
 import prisma from '../lib/prisma.lib.js';
 import bcrypt from 'bcrypt';
-
+import jwt from "jsonwebtoken";
 
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
 
@@ -132,13 +132,20 @@ const login = async (req, res) => {
             });
         }
 
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '2m' });
+        const refreshToken = jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+
         // Thành công - trả về thông tin user (không có password)
         const { password: _, ...userWithoutPassword } = user;
         
         res.status(200).json({ 
             success: true,
             message: 'Đăng nhập thành công',
-            data: userWithoutPassword
+            data: {
+                userWithoutPassword,
+                token,
+                refreshToken
+            }
         });
 
     } catch (error) {

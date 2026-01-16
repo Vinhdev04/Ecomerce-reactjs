@@ -4,6 +4,7 @@ import {register,login} from '@/api/authServices.js'
 import {useContext} from 'react';
 import { ToastContext } from '@contexts/ToastContext.js';
 import saveDataToLocalStorage from "@helpers/saveDataToLocalStorage.js"
+import setCookies from "@helpers/setCookies.js"
 function useAuthForm(isRegister) {
   const { toast } = useContext(ToastContext);
 
@@ -39,7 +40,7 @@ function useAuthForm(isRegister) {
     },
     validationSchema,
     enableReinitialize: true,
-    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      onSubmit: async (values, { setSubmitting, resetForm }) => {
       // 1. Lấy dữ liệu
       const { email: username, password } = values;
       
@@ -50,6 +51,10 @@ function useAuthForm(isRegister) {
           res = await register({ username, password });
         } else {
           res = await login({ username, password });
+          setCookies("token", res.data.token);
+          setCookies("refreshToken", res.data.refreshToken);
+          console.log(res);
+
         }
 
         // 3. Xử lý kết quả
@@ -60,7 +65,7 @@ function useAuthForm(isRegister) {
              saveDataToLocalStorage('users', res.data);
              if (values.remember) saveDataToLocalStorage('rememberMe', true);
           } else {
-             resetForm(); // Chỉ reset form khi đăng ký thành công
+             resetForm(); 
           }
         } else {
           toast.error(res.message || 'Thao tác thất bại!');
@@ -78,6 +83,7 @@ function useAuthForm(isRegister) {
       }
     },
   });
+ 
  
 
   return { formik }

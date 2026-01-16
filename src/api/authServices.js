@@ -33,4 +33,12 @@ const logout = async(body) => {
     }
 }
 
-export { register ,login,logout};
+const getInfoUser = async() => {
+     try {
+        const res = await axiosClient.get('/user/info/69669b1ecf77a4bd40c097d8');
+        return res;
+    } catch (error) {
+        console.error("Đăng xuất thất bại!", error.response?.data || error.message);
+    }
+}
+export { register ,login,logout,getInfoUser};

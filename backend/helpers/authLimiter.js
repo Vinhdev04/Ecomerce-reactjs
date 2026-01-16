@@ -1,7 +1,7 @@
 import rateLimit from "express-rate-limit";
 
 const authLimiter = rateLimit({
-    windowMs: 15*60*1000, // 15 minutes
+    windowMs: 1*60*1000, // 15 minutes
     max: 5, // giới hạn 5 lần thử
     message: {
         success: false,
