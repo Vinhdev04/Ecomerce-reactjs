@@ -10,7 +10,7 @@ function MenuItem({ title, href }) {
         setIsOpen(true);
         setType('login');
        }
-       console.log(title);
+
     }
     return <div className={navItem} onClick={handleShowLogin }>{title}</div>;
 }

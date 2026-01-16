@@ -225,7 +225,9 @@ const getUserById = async (req, res) => {
 
 const logout = async(req,res)=>{
     console.log("Logout!");
+    res.status(200).json({ success: true, message: 'Đăng xuất thành công!' });
 }
+
 export {
     register,
     login,logout,

@@ -6,6 +6,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import { connectDatabase } from './config/config.db.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,14 @@ const host = process.env.HOST || 'localhost';
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cookieParser());
+
+app.use(cors({
+  //origin: 'http://localhost:3000' ,
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}))
 
 // Import routes
 import productsRouter from './routes/products.route.js';

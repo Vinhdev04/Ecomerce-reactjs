@@ -3,8 +3,10 @@ import * as Yup from 'yup'
 import {register,login} from '@/api/authServices.js'
 import {useContext} from 'react';
 import { ToastContext } from '@contexts/ToastContext.js';
+import saveDataToLocalStorage from "@helpers/saveDataToLocalStorage.js"
 function useAuthForm(isRegister) {
   const { toast } = useContext(ToastContext);
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email('Email không hợp lệ!')
@@ -26,6 +28,8 @@ function useAuthForm(isRegister) {
     remember: Yup.boolean(),
   })
 
+  
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -36,48 +40,39 @@ function useAuthForm(isRegister) {
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
-      console.log(isRegister ? '📝 Sign Up' : '🔐 Sign In', values);
+      // 1. Lấy dữ liệu
+      const { email: username, password } = values;
       
       try {
-        const { email: username, password } = values;
-
+        let res;
+        // 2. Gọi API
         if (isRegister) {
+          res = await register({ username, password });
+        } else {
+          res = await login({ username, password });
+        }
+
+        // 3. Xử lý kết quả
+        if (res.success) {
+          toast.success(isRegister ? 'Đăng ký thành công!' : 'Đăng nhập thành công!');
           
-          const res = await register({ username, password });
-          
-          if (res.success) {
-            toast.success('Đăng ký thành công! ');
-            resetForm();
-          
+          if (!isRegister) {
+             saveDataToLocalStorage('users', res.data);
+             if (values.remember) saveDataToLocalStorage('rememberMe', true);
           } else {
-            toast.error(res.message || 'Đăng ký thất bại!');
+             resetForm(); // Chỉ reset form khi đăng ký thành công
           }
         } else {
-         
-          const res = await login({ username, password });
-          
-          if (res.success) {
-            toast.success('Đăng nhập thành công!');
-            
-           
-            localStorage.setItem('user', JSON.stringify(res.data));
-            
-            // Optional: Store remember me
-            if (values.remember) {
-              localStorage.setItem('rememberMe', 'true');
-            }
-            
-        
-          } else {
-            toast.error(res.message || 'Đăng nhập thất bại!');
-          }
+          toast.error(res.message || 'Thao tác thất bại!');
         }
+
       } catch (error) {
         const errorMessage = error.response?.data?.message || 
                            error.message || 
                            'An error occurred';
         toast.error(`${errorMessage}`);
         console.error(isRegister ? 'Đăng ký thất bại:' : 'Đăng nhập thất bại:', error);
+        setSubmitting(false);
       } finally {
         setSubmitting(false);
       }

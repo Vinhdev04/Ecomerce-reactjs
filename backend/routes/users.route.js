@@ -10,10 +10,10 @@ import {
     getAllUsers, 
     getUserById 
 } from '../controller/users.controller.js';
-
+import authLimiter from '../helpers/authLimiter.js';
 // Auth routes
-router.post('/register', register);
-router.post('/login', login);
+router.post('/register',authLimiter, register);
+router.post('/login',authLimiter, login);
 router.post('/logout', logout);
 
 router.get('/users', getAllUsers);

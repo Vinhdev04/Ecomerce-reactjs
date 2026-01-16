@@ -70,7 +70,7 @@ function Login() {
         disabled={formik.isSubmitting}
       >
         {formik.isSubmitting 
-          ? 'Processing...' 
+          ? 'Loading...' 
           : (isRegister ? 'Sign Up' : 'Sign In')
         }
       </button>
