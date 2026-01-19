@@ -129,9 +129,25 @@ const login = async (req, res) => {
             });
         }
 
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '2m' });
-        const refreshToken = jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign(
+            {
+                userId: user.id
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '15m' }
+        );
 
+        const refreshToken = jwt.sign(
+            {userId: user.id},
+            process.env.JWT_REFRESH_SECRET,
+            {expiresIn: '7d'}
+        )
+
+         // 🔥 LƯU REFRESH TOKEN VÀO DATABASE
+         await prisma.user.update({
+            where:{id:user.id},
+            data:{refreshToken}
+         })
         // Thành công - trả về thông tin user (không có password)
         const { password: _, ...userWithoutPassword } = user;
         
