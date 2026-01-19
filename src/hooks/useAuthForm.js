@@ -6,6 +6,7 @@ import { ToastContext } from '@contexts/ToastContext.js';
 import saveDataToLocalStorage from "@helpers/saveDataToLocalStorage.js";
 import setCookies from "@helpers/setCookies.js";
 
+
 function useAuthForm(isRegister) {
   const { toast } = useContext(ToastContext);
 
@@ -49,11 +50,14 @@ function useAuthForm(isRegister) {
                 res = await login({ username, password });
                 
                 if (res.success && res.data) {
-                    // ✅ CHỈ LƯU ACCESS TOKEN
-                    // Refresh token đã được server set vào httpOnly cookie
-                    setCookies("token", res.data.token);
-
-                    // Lưu user info
+                  
+                    // CHỈ LƯU ACCESS TOKEN vào cookie
+                    setCookies("token",res.data.token, {
+                        expires: 1/96, // 15 phút
+                        secure: process.env.NODE_ENV === 'production',
+                        sameSite: 'strict'
+                    });
+               
                     const { token, ...userInfo } = res.data;
                     saveDataToLocalStorage('users', userInfo);
 

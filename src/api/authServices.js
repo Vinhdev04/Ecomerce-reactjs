@@ -1,6 +1,8 @@
 import axiosClient from '../api/axiosClient';
 
-
+// ============================================
+// REGISTER
+// ============================================
 const register = async (body) => {
     try {
         const res = await axiosClient.post('/register', body);
@@ -11,6 +13,9 @@ const register = async (body) => {
     }
 };
 
+/* ==============================
+     LOGIN
+ ============================== */
 const login = async (body) => {
     try{
         const res = await axiosClient.post('/login', body);
@@ -22,8 +27,9 @@ const login = async (body) => {
 }
 
 
-
-
+/* ==============================
+     LOGOUT
+ ============================== */
 const logout = async(body) => {
     try {
         const res = await axiosClient.post('/logout',body);
@@ -33,9 +39,12 @@ const logout = async(body) => {
     }
 }
 
+/* ==============================
+     GET USER INFO
+ ============================== */
 const getInfoUser = async() => {
      try {
-        const res = await axiosClient.get('/user/info/69669b1ecf77a4bd40c097d8');
+        const res = await axiosClient.get('/users/69669b1ecf77a4bd40c097d8');
         return res;
     } catch (error) {
         console.error("Đăng xuất thất bại!", error.response?.data || error.message);

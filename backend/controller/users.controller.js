@@ -7,7 +7,9 @@ import jwt from "jsonwebtoken";
 
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
 
-// Register user
+/* ==============================
+     REGISTER - Đăng ký
+ ============================== */
 const register = async (req, res) => {
     const { username, password } = req.body;
 
@@ -96,7 +98,7 @@ const register = async (req, res) => {
 };
 
 // ============================================
-// BACKEND: users.controller.js
+// LOGIN - Đăng nhập
 // ============================================
 
 const login = async (req, res) => {
@@ -302,6 +304,9 @@ const logout = async (req, res) => {
     }
 };
 
+/* ==============================
+     GET ALL USERS
+ ============================== */
 const getAllUsers = async (req, res) => {
    try{
      const users = await prisma.user.findMany({
@@ -337,6 +342,9 @@ const getAllUsers = async (req, res) => {
    }
 }
 
+/* ==============================
+     GET USER BY ID
+ ============================== */
 const getUserById = async (req, res) => {
     const { id } = req.params;
 
@@ -373,8 +381,6 @@ const getUserById = async (req, res) => {
         });
     }
 };
-
-
 
 
 export {

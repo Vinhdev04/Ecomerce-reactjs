@@ -4,7 +4,8 @@ import Cookies from 'js-cookie';
 const axiosClient = axios.create({
     baseURL: 'http://localhost:3000/api/',
     timeout: 10000,
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
 });
 
 // ============================================
@@ -55,16 +56,25 @@ axiosClient.interceptors.response.use(
                 // để tránh vòng lặp vô hạn
                 const response = await axios.post(
                     'http://localhost:3000/api/refresh-token',
-                    { refreshToken },
-                    { headers: { 'Content-Type': 'application/json' } }
+                    {  },
+                    {
+                        withCredentials: true,// Gửi cookie kèm theo
+                        headers: { 'Content-Type': 'application/json' }
+                    
+                    }
                 );
 
                 // Lấy tokens mới từ response
-                const { token: newToken, refreshToken: newRefreshToken } = response.data.data;
+                const { token: newToken} = response.data.data;
 
                 // Lưu tokens mới
-                Cookies.set('token', newToken);
-                Cookies.set('refreshToken', newRefreshToken);
+                Cookies.set('token', newToken,
+                    {
+                        expires: 1/96, // 15 phút
+                        secure: process.env.NODE_ENV === 'production',
+                        sameSite: 'strict'
+                    });
+              
 
                 // Retry request gốc với token mới
                 originalRequest.headers.Authorization = `Bearer ${newToken}`;
@@ -73,7 +83,7 @@ axiosClient.interceptors.response.use(
             } catch (refreshError) {
                 // Refresh token thất bại -> Logout
                 Cookies.remove('token');
-                Cookies.remove('refreshToken');
+              
                 // window.location.href = '/login'; // Uncomment khi cần
                 return Promise.reject(refreshError);
             }
