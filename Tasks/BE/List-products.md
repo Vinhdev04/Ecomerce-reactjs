@@ -22,3 +22,15 @@
 - Handle getAllUser/ getUserByID
 - Using bcrypt/jwt/cookie to store user data
 - Testing in UI and Test in API using Postman
+
+# Task: ``
+ - Cập nhật Prisma schema
+ - Implement refreshToken controller
+ - Cập nhật login để lưu refresh token
+ - Cập nhật logout để xóa refresh token
+ - Tạo middleware verifyToken
+ - Sửa Axios interceptor
+ - Test flow: Login → Call API → Token hết hạn → Auto refresh → Success
+ - Test edge cases: Refresh token hết hạn, token không hợp lệ
+ - Thêm rate limiting
+ - Review bảo mật

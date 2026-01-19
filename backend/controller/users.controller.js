@@ -95,9 +95,6 @@ const register = async (req, res) => {
     }
 };
 
-
-
-
 const login = async (req, res) => {
     const { username, password } = req.body;
 
@@ -229,15 +226,32 @@ const getUserById = async (req, res) => {
     }
 };
 
-
 const logout = async(req,res)=>{
     console.log("Logout!");
     res.status(200).json({ success: true, message: 'Đăng xuất thành công!' });
 }
 
+const refreshToken = async (req, res) => {
+
+    const {refreshToken} = req.body;
+    console.log(refreshToken);
+    
+    if(!refreshToken){
+        res.status(401).json({
+            success:false,
+            message:'Không tìm thấy refresh token!'
+        });
+    }
+
+
+    
+}
+
+
 export {
     register,
     login,logout,
-    getAllUsers,getUserById
+    getAllUsers,getUserById,
+    refreshToken
 };
 

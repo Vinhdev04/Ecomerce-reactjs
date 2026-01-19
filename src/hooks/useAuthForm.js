@@ -42,7 +42,7 @@ function useAuthForm(isRegister) {
     enableReinitialize: true,
       onSubmit: async (values, { setSubmitting, resetForm }) => {
       // 1. Lấy dữ liệu
-      const { email: username, password } = values;
+      const { email: username, password, } = values;
       
       try {
         let res;
@@ -51,10 +51,16 @@ function useAuthForm(isRegister) {
           res = await register({ username, password });
         } else {
           res = await login({ username, password });
-          setCookies("token", res.data.token);
+          setCookies("token",res.data.token );
           setCookies("refreshToken", res.data.refreshToken);
-          console.log(res);
 
+          const { token, refreshToken, ...safeData } = res.data;
+
+          console.log({
+            ...safeData,
+            username,
+            password
+          });
         }
 
         // 3. Xử lý kết quả
