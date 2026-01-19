@@ -65,7 +65,7 @@ axiosClient.interceptors.response.use(
                 );
 
                 // Lấy tokens mới từ response
-                const { token: newToken} = response.data.data;
+                const { token: newToken, id} = response.data.data;
 
                 // Lưu tokens mới
                 Cookies.set('token', newToken,
@@ -74,7 +74,11 @@ axiosClient.interceptors.response.use(
                         secure: process.env.NODE_ENV === 'production',
                         sameSite: 'strict'
                     });
-              
+                  Cookies.set("id",id, {
+                        expires: 1/96, // 15 phút
+                        secure: process.env.NODE_ENV === 'production',
+                        sameSite: 'strict'
+                    });
 
                 // Retry request gốc với token mới
                 originalRequest.headers.Authorization = `Bearer ${newToken}`;

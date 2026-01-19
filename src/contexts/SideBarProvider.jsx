@@ -1,7 +1,7 @@
 /* ==============================
      Context: SideBarProvider
  ============================== */
-import { SideBarContext } from './SideBarContext.js';
+import { SideBarContext } from '@contexts/SideBarContext.js';
 import { useState } from 'react';
 
 export const SideBarProvider = ({children}) => {

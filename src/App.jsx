@@ -11,28 +11,30 @@ import { SideBarProvider } from '@contexts/SideBarProvider.jsx';
 import Sidebar from '@components/SideBar/SideBar.jsx';
 import { ToastProvider } from '@contexts/ToastProvider.jsx';
 import Loading from '@components/Loading/Loading.jsx';
-
+import UserInfoProvider from "@contexts/UserInfoProvider.jsx";
 
 function App() {
     return (
-        <ToastProvider>
-            <SideBarProvider>
-                <Sidebar/>
-                <BrowserRouter>
-                    <Suspense fallback={<Loading/>}>
-                        <Routes>
-                            {routers?.map((item, idx) => (
-                                <Route
-                                    key={idx}
-                                    path={item.path}
-                                    element={<item.component />}
-                                />
-                            ))}
-                        </Routes>
-                    </Suspense>
-                </BrowserRouter>
-            </SideBarProvider>
-        </ToastProvider>
+        <UserInfoProvider>
+            <ToastProvider>
+                <SideBarProvider>
+                    <Sidebar/>
+                    <BrowserRouter>
+                        <Suspense fallback={<Loading/>}>
+                            <Routes>
+                                {routers?.map((item, idx) => (
+                                    <Route
+                                        key={idx}
+                                        path={item.path}
+                                        element={<item.component />}
+                                    />
+                                ))}
+                            </Routes>
+                        </Suspense>
+                    </BrowserRouter>
+                </SideBarProvider>
+            </ToastProvider>
+        </UserInfoProvider>
     );
 }
 

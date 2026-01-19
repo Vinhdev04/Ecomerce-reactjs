@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
  * Giới hạn 10 requests mỗi 15 phút
  */
 const refreshLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, 
+    windowMs: 1 * 60 * 1000, 
     max: 10, 
     message: {
         success: false,

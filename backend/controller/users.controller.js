@@ -1,5 +1,5 @@
 /* ==============================
-     CONTROLLER: PRODUCTS 
+     CONTROLLER: USERS 
  ============================== */
 import prisma from '../lib/prisma.lib.js';
 import bcrypt from 'bcrypt';
@@ -21,7 +21,6 @@ const register = async (req, res) => {
         });
     }
 
- 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(username)) {
         return res.status(400).json({ 
@@ -30,7 +29,6 @@ const register = async (req, res) => {
         });
     }
 
-   
     if (password.length < 6) {
         return res.status(400).json({ 
             success: false,
@@ -38,7 +36,6 @@ const register = async (req, res) => {
         });
     }
 
-  
     if (!PASSWORD_REGEX.test(password)) {
         return res.status(400).json({ 
             success: false,
@@ -47,7 +44,6 @@ const register = async (req, res) => {
     }
 
     try {
-       
         const existingUser = await prisma.user.findUnique({
             where: { email: username }
         });
@@ -59,14 +55,10 @@ const register = async (req, res) => {
             });
         }
 
-       
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-        // Tạo name từ email (phần trước @)
         const name = username.split('@')[0];
 
-      
         const newUser = await prisma.user.create({
             data: {
                 email: username,
@@ -100,7 +92,6 @@ const register = async (req, res) => {
 // ============================================
 // LOGIN - Đăng nhập
 // ============================================
-
 const login = async (req, res) => {
     const { username, password } = req.body;
 
@@ -151,22 +142,24 @@ const login = async (req, res) => {
             data: { refreshToken }
         });
 
-        // ✅ LƯU VÀO HTTPONLY COOKIE
+        // ✅ SET REFRESH TOKEN VÀO HTTPONLY COOKIE
         res.cookie('refreshToken', refreshToken, {
-            httpOnly: true,      // JavaScript KHÔNG thể truy cập
-            secure: process.env.NODE_ENV === 'production', // Chỉ gửi qua HTTPS
+            httpOnly: true,      // ✅ QUAN TRỌNG: JavaScript KHÔNG thể truy cập
+            secure: process.env.NODE_ENV === 'production', // Chỉ gửi qua HTTPS trong production
             sameSite: 'strict',  // Chống CSRF
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 ngày
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
+            path: '/' // ✅ QUAN TRỌNG: Cookie áp dụng cho toàn bộ domain
         });
 
-        const { password: _, ...userWithoutPassword } = user;
+        const { password: _, refreshToken: __, ...userWithoutPassword } = user;
         
         res.status(200).json({ 
             success: true,
             message: 'Đăng nhập thành công',
             data: {
+                id: user.id, // ✅ THÊM id
                 user: userWithoutPassword,
-                token // Chỉ trả access token, KHÔNG trả refresh token
+                token // ✅ CHỈ trả access token, KHÔNG trả refresh token
             }
         });
 
@@ -228,10 +221,11 @@ const refreshToken = async (req, res) => {
 
         // ✅ CẬP NHẬT COOKIE MỚI
         res.cookie('refreshToken', newRefreshToken, {
-            httpOnly: true,
+            httpOnly: true,      // ✅ QUAN TRỌNG
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: '/' // ✅ QUAN TRỌNG
         });
 
         res.status(200).json({
@@ -239,7 +233,7 @@ const refreshToken = async (req, res) => {
             message: 'Refresh token thành công!',
             data: {
                 token: newAccessToken
-                // KHÔNG trả refresh token trong response
+                // ✅ KHÔNG trả refresh token trong response
             }
         });
 
@@ -274,21 +268,25 @@ const logout = async (req, res) => {
         const refreshToken = req.cookies.refreshToken;
         
         if (refreshToken) {
-            // Verify và lấy userId
-            const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-            
-            // Xóa refresh token trong DB
-            await prisma.user.update({
-                where: { id: decoded.userId },
-                data: { refreshToken: null }
-            });
+            try {
+                const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+                
+                // Xóa refresh token trong DB
+                await prisma.user.update({
+                    where: { id: decoded.userId },
+                    data: { refreshToken: null }
+                });
+            } catch (err) {
+                console.error('Token verification error:', err);
+            }
         }
 
         // ✅ XÓA COOKIE
         res.clearCookie('refreshToken', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict'
+            sameSite: 'strict',
+            path: '/' // ✅ QUAN TRỌNG: Phải giống khi set cookie
         });
 
         res.status(200).json({ 
@@ -374,7 +372,7 @@ const getUserById = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('❌ Lỗi lấy thông tin user:', error);
+        console.error('⌚ Lỗi lấy thông tin user:', error);
         res.status(500).json({ 
             success: false,
             message: 'Lỗi hệ thống, vui lòng thử lại sau' 
@@ -382,11 +380,11 @@ const getUserById = async (req, res) => {
     }
 };
 
-
 export {
     register,
-    login,logout,
-    getAllUsers,getUserById,
+    login,
+    logout,
+    getAllUsers,
+    getUserById,
     refreshToken
 };
-

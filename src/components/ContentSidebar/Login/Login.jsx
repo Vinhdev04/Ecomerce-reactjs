@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './Login.module.scss';
 import InputForm from '@components/InputForm/InputForm.jsx';
 import useAuthForm from '@hooks/useAuthForm';
-import {getInfoUser} from '@api/authServices.js'
+
 function Login() {
   const { formContainer, formTitle, forgotPass, checkBoxItem, fade } = styles;
   const [isRegister, setIsRegister] = useState(false);
@@ -12,10 +12,8 @@ function Login() {
     setIsRegister(!isRegister);
     formik.resetForm();
   };
-  
-  useEffect(()=>{
-    getInfoUser();
-  },[])
+
+
   return (
     <form 
       className={`${formContainer} ${fade}`} 
@@ -30,6 +28,8 @@ function Login() {
         label="Email" 
         name="email" 
         id="email" 
+        type="email"
+        placeholder="example@gmail.com"
         isRequired 
         formik={formik} 
       />
@@ -39,6 +39,7 @@ function Login() {
         type="password" 
         name="password" 
         id="password" 
+        placeholder="••••••••"
         isRequired 
         formik={formik} 
       />
@@ -49,6 +50,7 @@ function Login() {
           type="password"
           name="confirmPassword"
           id="confirmPassword"
+          placeholder="••••••••"
           isRequired
           formik={formik}
         />
