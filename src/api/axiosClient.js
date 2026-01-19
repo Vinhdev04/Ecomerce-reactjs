@@ -1,24 +1,15 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Cookie } from 'lucide-react';
+
 const axiosClient = axios.create({
     baseURL: 'http://localhost:3000/api/',
     timeout: 10000,
     headers: { 'Content-Type': 'application/json' }
 });
 
-axiosClient.interceptors.response.use(
-    (response) => {
-        return response.data;
-    },
-    (error) => {
-        console.error('Lỗi khi truy vấn API', error);
-        return Promise.reject(error);
-    }
-);
-
-export default axiosClient;
-
+// ============================================
+// REQUEST INTERCEPTOR - Thêm token vào header
+// ============================================
 axiosClient.interceptors.request.use(
     (config) => {
         const token = Cookies.get('token');
@@ -28,38 +19,69 @@ axiosClient.interceptors.request.use(
         return config;
     },
     (error) => {
-        console.error('Lỗi khi truy vấn API', error);
         return Promise.reject(error);
     }
 );
 
+// ============================================
+// RESPONSE INTERCEPTOR - Xử lý refresh token
+// ============================================
+axiosClient.interceptors.response.use(
+   
+    (response) => {
+        return response.data;
+    },
+    
+    // ❌ Error response - xử lý refresh token
+    async (error) => {
+        const originalRequest = error.config;
 
-axiosClient.interceptors.response.use((res)=>{
-    return res;
-},
-async(error)=>{
-    console.log(error);
-    const originalReq = error.config;
-    const refreshToken = Cookies.get('refreshToken');
+        // Kiểm tra lỗi 401 (Unauthorized) và chưa retry
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
 
-    if(!refreshToken) return Promise.reject(error);
+            const refreshToken = Cookies.get('refreshToken');
 
-    try{
-        const res = await axiosClient.post("/refresh-token",{
-            token: refreshToken
-        });
+            // Không có refresh token -> Redirect login
+            if (!refreshToken) {
+                Cookies.remove('token');
+                Cookies.remove('refreshToken');
+                // window.location.href = '/login';
+                return Promise.reject(error);
+            }
 
-        const newAccessToken = res.data.accessToken;
-        Cookies.set('token', newAccessToken);
-        originalReq.headers.Authorization = `Bearer ${newAccessToken}`;
+            try {
+                // ⚠️ QUAN TRỌNG: Gọi axios thuần, KHÔNG dùng axiosClient
+                // để tránh vòng lặp vô hạn
+                const response = await axios.post(
+                    'http://localhost:3000/api/refresh-token',
+                    { refreshToken },
+                    { headers: { 'Content-Type': 'application/json' } }
+                );
 
-        
-        return axiosClient(originalReq);
-    }catch(error){
-        Cookies.remove('token');
-        Cookies.remove('refreshToken');
+                // Lấy tokens mới từ response
+                const { token: newToken, refreshToken: newRefreshToken } = response.data.data;
+
+                // Lưu tokens mới
+                Cookies.set('token', newToken);
+                Cookies.set('refreshToken', newRefreshToken);
+
+                // Retry request gốc với token mới
+                originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                return axiosClient(originalRequest);
+
+            } catch (refreshError) {
+                // Refresh token thất bại -> Logout
+                Cookies.remove('token');
+                Cookies.remove('refreshToken');
+                // window.location.href = '/login'; // Uncomment khi cần
+                return Promise.reject(refreshError);
+            }
+        }
+
+        // Lỗi khác 401 hoặc đã retry -> reject
         return Promise.reject(error);
-    
     }
-    
-})
+);
+
+export default axiosClient;

@@ -24,7 +24,8 @@ app.use(cors({
   //origin: 'http://localhost:3000' ,
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
 // Import routes
@@ -33,6 +34,7 @@ import userRouter from './routes/users.route.js';
 // Routes
 app.use('/api/products', productsRouter);
 app.use('/api',userRouter);
+app.use('/api/refresh-token',userRouter)
 
 // Kết nối database trước khi start server
 connectDatabase().then(() => {
