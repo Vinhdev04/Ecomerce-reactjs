@@ -14,16 +14,17 @@ const app = express();
 // Config host & port
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
-
+const FE_HOST = process.env.FE_HOST || 'localhost';
+const FE_PORT = process.env.FE_PORT || 5173;
 // ============================================
 // MIDDLEWARE - THỨ TỰ QUAN TRỌNG
 // ============================================
 
 
 app.use(cors({
-  origin: 'http://localhost:5173', // ✅ Frontend URL
+  origin: 'http://localhost:5173', //  Frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  credentials: true, // ✅ Cho phép gửi cookie
+  credentials: true, //  Cho phép gửi cookie
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
@@ -71,7 +72,7 @@ app.use((req, res) => {
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-  console.error('❌ Server Error:', err);
+  console.error(' Server Error:', err);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
@@ -85,7 +86,7 @@ app.use((err, req, res, next) => {
 connectDatabase().then(() => {
     app.listen(port, host, () => {
         console.log(`✅ Server is running on http://${host}:${port}`);
-        console.log(`✅ CORS enabled for: http://localhost:5173`);
+        console.log(`✅ CORS enabled for: http://${FE_HOST}:${FE_PORT}`);
     });
 }).catch((error) => {
     console.error('❌ Failed to start server:', error);

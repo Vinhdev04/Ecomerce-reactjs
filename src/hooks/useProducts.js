@@ -77,7 +77,7 @@ export const useProducts = (initialLimit = 6) => {
          RETRY KHI GẶP LỖI
      ============================== */
     const retry = () => {
-        console.log('Retrying fetchProducts...');
+        // console.log('Retrying fetchProducts...');
         fetchProducts(pagination.page, pagination.limit);
     };
 
@@ -86,12 +86,12 @@ export const useProducts = (initialLimit = 6) => {
          RESET VỀ ĐẦU PAGE
      ============================== */
     const resetToFirstPage = () => {
-        console.log('Reset to first page');
+        // console.log('Reset to first page');
         fetchProducts(1, pagination.limit);
     };
 
     const changeLimit = (newLimit) => {
-        console.log('Change limit to:', newLimit);
+        // console.log('Change limit to:', newLimit);
         fetchProducts(1, newLimit);
     };
 
@@ -100,7 +100,7 @@ export const useProducts = (initialLimit = 6) => {
          TỰ ĐỘNG REFRESH PAGE
      ============================== */
     const refresh = () => {
-        console.log('Refreshing current page...');
+        // console.log('Refreshing current page...');
         fetchProducts(pagination.page, pagination.limit);
     };
 

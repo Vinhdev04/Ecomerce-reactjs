@@ -53,9 +53,7 @@ function useAuthForm(isRegister) {
             let res;
 
             if (isRegister) {
-                // ============================================
-                // ĐĂNG KÝ
-                // ============================================
+               
                 res = await register({ username, password });
                 
                 if (res.success) {
@@ -70,17 +68,15 @@ function useAuthForm(isRegister) {
                 }
                 
             } else {
-                // ============================================
-                // ĐĂNG NHẬP
-                // ============================================
+               
                 res = await login({ username, password });
                 
                 if (res.success && res.data) {
-                    //  LẤY userId TỪ RESPONSE
+                    
                     const userId = res.data.user?.id;
                     
-                    console.log('✅ Login response:', res.data);
-                    console.log('✅ User ID:', userId);
+                    // console.log(' Login response:', res.data);
+                    // console.log(' User ID:', userId);
 
                     //  LƯU ACCESS TOKEN vào cookie
                     setCookies("token", res.data.token, {
@@ -88,10 +84,10 @@ function useAuthForm(isRegister) {
                         sameSite: 'strict'
                     });
 
-                    //  LƯU USER ID vào cookie với TÊN ĐÚNG: "userId"
+                  
                     if (userId) {
-                        setCookies("userId", userId, { // ← ĐỔI TỪ "id" THÀNH "userId"
-                            expires: 7, // 7 ngày (giống refreshToken)
+                        setCookies("userId", userId, {
+                            expires: 7, 
                             sameSite: 'strict'
                         });
                         
@@ -121,7 +117,7 @@ function useAuthForm(isRegister) {
             }
 
         } catch (error) {
-            console.error('❌ Error:', error);
+            console.error('Error:', error);
             
             const errorMessage = error.response?.data?.message || 
                                error.message || 
