@@ -183,14 +183,14 @@ const handlePageChange = (page) => {
   - Validator Form Using **React Yup and Formik**
   - Call API get data from Form
 ----
-
+---
 # Task: ``
 - Handle login/logout
 - Handle error
 - Handle getAllUser/ getUserByID
 - Using bcrypt/jwt/cookie to store user data
 - Testing in UI and Test in API using Postman
-
+---
 # Task: ``
  - Cập nhật Prisma schema
  - Implement refreshToken controller
@@ -202,3 +202,16 @@ const handlePageChange = (page) => {
  - Test edge cases: Refresh token hết hạn, token không hợp lệ
  - Thêm rate limiting
  - Review bảo mật
+---
+# Task:  📋 Tóm tắt những thay đổi quan trọng:
+**1. UserInfoProvider.jsx**
+- ✅ Thêm await logoutAPI() để gọi API logout trước khi xóa dữ liệu local
+- ✅ Dùng try-catch-finally để đảm bảo luôn xóa dữ liệu local ngay cả khi API lỗi
+
+**2. users.controller.js - logout()**
+- ✅ Dùng jwt.decode() thay vì jwt.verify() để tránh lỗi khi token hết hạn
+- ✅ Luôn xóa cookie ngay cả khi có lỗi decode token
+
+**3. useAuthForm.js**
+- ✅ Giữ lại userId cookie (KHÔNG phải HttpOnly) vì cần để frontend biết user nào đang login
+- ✅ Comment rõ ràng mục đích của từng cookie
