@@ -173,6 +173,62 @@ const login = async (req, res) => {
 };
 
 // ============================================
+// LOGOUT - Xóa cookie và Database
+// ============================================
+const logout = async (req, res) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+        
+        if (refreshToken) {
+            try {
+                // ✅ Decode token KHÔNG verify (vì có thể đã hết hạn)
+                const decoded = jwt.decode(refreshToken);
+                
+                if (decoded && decoded.userId) {
+                    // ✅ Xóa refresh token trong DB
+                    await prisma.user.update({
+                        where: { id: decoded.userId },
+                        data: { refreshToken: null }
+                    });
+                }
+            } catch (err) {
+                // ✅ Bỏ qua lỗi decode, vẫn tiếp tục xóa cookie
+                console.error('Token decode error (ignored):', err.message);
+            }
+        }
+
+        // ✅ XÓA COOKIE (LUÔN THỰC HIỆN)
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/' // Phải giống khi set cookie
+        });
+
+        res.status(200).json({ 
+            success: true, 
+            message: 'Đăng xuất thành công!' 
+        });
+        
+    } catch (err) {
+        console.error('❌ Lỗi đăng xuất:', err);
+        
+        // ✅ VẪN XÓA COOKIE ngay cả khi có lỗi
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/'
+        });
+        
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi hệ thống!'
+        });
+    }
+};
+
+// ============================================
 // REFRESH TOKEN - Đọc từ cookie
 // ============================================
 const refreshToken = async (req, res) => {
@@ -221,11 +277,11 @@ const refreshToken = async (req, res) => {
 
         // ✅ CẬP NHẬT COOKIE MỚI
         res.cookie('refreshToken', newRefreshToken, {
-            httpOnly: true,      // ✅ QUAN TRỌNG
+            httpOnly: true,      //  QUAN TRỌNG
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000,
-            path: '/' // ✅ QUAN TRỌNG
+            path: '/' //  QUAN TRỌNG
         });
 
         res.status(200).json({
@@ -233,7 +289,7 @@ const refreshToken = async (req, res) => {
             message: 'Refresh token thành công!',
             data: {
                 token: newAccessToken
-                // ✅ KHÔNG trả refresh token trong response
+                //  KHÔNG trả refresh token trong response
             }
         });
 
@@ -260,47 +316,7 @@ const refreshToken = async (req, res) => {
     }
 };
 
-// ============================================
-// LOGOUT - Xóa cookie
-// ============================================
-const logout = async (req, res) => {
-    try {
-        const refreshToken = req.cookies.refreshToken;
-        
-        if (refreshToken) {
-            try {
-                const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-                
-                // Xóa refresh token trong DB
-                await prisma.user.update({
-                    where: { id: decoded.userId },
-                    data: { refreshToken: null }
-                });
-            } catch (err) {
-                console.error('Token verification error:', err);
-            }
-        }
 
-        // ✅ XÓA COOKIE
-        res.clearCookie('refreshToken', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            path: '/' // ✅ QUAN TRỌNG: Phải giống khi set cookie
-        });
-
-        res.status(200).json({ 
-            success: true, 
-            message: 'Đăng xuất thành công!' 
-        });
-    } catch (err) {
-        console.error('Lỗi đăng xuất:', err);
-        res.status(500).json({
-            success: false,
-            message: 'Lỗi hệ thống!'
-        });
-    }
-};
 
 /* ==============================
      GET ALL USERS
