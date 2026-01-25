@@ -18,7 +18,7 @@ const register = async (body) => {
 // ============================================
 const login = async (body) => {
     try {
-        // ✅ Backend sẽ tự động set refreshToken vào httpOnly cookie
+        //  Backend sẽ tự động set refreshToken vào httpOnly cookie
         const res = await axiosClient.post('/login', body);
         return res;
     } catch (error) {
@@ -32,7 +32,7 @@ const login = async (body) => {
 // ============================================
 const logout = async () => {
     try {
-        // ✅ Backend sẽ xóa refreshToken cookie và DB
+        //  Backend sẽ xóa refreshToken cookie và DB
         const res = await axiosClient.post('/logout');
         return res;
     } catch (error) {

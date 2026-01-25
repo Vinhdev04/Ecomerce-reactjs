@@ -8,37 +8,33 @@ const UserInfoProvider = ({ children }) => {
   const [userId, setUserId] = useState(cookie.get("userId")); 
   const [isLoading, setIsLoading] = useState(false);
 
-  // ============================================
-  // ✅ LOGOUT FUNCTION - GỌI API + XÓA DỮ LIỆU
-  // ============================================
+
   const handleLogout = async () => {
     try {
-      // 1️⃣ GỌI API LOGOUT để xóa refreshToken trong DB và Cookie
+      // 1️ GỌI API LOGOUT để xóa refreshToken trong DB và Cookie
       await logoutAPI();
       
     } catch (error) {
       console.error('❌ Logout API failed:', error);
-      // Vẫn tiếp tục xóa dữ liệu local ngay cả khi API lỗi
+      
     } finally {
 
-      // 2️⃣ XÓA DỮ LIỆU LOCAL
+     
       cookie.remove("token");
       cookie.remove("userId");
       localStorage.removeItem("users");
       localStorage.removeItem("rememberMe");
       
-      // 3️⃣ RESET STATE
+      
       setUserInfo(null);
       setUserId(null);
       
-      // 4️⃣ REDIRECT VỀ TRANG CHỦ
+      
       window.location.href = '/';
     }
   };
 
-  // ============================================
-  // FETCH USER INFO KHI CÓ userId
-  // ============================================
+
   useEffect(() => {
     if (userId) {
       setIsLoading(true);
