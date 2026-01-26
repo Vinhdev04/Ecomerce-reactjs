@@ -4,7 +4,10 @@ import styles from "./OurShop.module.scss"
 import { Breadcrumb } from 'antd';
 import { GoArrowLeft } from "react-icons/go";
 import classNames from 'classnames';
-import BannerShop from './BannerShop';
+import BannerShop from './components/BannerShop';
+import { useNavigate } from 'react-router-dom';
+import { OurShopProvider } from '@/contexts/OurShopProvider';
+import FilterProduct from '@components/OurShop/components/FilterProduct';
 
 
 function OurShop() {
@@ -12,32 +15,48 @@ function OurShop() {
     { title: 'Home' },
     { title: 'Shop', href: '' },
   ];
-
+  
+  const navigate = useNavigate();
   const {
     shopContainer,
     itemBreadcrumb,
     wrapHeader,btnReturn
     
   } = styles;
+  
+  const handleBackToPages = () => {
+    navigate(-1);
+  }
 
+
+  
   return (
-    <Layout>
-      <div className={classNames(shopContainer, "container")}>
-        {/* Header */}
-        <div className={classNames(wrapHeader, "d-flex justify-content-between align-items-center")}>
-          <Breadcrumb
-            separator=">"
-            items={items}
-            className={itemBreadcrumb}
-          />
-          <button className={btnReturn}>
-            <GoArrowLeft className='me-1'/>
-            Return to pages
-          </button>
-        </div>
-      <BannerShop/>
-      </div>
-    </Layout>
+    <OurShopProvider>
+        <Layout>
+          <div className={classNames(shopContainer, "container")}>
+
+            <div className={classNames(wrapHeader, "d-flex justify-content-between align-items-center")}>
+              <Breadcrumb
+                separator=">"
+                items={items}
+                className={itemBreadcrumb}
+              />
+              <button className={btnReturn} onClick={handleBackToPages}>
+                <GoArrowLeft className='me-1'/>
+                Return to pages
+              </button>
+            </div>
+            
+            <BannerShop/>
+            
+     
+           
+          
+           <FilterProduct/>
+            
+          </div>
+        </Layout>
+      </OurShopProvider>
   )
 }
 

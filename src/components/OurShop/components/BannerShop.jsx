@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styles from "./BannerShop.module.scss"
 import CalculatorTimer from '@components/Countdown/CalculatorTimer.jsx';
 import bannerImage from "@images/Xbox Series X Controller - Electric.webp";
-import Banner from './../Banner/Banner';
+import { OurShopContext } from '@contexts/OurShopContext.js';
 function BannerShop() {
+    const {softOptions,showOptions} = useContext(OurShopContext);
     const {
         bannerSection,
         bannerContent,
@@ -29,6 +30,10 @@ function BannerShop() {
         decorCircle1,
         decorCircle2
     } = styles;
+
+        
+    console.log("soft",softOptions);
+    console.log("show",showOptions);
 
     return (
         <div className={bannerSection}>
