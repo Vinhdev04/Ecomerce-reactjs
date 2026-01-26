@@ -1,0 +1,35 @@
+@use '@styles/variable.module.scss' as *;
+@use '@styles/mixin.module.scss' as *;
+
+.shopContainer {
+  padding-top: 100px;
+
+  .wrapHeader {
+    @include flex_box(space-between, center, 10px);
+    @include padding(20px, 20px, 0px, 20px);
+    
+    .itemBreadcrumb {
+      text-decoration: none;
+      color: #1677FF;
+    }
+
+
+    .btnReturn{
+      border: none;
+      outline: none;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease-in;
+      -webkit-transition: all 0.3s ease-in;
+      -moz-transition: all 0.3s ease-in;
+      -ms-transition: all 0.3s ease-in;
+      -o-transition: all 0.3s ease-in;
+
+
+      &:hover{
+        color: #1677FF;
+
+      }
+    }
+  }
+}

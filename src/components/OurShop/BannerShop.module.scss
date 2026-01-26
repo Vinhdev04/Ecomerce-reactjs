@@ -1,0 +1,290 @@
+@use '@styles/variable.module.scss' as *;
+@use '@styles/mixin.module.scss' as *;
+
+// Banner Section - Compact Version
+.bannerSection {
+  margin-top: 10px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+
+  // Subtle Background Glow
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+  }
+
+  .bannerContent {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 50px 40px;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+      padding: 40px 30px;
+      gap: 30px;
+    }
+
+    @media (max-width: 576px) {
+      padding: 30px 20px;
+    }
+  }
+}
+
+// Left Content Area
+.contentLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 16px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    width: fit-content;
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+  }
+
+  .mainTitle {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+
+    @media (max-width: 992px) {
+      font-size: 36px;
+    }
+
+    @media (max-width: 576px) {
+      font-size: 32px;
+    }
+
+    .titleGradient {
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+
+    .titleWhite {
+      color: white;
+      display: block;
+    }
+  }
+
+  .description {
+    color: #cbd5e1;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    max-width: 480px;
+
+    @media (max-width: 576px) {
+      font-size: 14px;
+    }
+  }
+
+  .timerWrapper {
+    margin-bottom: 28px;
+
+    .timerLabel {
+      color: #94a3b8;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+  }
+
+  .buttonGroup {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 40px;
+
+    @media (max-width: 576px) {
+      flex-direction: column;
+    }
+
+    .btnPrimary {
+      background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+      color: white;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    .btnSecondary {
+      background: transparent;
+      color: #cbd5e1;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 32px;
+      border: 2px solid #475569;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: #06b6d4;
+        color: #06b6d4;
+      }
+    }
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #334155;
+
+    .featureItem {
+      text-align: center;
+
+      .featureValue {
+        color: #06b6d4;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .featureLabel {
+        color: #94a3b8;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+}
+
+// Right Content Area - Product Display
+.contentRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .productWrapper {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 1;
+
+    @media (max-width: 992px) {
+      max-width: 320px;
+    }
+
+    // Subtle Glowing Effect
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+      border-radius: 50%;
+      filter: blur(40px);
+    }
+
+    .productImage {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+      border-radius: 20px;
+      border: 2px solid #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+
+      // Real Image Style
+      img {
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+        filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+      }
+
+      // Game Controller Icon (fallback)
+      svg {
+        width: 200px;
+        height: 200px;
+        color: rgba(6, 182, 212, 0.15);
+      }
+
+      .discountBadge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+        color: white;
+        font-weight: 700;
+        font-size: 14px;
+        padding: 10px 20px;
+        border-radius: 50px;
+        transform: rotate(8deg);
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        z-index: 3;
+      }
+    }
+
+    // Decorative Circles - Smaller
+    .decorCircle1 {
+      position: absolute;
+      top: -12px;
+      left: -12px;
+      width: 80px;
+      height: 80px;
+      border: 3px solid rgba(6, 182, 212, 0.25);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .decorCircle2 {
+      position: absolute;
+      bottom: -12px;
+      right: -12px;
+      width: 100px;
+      height: 100px;
+      border: 3px solid rgba(59, 130, 246, 0.25);
+      border-radius: 50%;
+      z-index: 1;
+    }
+  }
+}

@@ -31,7 +31,7 @@ function ProductList({
                             The Classics Make A Comeback
                         </h2>
                         <CalculatorTimer
-                            endTime={new Date('2025-12-31T23:59:59')}
+                            endTime={new Date('2026-12-31T23:59:59')}
                         />
                         <button className={styles.buyNowBtn}>
                             Buy Now
