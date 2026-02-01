@@ -1,6 +1,6 @@
 /* ==============================
     SERVER: APP
- ============================== */
+============================== */
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -11,89 +11,84 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 const app = express();
 
-// Config host & port
-const port = process.env.PORT || 3000;
-const host = process.env.HOST || 'localhost';
-const FE_HOST = process.env.FE_HOST || 'localhost';
-const FE_PORT = process.env.FE_PORT || 5173;
-// ============================================
-// MIDDLEWARE - THỨ TỰ QUAN TRỌNG
-// ============================================
+/* ==============================
+   CONFIG PORT
+============================== */
+const PORT = process.env.PORT || 3000;
 
+/* ==============================
+   MIDDLEWARE
+============================== */
+
+// ✅ CORS chuẩn production
+const allowedOrigins = [
+  "http://localhost:5173",                     // dev
+  "https://ecomerce-reactjs.onrender.com"      // production FE 
+];
 
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://ecomerce-reactjs.onrender.com/api'
-  ], //  Frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  credentials: true, //  Cho phép gửi cookie
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 }));
 
-// 2️ Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// 3️ Cookie parser
 app.use(cookieParser());
-
-// 4️ Logger
 app.use(morgan('dev'));
 
-// ============================================
-// ROUTES
-// ============================================
+/* ==============================
+   ROUTES
+============================== */
 import productsRouter from './routes/products.route.js';
 import userRouter from './routes/users.route.js';
 
-// API Routes
 app.use('/api/products', productsRouter);
 app.use('/api', userRouter);
 
-// ============================================
-// HEALTH CHECK
-// ============================================
+/* ==============================
+   HEALTH CHECK
+============================== */
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     success: true,
     message: 'API Server is running!',
     timestamp: new Date().toISOString()
   });
 });
 
-// ============================================
-// ERROR HANDLING
-// ============================================
-// 404 Handler
+/* ==============================
+   ERROR HANDLING
+============================== */
 app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found'
-  });
+  res.status(404).json({ success: false, message: 'Route not found' });
 });
 
-// Global Error Handler
 app.use((err, req, res, next) => {
-  console.error(' Server Error:', err);
+  console.error(err);
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || 'Internal Server Error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    message: err.message || 'Internal Server Error'
   });
 });
 
-// ============================================
-// START SERVER
-// ============================================
-connectDatabase().then(() => {
-    app.listen(port, host, () => {
-        console.log(`✅ Server is running on http://${host}:${port}`);
-        console.log(`✅ CORS enabled for: http://${FE_HOST}:${FE_PORT}`);
+/* ==============================
+   START SERVER
+============================== */
+connectDatabase()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
     });
-}).catch((error) => {
+  })
+  .catch((error) => {
     console.error('❌ Failed to start server:', error);
     process.exit(1);
-});
+  });
 
 export default app;
