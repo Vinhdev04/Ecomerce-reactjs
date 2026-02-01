@@ -21,20 +21,29 @@ const PORT = process.env.PORT || 3000;
 ============================== */
 
 // ✅ CORS chuẩn production
+/* ==============================
+   CORS CONFIG CHUẨN PRODUCTION
+============================== */
+
 const allowedOrigins = [
-  'http://localhost:5173',
-  'https://xpadgame-store.netlify.app'
+  'http://localhost:5173',                 // dev
+  'https://xpadgame-store.netlify.app'     // FE deploy
 ];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+  origin: function (origin, callback) {
+    // cho phép Postman, server-to-server request
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('CORS not allowed'));
+      callback(new Error(`CORS blocked: ${origin}`));
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET','POST','PUT','DELETE','PATCH','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
 }));
 
 
