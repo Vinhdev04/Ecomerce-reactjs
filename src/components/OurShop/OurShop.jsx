@@ -8,7 +8,7 @@ import BannerShop from './components/BannerShop';
 import { useNavigate } from 'react-router-dom';
 import { OurShopProvider } from '@/contexts/OurShopProvider';
 import FilterProduct from '@components/OurShop/components/FilterProduct';
-
+import ProductList from '@components/ProductList/ProductList';
 
 function OurShop() {
   const items = [
@@ -24,10 +24,6 @@ function OurShop() {
     
   } = styles;
   
-  const handleBackToPages = () => {
-    navigate(-1);
-  }
-
 
   
   return (
@@ -41,7 +37,7 @@ function OurShop() {
                 items={items}
                 className={itemBreadcrumb}
               />
-              <button className={btnReturn} onClick={handleBackToPages}>
+              <button className={btnReturn} onClick={() => navigate(-1)}>
                 <GoArrowLeft className='me-1'/>
                 Return to pages
               </button>
@@ -53,6 +49,7 @@ function OurShop() {
            
           
            <FilterProduct/>
+       
             
           </div>
         </Layout>

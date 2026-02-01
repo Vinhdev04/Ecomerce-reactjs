@@ -32,8 +32,8 @@ function BannerShop() {
     } = styles;
 
         
-    console.log("soft",softOptions);
-    console.log("show",showOptions);
+    // console.log("soft",softOptions);
+    // console.log("show",showOptions);
 
     return (
         <div className={bannerSection}>

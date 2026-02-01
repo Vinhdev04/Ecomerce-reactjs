@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 
 export const OurShopProvider = ({children}) => {
-    const [viewMode, setViewMode] = useState('grid');
+    
     const softOptions = [
         {
            label : 'Default',
@@ -45,9 +45,17 @@ export const OurShopProvider = ({children}) => {
         { label: '24', value: '24' }
     ]
 
+    const [sortedID,setSortedID] = useState('0');
+    const [viewMode, setViewMode] = useState('grid');
+    const [showID,setShowID] = useState('8');
+
     const value = {
-        softOptions,showOptions,viewMode,setViewMode
+        softOptions,showOptions,setViewMode,setShowID,setSortedID
     }
+
+    // console.log("SortedID",sortedID);
+    // console.log("ShowID",showID);
+    // console.log("ViewMode",viewMode);
 
 
     return (
