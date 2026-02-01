@@ -11,11 +11,10 @@ const API_BASE =
 
 const axiosClient = axios.create({
   baseURL: API_BASE,
-  timeout: 10000,
+  timeout: 60000, // Tăng lên 60 giây 
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' }
 });
-
 
 
 // ==================================================
