@@ -42,7 +42,7 @@ axiosClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // 🔥 GỌI API REFRESH TOKEN ĐÚNG URL (KHÔNG localhost)
+        // GỌI API REFRESH TOKEN ĐÚNG URL (KHÔNG localhost)
         const response = await axios.post(
           `${API_URL}/refresh-token`,
           {},
