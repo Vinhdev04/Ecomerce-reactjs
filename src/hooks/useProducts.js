@@ -4,7 +4,7 @@ import { getAllProducts } from '@api/productsService.js';
 /* ==============================
      HOOKS: SỬ DỤNG TRONG PRODUCTS
  ============================== */
-export const useProducts = (initialLimit = 6) => {
+export const useProducts = (initialLimit = 8) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,24 +14,40 @@ export const useProducts = (initialLimit = 6) => {
         total: 0,
         totalPages: 0
     });
+    const [filters,setFilters] = useState({
+        sortType: '0',
+        category: null
+    })
 
     const fetchProducts = useCallback(
-        async (page = 1, limit = initialLimit) => {
+        async (query={}) => {
             try {
                 setLoading(true);
                 setError(null);
 
-                const response = await getAllProducts(page, limit);
+                const queryParams = {
+                    page: params.page || pagination.page,
+                    limit:params.limit || pagination.limit,
+                    sortType: params.sortType || filters.sortType,
+                    category: params.category || filters.category
+                };
+                
+                const response = await getAllProducts(queryParams);
 
                 if (response && response.success) {
                     setProducts(response.data || []);
 
                     setPagination({
-                        page,
-                        limit,
+                        page: queryParams.page,
+                        limit: queryParams.limit,
                         total: response.pagination?.total || 0,
                         totalPages: response.pagination?.totalPages || 1
                     });
+
+                      setFilters({
+                        sortType: queryParams.sortType,
+                        category: queryParams.category
+                      })
                 } else {
                     throw new Error(
                         response?.message ||
@@ -49,7 +65,7 @@ export const useProducts = (initialLimit = 6) => {
                 setLoading(false);
             }
         },
-        [initialLimit]
+        [pagination.page, pagination.limit, filters.sortType, filters.category]
     );
 
     /* ==============================
@@ -67,19 +83,22 @@ export const useProducts = (initialLimit = 6) => {
                 behavior: 'smooth'
             });
 
-            fetchProducts(newPage, pagination.limit);
+            fetchProducts({page: newPage});
         },
-        [pagination.totalPages, pagination.limit, fetchProducts]
+       [pagination.totalPages, fetchProducts]
     );
 
      
     /* ==============================
          RETRY KHI GẶP LỖI
      ============================== */
-    const retry = () => {
-        // console.log('Retrying fetchProducts...');
-        fetchProducts(pagination.page, pagination.limit);
-    };
+    const retry = useCallback((sortType)=> {
+        fetchProducts({
+            page: 1,
+            sortType
+        });
+
+    },[fetchProducts])
 
    
     /* ==============================
@@ -87,15 +106,32 @@ export const useProducts = (initialLimit = 6) => {
      ============================== */
     const resetToFirstPage = () => {
         // console.log('Reset to first page');
-        fetchProducts(1, pagination.limit);
+        fetchProducts({page: 1});
     };
 
-    const changeLimit = (newLimit) => {
-        // console.log('Change limit to:', newLimit);
-        fetchProducts(1, newLimit);
-    };
+    const handleLimitChange =useCallback(
+        (newLimit) => {
+            fetchProducts({
+                page: 1, // Reset về trang 1
+                limit: newLimit
+            });
+        },
+        [fetchProducts]
+    );
 
-  
+    /* ==============================
+         THAY ĐỔI CATEGORY
+     ============================== */
+    const handleCategoryChange = useCallback(
+        (category) => {
+            fetchProducts({ 
+                page: 1, // Reset về trang 1
+                category 
+            });
+        },
+        [fetchProducts]
+    );
+
     /* ==============================
          TỰ ĐỘNG REFRESH PAGE
      ============================== */
@@ -122,7 +158,8 @@ export const useProducts = (initialLimit = 6) => {
         handlePageChange,
         retry,
         resetToFirstPage,
-        changeLimit,
+        handleLimitChange,
+        handleCategoryChange,
         refresh
     };
 };
