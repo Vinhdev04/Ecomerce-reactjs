@@ -14,47 +14,52 @@ export const useProducts = (initialLimit = 8) => {
         total: 0,
         totalPages: 0
     });
-    const [filters,setFilters] = useState({
+    const [filters, setFilters] = useState({
         sortType: '0',
         category: null
-    })
+    });
 
     const fetchProducts = useCallback(
-        async (query={}) => {
+        async (queryParams = {}) => {
             try {
                 setLoading(true);
                 setError(null);
 
-                const queryParams = {
-                    page: params.page || pagination.page,
-                    limit:params.limit || pagination.limit,
-                    sortType: params.sortType || filters.sortType,
-                    category: params.category || filters.category
+                // Merge query params với state hiện tại
+                const finalParams = {
+                    page: queryParams.page ?? pagination.page,
+                    limit: queryParams.limit ?? pagination.limit,
+                    sortType: queryParams.sortType ?? filters.sortType,
+                    category: queryParams.category ?? filters.category
                 };
-                
-                const response = await getAllProducts(queryParams);
+
+                // console.log('🔍 Fetching products with params:', finalParams);
+
+                const response = await getAllProducts(finalParams);
 
                 if (response && response.success) {
                     setProducts(response.data || []);
 
                     setPagination({
-                        page: queryParams.page,
-                        limit: queryParams.limit,
+                        page: finalParams.page,
+                        limit: finalParams.limit,
                         total: response.pagination?.total || 0,
                         totalPages: response.pagination?.totalPages || 1
                     });
 
-                      setFilters({
-                        sortType: queryParams.sortType,
-                        category: queryParams.category
-                      })
+                    setFilters({
+                        sortType: finalParams.sortType,
+                        category: finalParams.category
+                    });
+
+                    console.log('✅ Products loaded:', response.data?.length);
                 } else {
                     throw new Error(
-                        response?.message ||
-                            'Không thể tải dữ liệu các sản phẩm!'
+                        response?.message || 'Không thể tải dữ liệu các sản phẩm!'
                     );
                 }
             } catch (err) {
+                console.error('❌ Error fetching products:', err);
                 setError(
                     err.response?.data?.message ||
                         err.message ||
@@ -69,7 +74,7 @@ export const useProducts = (initialLimit = 8) => {
     );
 
     /* ==============================
-         SỬ DỤNG UseCallback() -> chỉ render khi cần
+         THAY ĐỔI TRANG
      ============================== */
     const handlePageChange = useCallback(
         (newPage) => {
@@ -83,34 +88,31 @@ export const useProducts = (initialLimit = 8) => {
                 behavior: 'smooth'
             });
 
-            fetchProducts({page: newPage});
+            fetchProducts({ page: newPage });
         },
-       [pagination.totalPages, fetchProducts]
+        [pagination.totalPages, fetchProducts]
     );
 
-     
     /* ==============================
-         RETRY KHI GẶP LỖI
+         THAY ĐỔI SORTING
      ============================== */
-    const retry = useCallback((sortType)=> {
-        fetchProducts({
-            page: 1,
-            sortType
-        });
+    const handleSortChange = useCallback(
+        (sortType) => {
+            // console.log('📊 Sort changed to:', sortType);
+            fetchProducts({
+                page: 1, // Reset về trang 1
+                sortType
+            });
+        },
+        [fetchProducts]
+    );
 
-    },[fetchProducts])
-
-   
     /* ==============================
-         RESET VỀ ĐẦU PAGE
+         THAY ĐỔI SỐ LƯỢNG HIỂN THỊ
      ============================== */
-    const resetToFirstPage = () => {
-        // console.log('Reset to first page');
-        fetchProducts({page: 1});
-    };
-
-    const handleLimitChange =useCallback(
+    const handleLimitChange = useCallback(
         (newLimit) => {
+            // console.log('📏 Limit changed to:', newLimit);
             fetchProducts({
                 page: 1, // Reset về trang 1
                 limit: newLimit
@@ -124,42 +126,60 @@ export const useProducts = (initialLimit = 8) => {
      ============================== */
     const handleCategoryChange = useCallback(
         (category) => {
-            fetchProducts({ 
+            // console.log('🏷️ Category changed to:', category);
+            fetchProducts({
                 page: 1, // Reset về trang 1
-                category 
+                category
             });
         },
         [fetchProducts]
     );
 
     /* ==============================
-         TỰ ĐỘNG REFRESH PAGE
+         RETRY KHI GẶP LỖI
      ============================== */
-    const refresh = () => {
-        // console.log('Refreshing current page...');
-        fetchProducts(pagination.page, pagination.limit);
-    };
+    const retry = useCallback(() => {
+        // console.log('🔄 Retrying...');
+        fetchProducts();
+    }, [fetchProducts]);
 
-  
+    /* ==============================
+         RESET VỀ ĐẦU PAGE
+     ============================== */
+    const resetToFirstPage = useCallback(() => {
+        fetchProducts({ page: 1 });
+    }, [fetchProducts]);
+
+    /* ==============================
+         REFRESH CURRENT PAGE
+     ============================== */
+    const refresh = useCallback(() => {
+        fetchProducts();
+    }, [fetchProducts]);
+
     /* ==============================
          TỰ ĐỘNG FETCH KHI COMPONENT MOUNT
      ============================== */
     useEffect(() => {
+        // console.log('🚀 useProducts mounted, fetching initial data...');
         fetchProducts();
-    }, [fetchProducts]);
+       
+    }, []);
 
     return {
         products,
         loading,
         error,
         pagination,
+        filters,
 
-        fetchProducts,
+        // Actions
         handlePageChange,
-        retry,
-        resetToFirstPage,
+        handleSortChange,
         handleLimitChange,
         handleCategoryChange,
+        retry,
+        resetToFirstPage,
         refresh
     };
 };

@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 import { Select, Space } from 'antd';
 import { CiGrid42, CiCircleList } from 'react-icons/ci';
 import { OurShopContext } from '@contexts/OurShopContext.js';
-import styles from './FilterProduct.module.scss';
+
 
 function FilterProduct() {
+
     const {
         sortOptions,
         showOptions,
@@ -14,26 +15,33 @@ function FilterProduct() {
         viewMode
     } = useContext(OurShopContext);
 
+    // Debug: Check context
+    console.log('FilterProduct context:', {
+        sortOptions,
+        showOptions,
+        setViewMode,
+        setSortType,
+        setShowLimit
+    });
+
     const handleSortChange = (value) => {
-        console.log('Sort changed:', value);
         setSortType(value);
     };
 
     const handleShowChange = (value) => {
-        console.log('Show limit changed:', value);
         setShowLimit(value);
     };
 
     const handleViewModeChange = (mode) => {
-        console.log('View mode changed:', mode);
+        
         setViewMode(mode);
     };
 
     return (
         <div className="mb-3 d-flex justify-content-between align-items-center">
-            {/* Left side - Sort & View Mode */}
+            
             <div className="gap-3 d-flex align-items-center">
-                {/* Sort Select */}
+             
                 <Space>
                     <Select
                         defaultValue="0"
@@ -44,7 +52,7 @@ function FilterProduct() {
                     />
                 </Space>
 
-                {/* View Mode Buttons */}
+           
                 <div className="ms-2">
                     <button
                         className={`btn fw-bold ${viewMode === 'grid' ? 'btn-primary' : ''}`}
@@ -61,7 +69,7 @@ function FilterProduct() {
                 </div>
             </div>
 
-            {/* Right side - Show Items */}
+       
             <div>
                 <Space>
                     <span>Show</span>

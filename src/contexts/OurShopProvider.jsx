@@ -1,11 +1,14 @@
 /* ==============================
      Context: OurShopProvider
  ============================== */
+import React from 'react';
 import { OurShopContext } from '@contexts/OurShopContext.js';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProducts } from '@hooks/useProducts.js';
 
 export const OurShopProvider = ({ children }) => {
+   
+
     const sortOptions = [
         { label: 'Default', value: '0' },
         { label: 'Popularity', value: '1' },
@@ -22,10 +25,10 @@ export const OurShopProvider = ({ children }) => {
         { label: '24', value: '24' }
     ];
 
-    // View mode state
+ 
     const [viewMode, setViewMode] = useState('grid');
 
-    // Sử dụng useProducts hook
+  
     const {
         products,
         loading,
@@ -40,12 +43,25 @@ export const OurShopProvider = ({ children }) => {
         refresh
     } = useProducts(8);
 
-    // Handlers
+    // Debug: Log hook values
+    useEffect(() => {
+        // console.log('📊 Provider state:', {
+        //     productsCount: products?.length,
+        //     loading,
+        //     error,
+        //     pagination,
+        //     filters
+        // });
+    }, [products, loading, error, pagination, filters]);
+
+    // Handlers wrapper
     const setSortType = (sortType) => {
+    
         handleSortChange(sortType);
     };
 
     const setShowLimit = (limit) => {
+   
         handleLimitChange(parseInt(limit));
     };
 
@@ -65,14 +81,18 @@ export const OurShopProvider = ({ children }) => {
         viewMode,
         setViewMode,
 
-        // Actions
+        // Actions 
         setSortType,
         setShowLimit,
         handlePageChange,
+        handleSortChange,
+        handleLimitChange,
         handleCategoryChange,
         retry,
         refresh
     };
+
+
 
     return (
         <OurShopContext.Provider value={value}>
@@ -80,3 +100,6 @@ export const OurShopProvider = ({ children }) => {
         </OurShopContext.Provider>
     );
 };
+
+// Export context để sử dụng trong components
+export { OurShopContext };
