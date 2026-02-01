@@ -5,15 +5,18 @@ import Cookies from "js-cookie";
 // BASE URL (tự động chọn local hoặc production)
 // ==================================================
 const API_URL =
-  import.meta.env.VITE_API_URL ||
-  import.meta.env.VITE_API_URL_DEPLOY;
+  import.meta.env.MODE === 'development'
+    ? import.meta.env.VITE_API_URL
+    : import.meta.env.VITE_API_URL_DEPLOY;
 
 const axiosClient = axios.create({
   baseURL: API_URL,
   timeout: 10000,
-  headers: { "Content-Type": "application/json" },
-  withCredentials: true,
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true
 });
+
+
 
 // ==================================================
 // REQUEST INTERCEPTOR — Gắn access token

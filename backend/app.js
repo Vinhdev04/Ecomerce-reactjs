@@ -21,11 +21,16 @@ const PORT = process.env.PORT || 3000;
 ============================== */
 
 // ✅ CORS chuẩn production
-const allowedOrigins = [
-  "http://localhost:5173",                     // dev
-  "https://xpadgame-store.netlify.app",
-  "https://ecomerce-reactjs.onrender.com"      // production FE 
-];
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://xpadgame-store.netlify.app'  // FE deploy Netlify
+  ],
+  credentials: true,
+  methods: ['GET','POST','PUT','DELETE','PATCH','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
+}));
+
 
 app.use(cors({
   origin: function(origin, callback) {
