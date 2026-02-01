@@ -23,6 +23,7 @@ const PORT = process.env.PORT || 3000;
 // ✅ CORS chuẩn production
 const allowedOrigins = [
   "http://localhost:5173",                     // dev
+  "https://xpadgame-store.netlify.app",
   "https://ecomerce-reactjs.onrender.com"      // production FE 
 ];
 
