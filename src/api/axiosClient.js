@@ -1,101 +1,82 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import axios from "axios";
+import Cookies from "js-cookie";
+
+// ==================================================
+// BASE URL (tự động chọn local hoặc production)
+// ==================================================
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_URL_DEPLOY;
 
 const axiosClient = axios.create({
-    baseURL: import.meta.env.VITE_API_URL ||  import.meta.env.VITE_API_URL_DEPLOY ,
-    timeout: 10000,
-    headers: { 'Content-Type': 'application/json' },
-    withCredentials: true
+  baseURL: API_URL,
+  timeout: 10000,
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true,
 });
 
-// ============================================
-// REQUEST INTERCEPTOR - Thêm token vào header
-// ============================================
+// ==================================================
+// REQUEST INTERCEPTOR — Gắn access token
+// ==================================================
 axiosClient.interceptors.request.use(
-    (config) => {
-        const token = Cookies.get('token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+  (config) => {
+    const token = Cookies.get("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
-// ============================================
-// RESPONSE INTERCEPTOR - Xử lý refresh token
-// ============================================
+// ==================================================
+// RESPONSE INTERCEPTOR — Refresh token khi 401
+// ==================================================
 axiosClient.interceptors.response.use(
-   
-    (response) => {
-        return response.data;
-    },
-    
-    // ❌ Error response - xử lý refresh token
-    async (error) => {
-        const originalRequest = error.config;
+  (response) => response.data,
 
-        // Kiểm tra lỗi 401 (Unauthorized) và chưa retry
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
+  async (error) => {
+    const originalRequest = error.config;
 
-            const refreshToken = Cookies.get('refreshToken');
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
-            // Không có refresh token -> Redirect login
-            if (!refreshToken) {
-                Cookies.remove('token');
-                Cookies.remove('refreshToken');
-                // window.location.href = '/login';
-                return Promise.reject(error);
-            }
+      try {
+        // 🔥 GỌI API REFRESH TOKEN ĐÚNG URL (KHÔNG localhost)
+        const response = await axios.post(
+          `${API_URL}/refresh-token`,
+          {},
+          { withCredentials: true }
+        );
 
-            try {
-                // ⚠️ QUAN TRỌNG: Gọi axios thuần, KHÔNG dùng axiosClient
-                // để tránh vòng lặp vô hạn
-                const response = await axios.post(
-                    'http://localhost:3000/api/refresh-token',
-                    {  },
-                    {
-                        withCredentials: true,// Gửi cookie kèm theo
-                        headers: { 'Content-Type': 'application/json' }
-                    
-                    }
-                );
+        const { token: newToken, id } = response.data.data;
 
-                // Lấy tokens mới từ response
-                const { token: newToken, id} = response.data.data;
+        // Lưu token mới
+        Cookies.set("token", newToken, {
+          expires: 1 / 96, // 15 phút
+          secure: import.meta.env.PROD, // Vite production
+          sameSite: "strict",
+        });
 
-                // Lưu tokens mới
-                Cookies.set('token', newToken,
-                    {
-                        expires: 1/96, // 15 phút
-                        secure: process.env.NODE_ENV === 'production',
-                        sameSite: 'strict'
-                    });
-                  Cookies.set("id",id, {
-                        expires: 1/96, // 15 phút
-                        secure: process.env.NODE_ENV === 'production',
-                        sameSite: 'strict'
-                    });
+        Cookies.set("id", id, {
+          expires: 1 / 96,
+          secure: import.meta.env.PROD,
+          sameSite: "strict",
+        });
 
-                // Retry request gốc với token mới
-                originalRequest.headers.Authorization = `Bearer ${newToken}`;
-                return axiosClient(originalRequest);
+        // Gắn token mới vào request cũ
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
 
-            } catch (refreshError) {
-                // Refresh token thất bại -> Logout
-                Cookies.remove('token');
-              
-                // window.location.href = '/login'; // Uncomment khi cần
-                return Promise.reject(refreshError);
-            }
-        }
-
-        // Lỗi khác 401 hoặc đã retry -> reject
-        return Promise.reject(error);
+        return axiosClient(originalRequest);
+      } catch (refreshError) {
+        Cookies.remove("token");
+        Cookies.remove("refreshToken");
+        return Promise.reject(refreshError);
+      }
     }
+
+    return Promise.reject(error);
+  }
 );
 
 export default axiosClient;
