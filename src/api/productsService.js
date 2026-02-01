@@ -1,12 +1,24 @@
 import axiosClient from '../api/axiosClient';
 
-// NOTE: LẤY DỮ LIỆU SẢN PHẨM TỪ API VÀ PHÂN TRANG SẢN PHẨM
-const getAllProducts = async (page = 1, limit = 10) => {
-    // const {sortedType,page,limit} = query;
+/* ==============================
+   LẤY TẤT CẢ SẢN PHẨM VỚI FILTER
+ ============================== */
+const getAllProducts = async (query = {}) => {
     try {
+        const {
+            page = 1,
+            limit = 8,
+            sortType = '0',
+            category
+        } = query;
+
         const res = await axiosClient.get('/products', {
-            // {số trang và số sản phẩm được hiển thị}
-            params: { page, limit }
+            query: {
+                page,
+                limit,
+                sortType,
+                ...(category && { category })
+            }
         });
 
         return res;
@@ -15,6 +27,5 @@ const getAllProducts = async (page = 1, limit = 10) => {
         throw error;
     }
 };
-export { getAllProducts };
 
-// NOTE:
+export { getAllProducts };
