@@ -22,7 +22,10 @@ const FE_PORT = process.env.FE_PORT || 5173;
 
 
 app.use(cors({
-  origin: 'http://localhost:5173', //  Frontend URL
+  origin: [
+    'http://localhost:5173',
+    'https://ecomerce-reactjs.onrender.com/api'
+  ], //  Frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   credentials: true, //  Cho phép gửi cookie
   allowedHeaders: ['Content-Type', 'Authorization']

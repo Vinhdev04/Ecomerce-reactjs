@@ -141,12 +141,12 @@ function ProductListItem({
                     </div>
 
                     <div className={styles.actions}>
-                        <button className={styles.btnDetail}>Chi tiết</button>
+                      
                         <button
                             className={styles.btnBuy}
                             disabled={stock === 0}
                         >
-                            {stock === 0 ? 'Hết hàng' : 'Mua Ngay'}
+                            {stock === 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
                         </button>
                     </div>
                 </div>

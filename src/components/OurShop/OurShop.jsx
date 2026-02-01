@@ -25,8 +25,6 @@ function OurShopContent() {
     //  Lấy data từ context
     const context = useContext(OurShopContext);
 
-    // Debug: Log context
-    // console.log('OurShop Context:', context);
 
     // Kiểm tra context có undefined không
     if (!context) {
@@ -94,7 +92,7 @@ function OurShopContent() {
                     retry={retry}
                 />
 
-                {/* Load More Button (Optional) */}
+         
                 {!loading && products.length > 0 && pagination.page < pagination.totalPages && (
                     <div className="mt-4 text-center">
                         <button
