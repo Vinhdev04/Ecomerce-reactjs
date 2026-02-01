@@ -49,6 +49,8 @@ function OurShop() {
            
           
            <FilterProduct/>
+           
+           <button>Load More</button>
        
             
           </div>

@@ -4,36 +4,68 @@
 import prisma from '../lib/prisma.lib.js';
 
 /* ==============================
-     GET ALL PRODUCTS
+     GET ALL PRODUCTS WITH FILTER & SORT
  ============================== */
 const getAllProducts = async (req, res) => {
     try {
-        // Lấy thông tin phân trang từ query
+        // Lấy thông tin từ query
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = parseInt(req.query.limit) || 8;
+        const sortType = req.query.sortType || '0';
+        const category = req.query.category;
         const skip = (page - 1) * limit;
 
-        // Truy vấn dữ liệu với phân trang
+        // Xây dựng sorting
+        let orderBy = {};
+        switch (sortType) {
+            case '1': // Popularity
+                orderBy = { rating: 'desc' };
+                break;
+            case '2': // High to Low
+                orderBy = { price: 'desc' };
+                break;
+            case '3': // Low to High
+                orderBy = { price: 'asc' };
+                break;
+            case '4': // Newest
+                orderBy = { createdAt: 'desc' };
+                break;
+            case '5': // Oldest
+                orderBy = { createdAt: 'asc' };
+                break;
+            default: // Default
+                orderBy = { id: 'asc' };
+        }
+
+        // Xây dựng filter
+        const where = {};
+        if (category && category !== 'all') {
+            where.category = category;
+        }
+
+        // Truy vấn dữ liệu với phân trang và sorting
         const [data, total] = await Promise.all([
             prisma.product.findMany({
+                where,
                 skip,
-                take: limit
+                take: limit,
+                orderBy
             }),
-
-            prisma.product.count()
+            prisma.product.count({ where })
         ]);
-
-        console.log(`Tống số sản phẩm hiện có: ${total}`);
 
         res.status(200).json({
             success: true,
             data: data,
-
             pagination: {
                 page,
                 limit,
                 total,
                 totalPages: Math.ceil(total / limit)
+            },
+            filters: {
+                sortType,
+                category
             }
         });
     } catch (error) {
@@ -58,7 +90,7 @@ const getProductByID = async (req, res) => {
         if (!product) {
             return res.status(404).json({
                 success: false,
-                message: `Không tìm thấy sản phẩm có ${product}`
+                message: `Không tìm thấy sản phẩm`
             });
         }
 
@@ -92,9 +124,23 @@ const createProduct = async (req, res) => {
             badge
         } = req.body;
 
+        const newProduct = await prisma.product.create({
+            data: {
+                image,
+                title,
+                description,
+                price,
+                category,
+                stock,
+                rating,
+                badge
+            }
+        });
+
         res.status(201).json({
             success: true,
-            message: 'Product created successfully'
+            message: 'Product created successfully',
+            data: newProduct
         });
     } catch (error) {
         res.status(500).json({
@@ -111,20 +157,17 @@ const createProduct = async (req, res) => {
 const updatedProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const {
-            image,
-            title,
-            description,
-            price,
-            category,
-            stock,
-            rating,
-            badge
-        } = req.body;
+        const updateData = req.body;
+
+        const updatedProduct = await prisma.product.update({
+            where: { id },
+            data: updateData
+        });
 
         res.status(200).json({
             success: true,
-            message: 'Product updated successfully'
+            message: 'Product updated successfully',
+            data: updatedProduct
         });
     } catch (error) {
         res.status(500).json({
@@ -141,6 +184,12 @@ const updatedProduct = async (req, res) => {
  ============================== */
 const deletedProduct = async (req, res) => {
     try {
+        const { id } = req.params;
+        
+        await prisma.product.delete({
+            where: { id }
+        });
+
         res.status(200).json({
             success: true,
             message: 'Product deleted successfully'

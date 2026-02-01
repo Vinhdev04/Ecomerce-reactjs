@@ -2,8 +2,8 @@
      Context: SideBarProvider
  ============================== */
 import { OurShopContext } from '@contexts/OurShopContext.js';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import {getAllProducts} from '@api/productsService.js';
 
 
 
@@ -53,10 +53,17 @@ export const OurShopProvider = ({children}) => {
         softOptions,showOptions,setViewMode,setShowID,setSortedID
     }
 
-    // console.log("SortedID",sortedID);
-    // console.log("ShowID",showID);
-    // console.log("ViewMode",viewMode);
-    // console.log("ViewMode",viewMode);
+
+    useEffect(()=>{
+        const query = {
+            sortedType: sortedID,
+            pages:1,
+            limit: showID
+        };
+
+        // getAllProducts(query);
+        console.log(query);
+    },[sortedID,showID])
 
 
     return (
