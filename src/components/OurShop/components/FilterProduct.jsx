@@ -1,56 +1,80 @@
-import React,{useContext} from 'react'
+import React, { useContext } from 'react';
 import { Select, Space } from 'antd';
-import { CiGrid42 } from "react-icons/ci";
-import { CiCircleList } from "react-icons/ci";
+import { CiGrid42, CiCircleList } from 'react-icons/ci';
 import { OurShopContext } from '@contexts/OurShopContext.js';
-import styles from "./FilterProduct.module.scss"
-import SelectedBox from './SelectedBox';
-
+import styles from './FilterProduct.module.scss';
 
 function FilterProduct() {
-  const {softOptions,showOptions,setViewMode,setShowID,setSortedID} = useContext(OurShopContext);
-  
-  const handleSetValue = (value,typed) => {
-      console.log("Typed:", typed);
-      (typed === "sort") ? setSortedID(value) : setShowID(value);
-  };
+    const {
+        sortOptions,
+        showOptions,
+        setViewMode,
+        setSortType,
+        setShowLimit,
+        viewMode
+    } = useContext(OurShopContext);
 
-  const handleSetViewMode = (viewMode) => {
-      (viewMode === "grid") ? setViewMode("grid") : setViewMode("list");
-      console.log(viewMode);
-  }
-  return (
-     <div className="mb-3 d-flex justify-content-between align-items-center">
-          
-        <div className="d-flex justify-content-between align-items-center g-3">
-          <Space>
-            <SelectedBox options={softOptions} getSelected={handleSetValue} typed ="sorted"/>
-          </Space>
-          
-          
-           <div className='ms-2 '>
-              <button className=" btn fw-bold" id="" >
-                <CiGrid42 onClick={()=> handleSetViewMode("grid")}/>
-              </button>
-              <button className="btn ms-2 fw-bold" id="" >
-                <CiCircleList onClick={()=> handleSetViewMode("list")}/>
-              </button>
+    const handleSortChange = (value) => {
+        console.log('Sort changed:', value);
+        setSortType(value);
+    };
+
+    const handleShowChange = (value) => {
+        console.log('Show limit changed:', value);
+        setShowLimit(value);
+    };
+
+    const handleViewModeChange = (mode) => {
+        console.log('View mode changed:', mode);
+        setViewMode(mode);
+    };
+
+    return (
+        <div className="mb-3 d-flex justify-content-between align-items-center">
+            {/* Left side - Sort & View Mode */}
+            <div className="gap-3 d-flex align-items-center">
+                {/* Sort Select */}
+                <Space>
+                    <Select
+                        defaultValue="0"
+                        style={{ width: 150 }}
+                        onChange={handleSortChange}
+                        options={sortOptions}
+                        placeholder="Sort by"
+                    />
+                </Space>
+
+                {/* View Mode Buttons */}
+                <div className="ms-2">
+                    <button
+                        className={`btn fw-bold ${viewMode === 'grid' ? 'btn-primary' : ''}`}
+                        onClick={() => handleViewModeChange('grid')}
+                    >
+                        <CiGrid42 size={20} />
+                    </button>
+                    <button
+                        className={`btn ms-2 fw-bold ${viewMode === 'list' ? 'btn-primary' : ''}`}
+                        onClick={() => handleViewModeChange('list')}
+                    >
+                        <CiCircleList size={20} />
+                    </button>
+                </div>
+            </div>
+
+            {/* Right side - Show Items */}
+            <div>
+                <Space>
+                    <span>Show</span>
+                    <Select
+                        defaultValue="8"
+                        style={{ width: 80 }}
+                        onChange={handleShowChange}
+                        options={showOptions}
+                    />
+                </Space>
             </div>
         </div>
-        
-        
-         <div  >
-            <Space>
-              Show
-              <SelectedBox
-                options={showOptions}
-                getSelected={handleSetValue}
-                typed ="show"
-              />
-            </Space>
-          </div>
-    </div>
-  )
+    );
 }
 
-export default FilterProduct
+export default FilterProduct;

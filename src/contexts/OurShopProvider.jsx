@@ -1,74 +1,82 @@
 /* ==============================
-     Context: SideBarProvider
+     Context: OurShopProvider
  ============================== */
 import { OurShopContext } from '@contexts/OurShopContext.js';
-import { useEffect, useState } from 'react';
-import {getAllProducts} from '@api/productsService.js';
+import { useState } from 'react';
+import { useProducts } from '@hooks/useProducts.js';
 
-
-
-export const OurShopProvider = ({children}) => {
-    
-    const softOptions = [
-        {
-           label : 'Default',
-           value : '0'
-        },
-        {
-            label : 'Popularity',
-            value : '1'
-        },
-        {
-            label : 'High to Low',
-            value : '2'
-        },
-        {
-            label : 'Low to High',
-            value : '3'
-        },
-        {
-            label : 'Newest',
-            value : '4'
-        }
-        ,{
-            label : 'Oldest',
-            value : '5'
-        }
-        
-        
-    ]
+export const OurShopProvider = ({ children }) => {
+    const sortOptions = [
+        { label: 'Default', value: '0' },
+        { label: 'Popularity', value: '1' },
+        { label: 'High to Low', value: '2' },
+        { label: 'Low to High', value: '3' },
+        { label: 'Newest', value: '4' },
+        { label: 'Oldest', value: '5' }
+    ];
 
     const showOptions = [
         { label: '8', value: '8' },
         { label: '12', value: '12' },
         { label: '16', value: '16' },
         { label: '24', value: '24' }
-    ]
+    ];
 
-    const [sortedID,setSortedID] = useState('0');
+    // View mode state
     const [viewMode, setViewMode] = useState('grid');
-    const [showID,setShowID] = useState('8');
+
+    // Sử dụng useProducts hook
+    const {
+        products,
+        loading,
+        error,
+        pagination,
+        filters,
+        handlePageChange,
+        handleSortChange,
+        handleLimitChange,
+        handleCategoryChange,
+        retry,
+        refresh
+    } = useProducts(8);
+
+    // Handlers
+    const setSortType = (sortType) => {
+        handleSortChange(sortType);
+    };
+
+    const setShowLimit = (limit) => {
+        handleLimitChange(parseInt(limit));
+    };
 
     const value = {
-        softOptions,showOptions,setViewMode,setShowID,setSortedID
-    }
+        // Options
+        sortOptions,
+        showOptions,
 
+        // Data
+        products,
+        loading,
+        error,
+        pagination,
+        filters,
 
-    useEffect(()=>{
-        const query = {
-            sortedType: sortedID,
-            pages:1,
-            limit: showID
-        };
+        // View Mode
+        viewMode,
+        setViewMode,
 
-        // getAllProducts(query);
-        console.log(query);
-    },[sortedID,showID])
-
+        // Actions
+        setSortType,
+        setShowLimit,
+        handlePageChange,
+        handleCategoryChange,
+        retry,
+        refresh
+    };
 
     return (
         <OurShopContext.Provider value={value}>
             {children}
         </OurShopContext.Provider>
-    )
-}
+    );
+};

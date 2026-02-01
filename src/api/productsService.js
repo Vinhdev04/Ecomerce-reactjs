@@ -12,8 +12,9 @@ const getAllProducts = async (query = {}) => {
             category
         } = query;
 
+        // FIX: Đổi query thành params
         const res = await axiosClient.get('/products', {
-            query: {
+            params: {
                 page,
                 limit,
                 sortType,
