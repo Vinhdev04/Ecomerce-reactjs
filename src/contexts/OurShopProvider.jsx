@@ -56,6 +56,7 @@ export const OurShopProvider = ({children}) => {
     // console.log("SortedID",sortedID);
     // console.log("ShowID",showID);
     // console.log("ViewMode",viewMode);
+    // console.log("ViewMode",viewMode);
 
 
     return (
