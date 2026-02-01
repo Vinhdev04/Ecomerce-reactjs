@@ -8,7 +8,7 @@ import routers from '@routes/index';
 import { initVisibilityHandler } from '@utils/changeFavicon';
 import { Suspense } from 'react';
 import { SideBarProvider } from '@contexts/SideBarProvider.jsx';
-import Sidebar from '@components/SideBar/SideBar.jsx';
+import Sidebar from '@components/Sidebar/Sidebar.jsx';
 import { ToastProvider } from '@contexts/ToastProvider.jsx';
 import Loading from '@components/Loading/Loading.jsx';
 import UserInfoProvider from "@contexts/UserInfoProvider.jsx";
