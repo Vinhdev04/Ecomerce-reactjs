@@ -1,5 +1,6 @@
 import React from 'react';
 import { Carousel, Row, Col, Button } from 'antd';
+import { NavLink } from 'react-router-dom';
 import {
     ShoppingCartOutlined,
     RocketOutlined,
@@ -85,14 +86,16 @@ function BannerHome() {
                             </p>
 
                             <div className={styles.buttonGroup}>
-                                <Button
-                                    type='primary'
-                                    size='large'
-                                    className={styles.primaryBtn}
-                                    icon={<ShoppingCartOutlined />}
-                                >
-                                    Shop Now
-                                </Button>
+                                <NavLink to="/shop">
+                                    <Button
+                                        type='primary'
+                                        size='large'
+                                        className={styles.primaryBtn}
+                                        icon={<ShoppingCartOutlined />}
+                                    >
+                                        Shop Now
+                                    </Button>
+                                </NavLink>
                                 <Button
                                     size='large'
                                     className={styles.secondaryBtn}

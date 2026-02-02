@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Banner.module.scss';
 import useTypedTitle from './hooks/typedTitle.js';
 import Button from '@components/Button/Button.jsx';
+import { NavLink } from 'react-router-dom';
 function Banner() {
     const { container, bannerInform } = styles;
 
@@ -19,7 +20,9 @@ function Banner() {
                     Shop now and get your hands on the best games of the future.
                 </p>
 
-                <Button content={'Go To Shop'}></Button>
+                <NavLink to="/shop">
+                    <Button content={'Go To Shop'}></Button>
+                </NavLink>
             </div>
         </div>
     );

@@ -59,7 +59,7 @@ function Header() {
 
                     <div className={containerItem}>
                         {navItem?.slice(0, 3).map((item, idx) => {
-                            return <MenuItem key={idx} title={item.title} />;
+                            return <MenuItem key={idx} title={item.title} href={item.href} />;
                         })}
                     </div>
                 </div>
@@ -78,7 +78,7 @@ function Header() {
                     {' '}
                     <div className={containerItem}>
                         {navItem?.slice(3, navItem.length).map((item, idx) => {
-                            return <MenuItem key={idx} title={item.title} setIsOpen={isOpen}/>;
+                            return <MenuItem key={idx} title={item.title} href={item.href} setIsOpen={isOpen}/>;
                         })}
                     </div>
                     <div className={containerBox} >

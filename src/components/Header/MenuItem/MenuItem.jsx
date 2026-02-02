@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../Header.module.scss';
 import { SideBarContext } from '@contexts/SideBarContext.js';
 import { UserInfoContext } from "@contexts/UserInfoContext.js";
@@ -8,7 +9,7 @@ function MenuItem({ title, href }) {
     const { setIsOpen, setType } = useContext(SideBarContext);
     const { userInfo, handleLogout, isLoading } = useContext(UserInfoContext);
     const [isShowSubMenu, setIsShowSubMenu] = useState(false);
-
+    const navigate = useNavigate();
 
     const handleClick = () => {
         if (title === 'Sign in') {
@@ -20,6 +21,8 @@ function MenuItem({ title, href }) {
               
                 setIsShowSubMenu(!isShowSubMenu);
             }
+        } else if (href) {
+            navigate(href);
         }
     };
 

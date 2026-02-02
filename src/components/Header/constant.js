@@ -16,33 +16,29 @@ const icons = [
 const navItem = [
     {
         title: 'Home',
-        href: '#'
+        href: '/'
     },
     {
         title: 'Our shop',
-        href: '#'
+        href: '/shop'
     },
-    // {
-    //     title: 'Xbox Controller',
-    //     href: '#'
-    // },
-    // { title: 'Playstation Controller', href: '#' },
     {
         title: 'About us',
-        href: '#'
+        href: '/about'
     },
     {
         title: 'Contact',
-        href: '#'
+        href: '/contact'
     },
     {
         title: 'Search',
-        href: '#'
+        href: '/search'
     },
     {
         title: 'Sign in',
-        href: '#'
+        href: '/sign-in'
     }
+  
 ];
 
 export { icons, navItem };

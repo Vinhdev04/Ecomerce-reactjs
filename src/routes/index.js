@@ -1,5 +1,4 @@
-import Home from '@/pages/Home/HomePage';
-import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
+
 import { lazy } from 'react';
 const routers = [
     {
