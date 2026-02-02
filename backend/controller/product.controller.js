@@ -69,6 +69,7 @@ const getAllProducts = async (req, res) => {
             }
         });
     } catch (error) {
+        console.error('❌ Error in getAllProducts:', error); // Log lỗi chi tiết ra console server
         res.status(500).json({
             success: false,
             message: 'Lỗi khi truy vấn dữ liệu từ API',
