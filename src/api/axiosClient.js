@@ -4,18 +4,13 @@ import Cookies from "js-cookie";
 // ==================================================
 // BASE URL (tự động chọn local hoặc production)
 // ==================================================
-const API_BASE =
-  import.meta.env.MODE === 'development'
-    ? import.meta.env.VITE_API_URL
-    : (import.meta.env.VITE_API_URL_DEPLOY || 'https://your-render-backend-url.onrender.com/api'); // Fallback nếu quên set env
-
-console.log('🌐 API BASE URL:', API_BASE); // Debug log
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+console.log('🌐 API BASE URL:', API_BASE);
 
 const axiosClient = axios.create({
   baseURL: API_BASE,
-  timeout: 60000, // Tăng lên 60 giây 
+  timeout: 60000,
   withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
 });
 
 
