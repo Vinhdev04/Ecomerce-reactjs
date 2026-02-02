@@ -20,6 +20,7 @@ async function main() {
       price: 1599000,
       category: "PlayStation Controllers",
       stock: 45,
+      size: ["S", "M", "L"],
       rating: 4.8,
       badge: "Bestseller"
     },
@@ -34,6 +35,7 @@ async function main() {
       price: 1399000,
       category: "Xbox Controllers",
       stock: 30,
+      size: ["S", "M", "L"],
       rating: 4.7,
       badge: "New"
     },
@@ -49,6 +51,7 @@ async function main() {
       price: 1699000,
       category: "Nintendo Controllers",
       stock: 25,
+      size: ["S", "M", "L"],
       rating: 4.6,
       badge: null
     },
@@ -63,6 +66,7 @@ async function main() {
       price: 4999000,
       category: "Premium Controllers",
       stock: 15,
+      size: ["S", "M", "L"],
       rating: 4.9,
       badge: "Premium"
     },
@@ -78,6 +82,7 @@ async function main() {
       price: 1299000,
       category: "Multi-Platform Controllers",
       stock: 40,
+      size: ["S", "M", "L"],
       rating: 4.5,
       badge: "Hot Deal"
     },
@@ -92,6 +97,7 @@ async function main() {
       price: 1799000,
       category: "PC Controllers",
       stock: 20,
+      size: ["S", "M", "L"],
       rating: 4.4,
       badge: null
     },
@@ -107,6 +113,7 @@ async function main() {
       price: 899000,
       category: "PC Controllers",
       stock: 35,
+      size: ["S", "M", "L"],
       rating: 4.3,
       badge: "Budget"
     },
@@ -121,6 +128,7 @@ async function main() {
       price: 5499000,
       category: "Premium Controllers",
       stock: 8,
+      size: ["S", "M", "L"],
       rating: 4.9,
       badge: "Premium"
     },
@@ -136,6 +144,7 @@ async function main() {
       price: 699000,
       category: "Xbox Controllers",
       stock: 50,
+      size: ["S", "M", "L"],
       rating: 4.2,
       badge: "Budget"
     },
@@ -150,6 +159,7 @@ async function main() {
       price: 2299000,
       category: "Fighting Game Controllers",
       stock: 12,
+      size: ["S", "M", "L"],
       rating: 4.7,
       badge: "Specialty"
     },
@@ -165,6 +175,7 @@ async function main() {
       price: 5199000,
       category: "PlayStation Controllers",
       stock: 18,
+      size: ["S", "M", "L"],
       rating: 4.8,
       badge: "Premium"
     },
@@ -179,6 +190,7 @@ async function main() {
       price: 1899000,
       category: "Nintendo Controllers",
       stock: 28,
+      size: ["S", "M", "L"],
       rating: 4.5,
       badge: "Bestseller"
     },
@@ -194,6 +206,7 @@ async function main() {
       price: 4299000,
       category: "Premium Controllers",
       stock: 10,
+      size: ["S", "M", "L"],
       rating: 4.9,
       badge: "Premium"
     },
@@ -208,6 +221,7 @@ async function main() {
       price: 3299000,
       category: "Racing Controllers",
       stock: 6,
+      size: ["S", "M", "L"],
       rating: 4.6,
       badge: "Specialty"
     },
@@ -223,6 +237,7 @@ async function main() {
       price: 2499000,
       category: "Mobile Controllers",
       stock: 22,
+      size: ["S", "M", "L"],
       rating: 4.7,
       badge: "New"
     },
@@ -237,6 +252,7 @@ async function main() {
       price: 1899000,
       category: "Mobile Controllers",
       stock: 19,
+      size: ["S", "M", "L"],
       rating: 4.5,
       badge: "Hot Deal"
     },
@@ -252,6 +268,7 @@ async function main() {
       price: 2199000,
       category: "Accessories",
       stock: 15,
+      size: ["S", "M", "L"],
       rating: 4.6,
       badge: null
     },
@@ -266,6 +283,7 @@ async function main() {
       price: 3799000,
       category: "Premium Controllers",
       stock: 7,
+      size: ["S", "M", "L"],
       rating: 4.8,
       badge: "Premium"
     },
@@ -281,6 +299,7 @@ async function main() {
       price: 4599000,
       category: "Premium Controllers",
       stock: 5,
+      size: ["S", "M", "L"],
       rating: 4.7,
       badge: "Premium"
     },
@@ -295,6 +314,7 @@ async function main() {
       price: 999000,
       category: "Retro Controllers",
       stock: 24,
+      size: ["S", "M", "L"],
       rating: 4.4,
       badge: "Retro"
     }

@@ -14,6 +14,7 @@ export const ProductGrid = ({ products }) => (
                     badge={product.badge}
                     rating={product.rating}
                     stock={product.stock}
+                    details={product}
                 />
             </div>
         ))}

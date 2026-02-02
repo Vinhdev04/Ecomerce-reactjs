@@ -121,7 +121,8 @@ const createProduct = async (req, res) => {
             category,
             stock,
             rating,
-            badge
+            badge,
+            size
         } = req.body;
 
         const newProduct = await prisma.product.create({
@@ -133,7 +134,8 @@ const createProduct = async (req, res) => {
                 category,
                 stock,
                 rating,
-                badge
+                badge,
+                size
             }
         });
 

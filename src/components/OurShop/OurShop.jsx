@@ -77,7 +77,7 @@ function OurShopContent() {
                 </div>
 
                 {/* Banner */}
-                {/* <BannerShop /> */}
+                <BannerShop />
 
                 {/* Filter Section */}
                 <FilterProduct />

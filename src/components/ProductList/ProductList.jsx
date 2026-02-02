@@ -50,6 +50,9 @@ function ProductList({
                     {!loading && !error && products.length === 0 && (
                         <EmptyState />
                     )}
+
+
+               
                 </div>
             </div>
         </div>

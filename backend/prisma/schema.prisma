@@ -17,6 +17,7 @@ model Product {
   stock       Int
   rating      Float
   badge       String?
+  size        String[]
 
   @@map("products")
 }
