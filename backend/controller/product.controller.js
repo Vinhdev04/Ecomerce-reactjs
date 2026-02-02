@@ -49,7 +49,8 @@ const getAllProducts = async (req, res) => {
                 where,
                 skip,
                 take: limit,
-                orderBy
+                // Tạm thời comment orderBy để test lỗi
+                // orderBy 
             }),
             prisma.product.count({ where })
         ]);
