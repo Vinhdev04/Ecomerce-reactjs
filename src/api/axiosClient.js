@@ -7,7 +7,9 @@ import Cookies from "js-cookie";
 const API_BASE =
   import.meta.env.MODE === 'development'
     ? import.meta.env.VITE_API_URL
-    : import.meta.env.VITE_API_URL_DEPLOY;
+    : (import.meta.env.VITE_API_URL_DEPLOY || 'https://your-render-backend-url.onrender.com/api'); // Fallback nếu quên set env
+
+console.log('🌐 API BASE URL:', API_BASE); // Debug log
 
 const axiosClient = axios.create({
   baseURL: API_BASE,

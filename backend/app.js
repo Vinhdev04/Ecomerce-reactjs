@@ -35,9 +35,11 @@ app.use(cors({
     // cho phép Postman, server-to-server request
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
+    // Cho phép localhost, domain chính và các subdomains của netlify (deploy preview)
+    if (allowedOrigins.includes(origin) || origin.endsWith('.netlify.app')) {
       callback(null, true);
     } else {
+      console.log('Blocked by CORS:', origin); // Log để debug trên Render
       callback(new Error(`CORS blocked: ${origin}`));
     }
   },
