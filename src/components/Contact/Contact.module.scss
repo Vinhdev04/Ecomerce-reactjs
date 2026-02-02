@@ -1,0 +1,209 @@
+@use '@styles/variable.module.scss' as *;
+@use '@styles/mixin.module.scss' as *;
+
+.contactContainer {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #0a1628 0%, #050c16 100%);
+    color: #e2e8f0;
+    padding: 120px 0 60px; // Padding top for fixed header
+    overflow-x: hidden;
+}
+
+.contentWrapper {
+    @include container;
+    @include flex_box(space-between, flex-start, 40px);
+    
+    @include responsive(laptop) {
+        padding: 0 20px;
+    }
+
+    @include responsive(tablet) {
+        flex-direction: column;
+        gap: 40px;
+    }
+}
+
+.infoSection {
+    flex: 1;
+    width: 100%;
+    animation: slideInLeft 0.8s ease-out;
+
+    h2 {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #00ffff;
+        
+        span {
+            color: $white_color;
+        }
+    }
+
+    p {
+        font-size: 16px;
+        color: #a0aec0;
+        margin-bottom: 40px;
+        line-height: 1.6;
+    }
+}
+
+.contactDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.detailItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    
+    .iconBox {
+        width: 50px;
+        height: 50px;
+        background: rgba(0, 255, 255, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #00ffff;
+        font-size: 24px;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+    }
+
+    &:hover .iconBox {
+        background: #00ffff;
+        color: #0a1628;
+        transform: scale(1.1);
+    }
+
+    .infoContent {
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: $white_color;
+            margin-bottom: 5px;
+        }
+
+        p {
+            margin: 0;
+            font-size: 14px;
+            color: #cbd5e0;
+        }
+    }
+}
+
+.formSection {
+    flex: 1.2;
+    width: 100%;
+    background: rgba(26, 32, 44, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideInRight 0.8s ease-out;
+
+    @include responsive(mobile) {
+        padding: 25px;
+    }
+}
+
+.formTitle {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: $white_color;
+    text-align: center;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+
+    label {
+        display: block;
+        font-size: 14px;
+        color: #a0aec0;
+        margin-bottom: 8px;
+    }
+
+    input, textarea {
+        width: 100%;
+        background: rgba(10, 22, 40, 0.8);
+        border: 1px solid #2d3748;
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: $white_color;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        outline: none;
+
+        &:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.2);
+        }
+
+        &::placeholder {
+            color: #4a5568;
+        }
+    }
+
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, #00ffff 0%, #00b8d4 100%);
+    color: #0a1628;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+// Animations
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

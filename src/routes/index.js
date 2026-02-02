@@ -12,6 +12,11 @@ const routers = [
     {
         path:"/shop",
         component:lazy(()=>import("@/pages/Shop/Shop"))
+    },
+   
+    {
+        path: '/contact',
+        component: lazy(() => import('@/components/Contact/ContactPage'))
     }
 ];
 
