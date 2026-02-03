@@ -1,3 +1,4 @@
+@use "sass:color";
 @use '@styles/mixin.module.scss' as *;
 @use '@styles/variable.module.scss' as *;
 @use '@styles/_responsive.module.scss' as *;
@@ -6,7 +7,7 @@
     @include flex_box(center,center,0px);
     @include radius_base(50%);
 
-    background: linear-gradient(135deg, $primary_color 0%, darken($primary_color, 10%) 100%);
+    background: linear-gradient(135deg, $primary_color 0%, color.adjust($primary_color, $lightness: -10%) 100%);
     width: 36px;
     height: 36px;
     color: #fff;

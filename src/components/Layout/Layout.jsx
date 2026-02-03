@@ -1,6 +1,7 @@
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import BackToTop from '@/components/BackToTop/BackToTop';
+import ContactModal from '@/components/ContactModal/ContactModal';
 
 function Layout({ children }) {
     return (
@@ -12,6 +13,7 @@ function Layout({ children }) {
             </main>
             
             <Footer />
+            <ContactModal />
             <BackToTop />
         </div>
     );

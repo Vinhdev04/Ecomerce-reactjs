@@ -1,0 +1,177 @@
+@use '@styles/_responsive.module.scss' as *;
+@use "sass:color";
+
+.contactWrapper {
+  position: fixed;
+  bottom: 95px; // 30px (BackToTop bottom) + 50px (height) + 15px (gap)
+  right: 30px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  transition: all 0.3s ease;
+
+  @include tablet {
+    right: 20px;
+    bottom: 80px; // 20px (BackToTop bottom) + 45px (height) + 15px (gap)
+  }
+}
+
+.popup {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 15px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  &.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+  }
+}
+
+.popupItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f5f7fa;
+  }
+
+  span {
+    font-weight: 600;
+  }
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
+  font-size: 16px;
+
+  &.messenger {
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+  }
+
+  &.zalo {
+    background: #0068ff;
+  }
+
+  &.phone {
+    background: #ed1c24;
+  }
+}
+
+.mainButton {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+  position: relative;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  animation: pulse 2s infinite;
+
+  @include tablet {
+    width: 45px;
+    height: 45px;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: color.adjust(#007bff, $lightness: -5%);
+  }
+
+  &.active {
+    background-color: #ff4757;
+    animation: none;
+    transform: rotate(90deg);
+  }
+
+  svg {
+    font-size: 24px;
+    @include tablet {
+      font-size: 20px;
+    }
+  }
+}
+
+.tooltip {
+  position: absolute;
+  right: 65px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #333;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+  pointer-events: none;
+
+  @include tablet {
+    right: 55px; // Adjust for smaller button
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -4px;
+    transform: translateY(-50%);
+    border-width: 4px 0 4px 4px;
+    border-style: solid;
+    border-color: transparent transparent transparent #333;
+  }
+}
+
+.contactWrapper:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(0, 123, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}

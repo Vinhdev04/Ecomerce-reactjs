@@ -1,3 +1,4 @@
+@use "sass:color";
 @use '@styles/_responsive.module.scss' as *;
 
 // Variables
@@ -125,7 +126,7 @@ $transition: all 0.3s ease;
     }
 
     &:hover {
-        border-top-color: darken($purple, 10%);
+        border-top-color: color.adjust($purple, $lightness: -10%);
     }
 }
 
@@ -138,7 +139,7 @@ $transition: all 0.3s ease;
     }
 
     &:hover {
-        border-top-color: darken($blue, 10%);
+        border-top-color: color.adjust($blue, $lightness: -10%);
     }
 }
 
@@ -151,7 +152,7 @@ $transition: all 0.3s ease;
     }
 
     &:hover {
-        border-top-color: darken($orange, 10%);
+        border-top-color: color.adjust($orange, $lightness: -10%);
     }
 }
 
@@ -164,7 +165,7 @@ $transition: all 0.3s ease;
     }
 
     &:hover {
-        border-top-color: darken($gray, 10%);
+        border-top-color: color.adjust($gray, $lightness: -10%);
     }
 }
 
