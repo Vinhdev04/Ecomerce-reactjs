@@ -1,78 +1,52 @@
-@use '@styles/mixin.module.scss' as *;
-@use '@styles/variable.module.scss' as *;
+@use '@styles/_responsive.module.scss' as *;
+@use '@styles/_variable.module.scss' as *;
 
 .containerBox {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  background: $white_color;
+  padding: 40px 50px;
+  margin-top: -80px;
+  position: relative;
+  z-index: 10;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+
+  @include responsive(laptop) {
+    flex-wrap: wrap;
+    padding: 30px 20px;
     gap: 20px;
-    background: #f7f7f7;
-    padding: 30px 40px;
-    margin-top: -70px;
-    position: relative;
-    z-index: 10;
-    border-radius: 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-
-    @include responsive(laptop) {
-        flex-wrap: wrap;
-        padding: 25px 30px;
-        gap: 15px;
-    }
-
-    @include responsive(tablet) {
-        flex-direction: column;
-        padding: 30px 20px;
-        margin-top: -50px;
-        gap: 15px;
-    }
-
-    @include responsive(mobile) {
-        padding: 25px 15px;
-        margin-top: -40px;
-        gap: 12px;
-    }
+    margin-top: -40px;
+  }
 }
 
 .card {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #f8f9fa;
+  padding: 25px 30px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  box-shadow: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  min-width: 250px;
+
+  &:hover {
+    transform: translateY(-5px);
     background: $white_color;
-    padding: 20px 24px;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    min-width: 240px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.05);
 
-    &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        border-color: rgba(0, 0, 0, 0.1);
+    // Assuming icon is the first child or an img
+    & > *:first-child {
+        transform: scale(1.1);
     }
-
-    @include responsive(laptop) {
-        flex: 1 1 calc(50% - 10px);
-        min-width: 220px;
-        padding: 18px 20px;
-    }
-
-    @include responsive(tablet) {
-        flex: 1 1 100%;
-        width: 100%;
-        max-width: 600px;
-        padding: 20px 22px;
-    }
-
-    @include responsive(mobile) {
-        min-width: auto;
-        width: 100%;
-        padding: 16px 18px;
-        gap: 14px;
-    }
+  }
 }
 
 .cardIcon {
