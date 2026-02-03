@@ -1,5 +1,6 @@
 @use '@styles/mixin.module.scss' as *;
 @use '@styles/variable.module.scss' as *;
+@use '@styles/_responsive.module.scss' as *;
 
 .navIcons {
     @include flex_box(center,center,0px);
@@ -67,16 +68,16 @@
     @include container;
     height: 80px;
 
-    @include responsive(laptop) {
+    @include laptop {
         @include padding(0, 20px, 0, 20px);
     }
 
-    @include responsive(tablet) {
+    @include tablet {
         height: 70px;
         @include padding(0, 15px, 0, 15px);
     }
 
-    @include responsive(mobile) {
+    @include mobile {
         height: 60px;
         @include padding(0, 10px, 0, 10px);
     }
@@ -85,15 +86,15 @@
 .containerBox {
     @include flex_box(center, center, 10px);
 
-    @include responsive(laptop) {
+    @include laptop {
         gap: 8px;
     }
 
-    @include responsive(tablet) {
+    @include tablet {
         gap: 6px;
     }
 
-    @include responsive(mobile) {
+    @include mobile {
         gap: 8px;
     }
 
@@ -108,12 +109,12 @@
             transform: scale(1.1);
         }
 
-        @include responsive(tablet) {
+        @include tablet {
             width: 22px;
             height: 22px;
         }
 
-        @include responsive(mobile) {
+        @include mobile {
             width: 20px;
             height: 20px;
         }
@@ -136,15 +137,15 @@
 .containerItem {
     @include flex_box(center, center, 40px);
 
-    @include responsive(laptop) {
+    @include laptop {
         gap: 30px;
     }
 
-    @include responsive(tablet) {
+    @include tablet {
         gap: 20px;
     }
 
-    @include responsive(mobile) {
+    @include mobile {
         gap: 15px;
 
         &:nth-child(1) {
@@ -156,12 +157,12 @@
 .navLogo {
     @include size_img(24px, 24px, cover);
 
-    @include responsive(tablet) {
+    @include tablet {
         width: 20px;
         height: 20px;
     }
 
-    @include responsive(mobile) {
+    @include mobile {
         width: 18px;
         height: 18px;
     }
@@ -175,16 +176,16 @@
     white-space: nowrap;
     position: relative;
 
-    @include responsive(laptop) {
+    @include laptop {
         font-size: 13px;
     }
 
-    @include responsive(tablet) {
+    @include tablet {
         font-size: 12px;
         padding-top: 6px;
     }
 
-    @include responsive(mobile) {
+    @include mobile {
         display: none;
     }
 
@@ -276,7 +277,7 @@
     display: flex;
     align-items: center;
 
-    @include responsive(laptop) {
+    @include laptop {
         flex: 1;
         justify-content: center;
     }
@@ -287,15 +288,15 @@
     flex-direction: column;
     margin-top: -10px;
 
-    @include responsive(laptop) {
+    @include laptop {
         margin-top: 0;
     }
 
-    @include responsive(tablet) {
+    @include tablet {
         display: none;
     }
 
-    @include responsive(mobile) {
+    @include mobile {
         display: none;
     }
 }
@@ -310,7 +311,7 @@
     font-size: 22px;
     white-space: nowrap;
     color: #fff;
-    @include responsive(laptop) {
+    @include laptop {
         font-size: 18px;
     }
 }
@@ -321,7 +322,7 @@
     margin-top: -4px;
     font-size: 14px;
 
-    @include responsive(laptop) {
+    @include laptop {
         font-size: 12px;
     }
 }

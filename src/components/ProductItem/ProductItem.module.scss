@@ -1,3 +1,5 @@
+@use '@styles/_responsive.module.scss' as *;
+
 $primary-color: #3498db;
 $secondary-color: #2ecc71;
 $danger-color: #e74c3c;
@@ -269,7 +271,7 @@ $border-radius: 12px;
     }
 }
 
-@media (max-width: 991px) {
+@include laptop {
     .cardImg {
         height: 240px;
     }
@@ -289,7 +291,7 @@ $border-radius: 12px;
     }
 }
 
-@media (max-width: 768px) {
+@include tablet {
     .cardImg {
         height: 220px;
     }
@@ -315,7 +317,7 @@ $border-radius: 12px;
     }
 }
 
-@media (max-width: 576px) {
+@include mobile {
     .cardImg {
         height: 200px;
     }

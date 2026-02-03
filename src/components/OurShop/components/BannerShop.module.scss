@@ -1,5 +1,6 @@
 @use '@styles/variable.module.scss' as *;
 @use '@styles/mixin.module.scss' as *;
+@use '@styles/_responsive.module.scss' as *;
 
 // Banner Section - Compact Version
 .bannerSection {
@@ -32,13 +33,13 @@
     gap: 40px;
     padding: 50px 40px;
 
-    @media (max-width: 992px) {
+    @include laptop {
       grid-template-columns: 1fr;
       padding: 40px 30px;
       gap: 30px;
     }
 
-    @media (max-width: 576px) {
+    @include mobile {
       padding: 30px 20px;
     }
   }
@@ -122,7 +123,7 @@
     gap: 12px;
     margin-bottom: 40px;
 
-    @media (max-width: 576px) {
+    @include mobile {
       flex-direction: column;
     }
 
@@ -206,7 +207,7 @@
     max-width: 380px;
     aspect-ratio: 1;
 
-    @media (max-width: 992px) {
+    @include laptop {
       max-width: 320px;
     }
 

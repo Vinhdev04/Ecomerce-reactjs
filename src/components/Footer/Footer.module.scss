@@ -1,3 +1,5 @@
+@use '@styles/_responsive.module.scss' as *;
+
 .footer {
     background: linear-gradient(180deg, #0a1628 0%, #050c16 100%);
     border-top: 2px solid rgba(0, 255, 255, 0.1);
@@ -210,7 +212,7 @@
 }
 
 // Responsive
-@media (max-width: 768px) {
+@include tablet {
     .copyrightContent {
         flex-direction: column;
         text-align: center;

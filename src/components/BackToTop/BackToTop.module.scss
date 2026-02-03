@@ -1,3 +1,5 @@
+@use '@styles/_responsive.module.scss' as *;
+
 .backToTop {
     position: fixed;
     bottom: 30px;
@@ -33,7 +35,7 @@
         animation: bounce 2s infinite;
     }
 
-    @media (max-width: 768px) {
+    @include tablet {
         width: 45px;
         height: 45px;
         bottom: 20px;

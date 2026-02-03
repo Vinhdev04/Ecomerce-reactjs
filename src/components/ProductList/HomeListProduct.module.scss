@@ -1,3 +1,6 @@
+@use '@styles/variable.module.scss' as *;
+@use '@styles/_responsive.module.scss' as *;
+
 $primary-color: #3498db;
 $secondary-color: #2ecc71;
 $dark-color: #2c3e50;
@@ -53,7 +56,7 @@ $border-radius: 12px;
     margin-bottom: 30px;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 
-    @media (max-width: 768px) {
+    @include tablet {
         font-size: 1.8rem;
     }
 }
@@ -126,11 +129,11 @@ $border-radius: 12px;
         transition: $transition;
     }
 
-    @media (max-width: 991px) {
+    @include laptop {
         height: 300px;
     }
 
-    @media (max-width: 576px) {
+    @include mobile {
         height: 250px;
     }
 }
@@ -164,7 +167,7 @@ $border-radius: 12px;
         color: $text-dark;
         margin-bottom: 12px;
 
-        @media (max-width: 576px) {
+        @include mobile {
             font-size: 1.5rem;
         }
     }
@@ -226,7 +229,7 @@ $border-radius: 12px;
             border-radius: 2px;
         }
 
-        @media (max-width: 768px) {
+        @include tablet {
             font-size: 2rem;
         }
     }
@@ -239,7 +242,7 @@ $border-radius: 12px;
     }
 }
 
-@media (max-width: 576px) {
+@include mobile {
     .featuredSection,
     .regularSection {
         .row {

@@ -1,3 +1,5 @@
+@use '@styles/_responsive.module.scss' as *;
+
 .notFoundContainer {
     min-height: 100vh;
     background: linear-gradient(180deg, #0a1628 0%, #050c16 100%);
@@ -385,7 +387,7 @@
 }
 
 // Responsive
-@media (max-width: 768px) {
+@include tablet {
     .errorCode {
         font-size: 120px;
     }
@@ -420,7 +422,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@include mobile {
     .errorCode {
         font-size: 80px;
     }

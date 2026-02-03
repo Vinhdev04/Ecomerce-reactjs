@@ -1,0 +1,68 @@
+@use './variable.module.scss' as *;
+
+/* ======================================================
+   RESPONSIVE BREAKPOINTS & MIXINS
+   Author: Vinhdev04
+   ====================================================== */
+
+// Mobile Devices (Phones)
+// Max-width: 576px
+// Usage: @include mobile { ... }
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
+  }
+}
+
+// Tablet Devices (Tablets)
+// Max-width: 768px
+// Usage: @include tablet { ... }
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+// Laptop Devices (Small Laptops)
+// Max-width: 992px
+// Usage: @include laptop { ... }
+@mixin laptop {
+  @media (max-width: #{$laptop}) {
+    @content;
+  }
+}
+
+// Desktop Devices (Large Screens)
+// Max-width: 1200px
+// Usage: @include desktop { ... }
+@mixin desktop {
+  @media (max-width: #{$desktop}) {
+    @content;
+  }
+}
+
+/* ======================================================
+   RESPONSIVE UTILITIES
+   ====================================================== */
+
+// Hide on Mobile
+.hide_on_mobile {
+  @include mobile {
+    display: none !important;
+  }
+}
+
+// Hide on Tablet
+.hide_on_tablet {
+  @include tablet {
+    display: none !important;
+  }
+}
+
+// Show on Mobile only
+.show_on_mobile {
+  display: none;
+  @include mobile {
+    display: block !important;
+  }
+}

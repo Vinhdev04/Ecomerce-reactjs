@@ -1,3 +1,5 @@
+@use '@styles/_responsive.module.scss' as *;
+
 .notFoundContainer {
     min-height: 100vh;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -201,7 +203,7 @@
     }
 
     // Responsive
-    @media (max-width: 768px) {
+    @include tablet {
         .errorCode {
             font-size: 100px;
         }
@@ -234,7 +236,7 @@
         }
     }
 
-    @media (max-width: 480px) {
+    @include mobile {
         .linkGrid {
             grid-template-columns: 1fr;
         }
