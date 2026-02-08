@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { FaShippingFast, FaHeadset, FaUndo, FaShieldAlt, FaUsers, FaAward, FaSmile, FaRocket, FaHeart, FaLightbulb } from 'react-icons/fa';
 import styles from './About.module.scss';
 import bannerImg from '@images/banner.jpg';
+import storyImg from '@images/Xbox Series X Controller.webp'; // Ảnh mới cho Story section
 import missionImg from '@images/Xbox Series X Controller-02.webp'; // Ảnh minh họa cho Mission
 import visionImg from '@images/8BitDoUltimate-02.webp'; // Ảnh minh họa cho Vision
 
@@ -95,7 +96,7 @@ const About = () => {
                         </div>
                         <div className={styles.imageBlock}>
                             <div className={styles.imageWrapper}>
-                                <img src={bannerImg} alt="Our Story" />
+                                <img src={storyImg} alt="Our Story" />
                             </div>
                         </div>
                     </div>
