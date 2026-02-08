@@ -1,11 +1,12 @@
 import prisma from "../lib/prisma.lib.js";
 
 async function main() {
+  // Seed Products
   console.log("🌱 Bắt đầu seed dữ liệu sản phẩm...");
-
+  
   // Xóa dữ liệu cũ (nếu có)
   await prisma.product.deleteMany({});
-  console.log("🗑️  Đã xóa dữ liệu cũ");
+  console.log("🗑️  Đã xóa dữ liệu sản phẩm cũ");
 
   const products = [
     {
@@ -321,16 +322,70 @@ async function main() {
   ];
 
   // Insert từng sản phẩm để tránh lỗi
-  let count = 0;
   for (const product of products) {
     await prisma.product.create({
       data: product
     });
-    count++;
-    console.log(`✅ Đã thêm sản phẩm ${count}/20: ${product.title}`);
   }
 
-  console.log(`\n🎉 Hoàn thành! Đã seed ${count} sản phẩm vào database`);
+  console.log("✅ Đã seed xong dữ liệu sản phẩm");
+
+  // Seed News
+  console.log("🌱 Bắt đầu seed dữ liệu tin tức...");
+
+  // Xóa dữ liệu news cũ
+  await prisma.news.deleteMany({});
+  console.log("🗑️  Đã xóa dữ liệu tin tức cũ");
+
+  const newsData = [
+    {
+      title: "PlayStation 5 Pro được công bố chính thức",
+      summary: "Sony vừa chính thức công bố phiên bản nâng cấp PlayStation 5 Pro với hiệu năng mạnh mẽ hơn.",
+      content: "Sony Interactive Entertainment đã chính thức công bố PlayStation 5 Pro, phiên bản nâng cấp giữa vòng đời của hệ máy console PS5. PS5 Pro được trang bị GPU mạnh mẽ hơn, hỗ trợ Ray Tracing tiên tiến và công nghệ upscaling AI mới có tên PSSR (PlayStation Spectral Super Resolution). Dự kiến máy sẽ được bán ra vào cuối năm nay với mức giá 699$.",
+      image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=800",
+      author: "Admin",
+      category: "Console News"
+    },
+    {
+      title: "Top 10 game hay nhất năm 2024",
+      summary: "Danh sách 10 tựa game xuất sắc nhất năm 2024 do cộng đồng game thủ bình chọn.",
+      content: "Năm 2024 là một năm tuyệt vời của làng game với hàng loạt siêu phẩm ra mắt. Dưới đây là danh sách 10 tựa game được đánh giá cao nhất: 1. Black Myth: Wukong, 2. Final Fantasy VII Rebirth, 3. Hades II, 4. Star Wars Outlaws... Mỗi tựa game đều mang đến những trải nghiệm độc đáo và cốt truyện hấp dẫn.",
+      image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800",
+      author: "Editor Choice",
+      category: "Game Review"
+    },
+    {
+      title: "Xbox Game Pass bổ sung thêm nhiều game mới",
+      summary: "Microsoft cập nhật danh sách game mới cho dịch vụ Xbox Game Pass trong tháng này.",
+      content: "Microsoft tiếp tục mở rộng thư viện game của Xbox Game Pass với sự bổ sung của nhiều tựa game hấp dẫn như Persona 3 Reload, Resident Evil 3 Remake, và Madden NFL 24. Người đăng ký dịch vụ Ultimate cũng sẽ nhận được các perk độc quyền trong game.",
+      image: "https://images.unsplash.com/photo-1621259182902-885a1a9104d7?w=800",
+      author: "Xbox Team",
+      category: "Service Update"
+    },
+    {
+      title: "Nintendo Switch 2 sẽ ra mắt vào năm 2025?",
+      summary: "Nhiều tin đồn cho rằng thế hệ tiếp theo của Nintendo Switch sẽ bị trì hoãn sang năm 2025.",
+      content: "Theo các nguồn tin thân cận từ chuỗi cung ứng, Nintendo đã thông báo cho các nhà phát triển game rằng hệ máy kế nhiệm của Switch sẽ không ra mắt trong năm 2024 như dự kiến ban đầu, mà sẽ lùi sang quý 1 năm 2025. Lý do được đưa ra là để đảm bảo danh sách game ra mắt cùng máy (launch titles) đủ mạnh mẽ.",
+      image: "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=800",
+      author: "Insider",
+      category: "Rumors"
+    },
+    {
+      title: "Steam Summer Sale 2024 bắt đầu",
+      summary: "Sự kiện giảm giá lớn nhất năm của Steam đã chính thức bắt đầu với hàng ngàn deal hấp dẫn.",
+      content: "Valve đã chính thức khởi động Steam Summer Sale 2024. Hàng ngàn tựa game từ AAA đến Indie đều đang được giảm giá sâu, lên đến 90%. Đây là cơ hội tuyệt vời để game thủ bổ sung vào bộ sưu tập game của mình những cái tên đình đám như Elden Ring, Cyberpunk 2077, hay Baldur's Gate 3.",
+      image: "https://images.unsplash.com/photo-1614145121029-83a9f7cafd8d?w=800",
+      author: "Sale Hunter",
+      category: "Deals"
+    }
+  ];
+
+  for (const news of newsData) {
+    await prisma.news.create({
+      data: news
+    });
+  }
+  console.log("✅ Đã seed xong dữ liệu tin tức");
 }
 
 main()

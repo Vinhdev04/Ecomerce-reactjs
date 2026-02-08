@@ -31,8 +31,8 @@ const navItem = [
         href: '/contact'
     },
     {
-        title: 'Search',
-        href: '/search'
+        title: 'News',
+        href: '/news'
     },
     {
         title: 'Sign in',

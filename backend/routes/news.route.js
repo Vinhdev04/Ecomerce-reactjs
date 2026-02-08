@@ -1,0 +1,12 @@
+import express from "express";
+import { createNews, getAllNews, getNewsById, updateNews, deleteNews } from "../controller/news.controller.js";
+
+const router = express.Router();
+
+router.get("/", getAllNews);
+router.get("/:id", getNewsById);
+router.post("/", createNews);
+router.put("/:id", updateNews);
+router.delete("/:id", deleteNews);
+
+export default router;

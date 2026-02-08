@@ -59,9 +59,11 @@ app.use(morgan('dev'));
 ============================== */
 import productsRouter from './routes/products.route.js';
 import userRouter from './routes/users.route.js';
+import newsRouter from './routes/news.route.js';
 
 app.use('/api/products', productsRouter);
 app.use('/api', userRouter);
+app.use('/api/news', newsRouter);
 
 /* ==============================
    HEALTH CHECK

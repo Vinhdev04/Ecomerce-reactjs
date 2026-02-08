@@ -29,6 +29,10 @@ const routers = [
     {
         path: '/terms-of-service',
         component: lazy(() => import('@/components/TermsOfService/TermsOfService'))
+    },
+    {
+        path: '/news',
+        component: lazy(() => import('@/components/News/News'))
     }
 ];
 
