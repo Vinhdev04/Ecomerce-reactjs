@@ -103,24 +103,26 @@ const About = () => {
 
                 {/* Mission & Vision */}
                 <section className={`${styles.section} ${styles.bgLight}`} id="mission-vision">
-                    <div className={styles.gridTwoCol}>
-                        <div className={styles.imageBlock}>
-                             <div className={`${styles.imageWrapper} ${styles.tiltLeft}`}>
-                                <img src={missionImg} alt="Mission" />
+                    <div className={styles.innerContainer}>
+                        <div className={styles.gridTwoCol}>
+                            <div className={styles.imageBlock}>
+                                 <div className={`${styles.imageWrapper} ${styles.tiltLeft}`}>
+                                    <img src={missionImg} alt="Mission" />
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.textBlock}>
-                            <div className={styles.mvItem}>
-                                <h3 className={styles.mvTitle}><FaRocket className={styles.icon} /> Sứ Mệnh</h3>
-                                <p>
-                                    Cung cấp các sản phẩm Gaming Gear chính hãng, chất lượng cao với mức giá hợp lý nhất, giúp game thủ Việt Nam tiếp cận dễ dàng với công nghệ thế giới.
-                                </p>
-                            </div>
-                            <div className={styles.mvItem}>
-                                <h3 className={styles.mvTitle}><FaLightbulb className={styles.icon} /> Tầm Nhìn</h3>
-                                <p>
-                                    Trở thành hệ sinh thái Gaming Gear số 1 tại Việt Nam, nơi không chỉ bán sản phẩm mà còn cung cấp các giải pháp, dịch vụ và sân chơi cho cộng đồng game thủ.
-                                </p>
+                            <div className={styles.textBlock}>
+                                <div className={styles.mvItem}>
+                                    <h3 className={styles.mvTitle}><FaRocket className={styles.icon} /> Sứ Mệnh</h3>
+                                    <p>
+                                        Cung cấp các sản phẩm Gaming Gear chính hãng, chất lượng cao với mức giá hợp lý nhất, giúp game thủ Việt Nam tiếp cận dễ dàng với công nghệ thế giới.
+                                    </p>
+                                </div>
+                                <div className={styles.mvItem}>
+                                    <h3 className={styles.mvTitle}><FaLightbulb className={styles.icon} /> Tầm Nhìn</h3>
+                                    <p>
+                                        Trở thành hệ sinh thái Gaming Gear số 1 tại Việt Nam, nơi không chỉ bán sản phẩm mà còn cung cấp các giải pháp, dịch vụ và sân chơi cho cộng đồng game thủ.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -159,18 +161,20 @@ const About = () => {
 
                 {/* Why Choose Us */}
                 <section className={`${styles.section} ${styles.bgLight}`} id="features">
-                    <div className={styles.centerText}>
-                        <h2 className={styles.heading}>Tại Sao Chọn Chúng Tôi?</h2>
-                        <p className={styles.subDesc}>Chúng tôi cam kết mang lại giá trị tốt nhất cho khách hàng</p>
-                    </div>
-                    <div className={styles.featuresGrid}>
-                        {features.map((feature) => (
-                            <div key={feature.id} className={styles.featureCard}>
-                                <div className={styles.featureIcon}>{feature.icon}</div>
-                                <h3 className={styles.featureTitle}>{feature.title}</h3>
-                                <p className={styles.featureDesc}>{feature.desc}</p>
-                            </div>
-                        ))}
+                    <div className={styles.innerContainer}>
+                        <div className={styles.centerText}>
+                            <h2 className={styles.heading}>Tại Sao Chọn Chúng Tôi?</h2>
+                            <p className={styles.subDesc}>Chúng tôi cam kết mang lại giá trị tốt nhất cho khách hàng</p>
+                        </div>
+                        <div className={styles.featuresGrid}>
+                            {features.map((feature) => (
+                                <div key={feature.id} className={styles.featureCard}>
+                                    <div className={styles.featureIcon}>{feature.icon}</div>
+                                    <h3 className={styles.featureTitle}>{feature.title}</h3>
+                                    <p className={styles.featureDesc}>{feature.desc}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
                 
