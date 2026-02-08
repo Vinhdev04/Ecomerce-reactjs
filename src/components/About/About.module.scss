@@ -20,7 +20,7 @@
 
 .heroSection {
     height: 60vh;
-    background-image: url('@images/bannerX.jpeg'); // Assume this exists
+    background-image: url('@images/hero-bg-new.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed; // Parallax effect
@@ -181,6 +181,11 @@
     &.tiltLeft {
         transform: rotate(-2deg);
         
+        @include responsive(mobile) {
+            transform: rotate(0);
+            margin-bottom: 20px;
+        }
+
         &:hover {
             transform: rotate(0) translateY(-10px);
         }
@@ -271,7 +276,7 @@
 }
 
 .statsSection {
-    background-image: url('@images/home_img_list-products-02.jpg'); // Parallax bg
+    background-image: url('@images/stats-bg-new.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
