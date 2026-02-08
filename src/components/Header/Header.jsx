@@ -9,7 +9,7 @@ import { SideBarContext } from '@contexts/SideBarContext.js';
 
 
 import { TfiReload } from "react-icons/tfi";
-import { FaRegHeart } from "react-icons/fa";
+import { FaRegHeart, FaBars, FaTimes } from "react-icons/fa";
 import { BsCart } from "react-icons/bs";
 
 function Header() {
@@ -25,11 +25,20 @@ function Header() {
         descLogo,
         container,
         topHeader,
-        fixedXHeader,boxIcons
+        fixedXHeader,boxIcons,
+        hamburgerBtn,
+        desktopOnly,
+        mobileMenu,
+        mobileMenuHeader,
+        closeBtn,
+        mobileMenuList,
+        mobileSocials,
+        mobileNavItem
     } = styles;
 
     const{scrollPosition} = useScrollHandling();
     const [fixedHeader,setFixedHeader] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const {isOpen,setIsOpen,setType} = useContext(SideBarContext);
 
     const handleShowSidebar = (type)=> {
@@ -45,7 +54,10 @@ function Header() {
         <div className={classNames(container,topHeader,{[fixedXHeader]:fixedHeader})}>
             <div className={containerHeader}>
                 <div className={containerItem}>
-                    <div className={containerBox}>
+                    {/* Mobile Hamburger Button */}
+                    <FaBars className={hamburgerBtn} onClick={() => setIsMobileMenuOpen(true)} />
+                    
+                    <div className={classNames(containerBox, desktopOnly)}>
                         {icons?.map((item, idx) => {
                             return (
                                 <NavIcon
@@ -57,7 +69,7 @@ function Header() {
                         })}
                     </div>
 
-                    <div className={containerItem}>
+                    <div className={classNames(containerItem, desktopOnly)}>
                         {navItem?.slice(0, 3).map((item, idx) => {
                             return <MenuItem key={idx} title={item.title} href={item.href} />;
                         })}
@@ -76,7 +88,7 @@ function Header() {
 
                 <div className={containerItem}>
                     {' '}
-                    <div className={containerItem}>
+                    <div className={classNames(containerItem, desktopOnly)}>
                         {navItem?.slice(3, navItem.length).map((item, idx) => {
                             return <MenuItem key={idx} title={item.title} href={item.href} setIsOpen={isOpen}/>;
                         })}
@@ -87,6 +99,38 @@ function Header() {
                         <BsCart width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("cart")}/>
                        
                     </div>
+                </div>
+            </div>
+
+            {/* Mobile Menu Overlay */}
+            <div className={classNames(mobileMenu, { [styles.open]: isMobileMenuOpen })}>
+                <div className={mobileMenuHeader}>
+                    <span className={logoFont}>Menu</span>
+                    <FaTimes className={closeBtn} onClick={() => setIsMobileMenuOpen(false)} />
+                </div>
+                <div className={mobileMenuList}>
+                    {navItem?.map((item, idx) => {
+                        return (
+                            <MenuItem 
+                                key={idx} 
+                                title={item.title} 
+                                href={item.href} 
+                                className={mobileNavItem}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            />
+                        );
+                    })}
+                </div>
+                <div className={mobileSocials}>
+                    {icons?.map((item, idx) => {
+                        return (
+                            <NavIcon
+                                key={idx}
+                                href={item.href}
+                                type={item.type}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         </div>

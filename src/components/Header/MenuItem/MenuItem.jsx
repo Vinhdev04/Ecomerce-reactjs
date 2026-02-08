@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames';
 import styles from '../Header.module.scss';
 import { SideBarContext } from '@contexts/SideBarContext.js';
 import { UserInfoContext } from "@contexts/UserInfoContext.js";
 
-function MenuItem({ title, href }) {
+function MenuItem({ title, href, className, onClick }) {
     const { navItem, subMenu } = styles;
     const { setIsOpen, setType } = useContext(SideBarContext);
     const { userInfo, handleLogout, isLoading } = useContext(UserInfoContext);
@@ -12,6 +13,8 @@ function MenuItem({ title, href }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
+        if (onClick) onClick();
+
         if (title === 'Sign in') {
             if (!userInfo) {
                 // Chưa login -> Mở sidebar login
@@ -51,7 +54,7 @@ function MenuItem({ title, href }) {
     };
 
     return (
-        <div className={navItem} onClick={handleClick}>
+        <div className={classNames(navItem, className)} onClick={handleClick}>
             {getDisplayText()}
 
             {/* SUBMENU - CHỈ HIỂN THỊ KHI ĐÃ LOGIN */}
