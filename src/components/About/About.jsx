@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Layout from '@components/Layout/Layout';
 import { FaShippingFast, FaHeadset, FaUndo, FaShieldAlt, FaUsers, FaAward, FaSmile, FaRocket, FaHeart, FaLightbulb } from 'react-icons/fa';
 import styles from './About.module.scss';
 import bannerImg from '@images/banner.jpg';
@@ -194,6 +195,7 @@ const About = () => {
                 </section>
             </div>
         </div>
+        </Layout>
     );
 };
 

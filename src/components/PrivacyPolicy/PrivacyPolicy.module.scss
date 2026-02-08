@@ -1,0 +1,278 @@
+@use '@styles/variable.module.scss' as *;
+@use '@styles/mixin.module.scss' as *;
+
+.container {
+    padding: 120px 20px 80px;
+    min-height: 100vh;
+    color: $white_color;
+    background-color: #0b1120; // Dark background for contrast
+    max-width: 100%; // Full width background
+    margin: 0 auto;
+    position: relative;
+    
+    // Background mesh/grid effect
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: 0;
+        mask-image: linear-gradient(to bottom, black 0%, transparent 80%);
+        pointer-events: none;
+    }
+}
+
+.header {
+    text-align: center;
+    margin: 0 auto 60px;
+    max-width: 1200px;
+    position: relative;
+    z-index: 1;
+    animation: zoomIn 0.8s ease-out;
+
+    .iconWrapper {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 90px;
+        height: 90px;
+        background: linear-gradient(135deg, $btn_color, darken($btn_color, 20%));
+        border-radius: 50%; // Rounded for privacy icon
+        margin-bottom: 30px;
+        box-shadow: 0 0 30px rgba($btn_color, 0.4);
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            border: 2px solid rgba($btn_color, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .mainIcon {
+            font-size: 40px;
+            color: #fff;
+        }
+    }
+
+    h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+        color: $white_color;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 800;
+        text-shadow: 0 0 20px rgba($btn_color, 0.5);
+    }
+
+    .subtitle {
+        font-size: 18px;
+        color: #a0aec0;
+        font-family: 'Courier New', monospace;
+    }
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 1s ease-out 0.2s backwards;
+
+    .lastUpdated {
+        text-align: center;
+        font-size: 14px;
+        color: $btn_color;
+        margin-bottom: 10px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .intro {
+        text-align: center;
+        font-size: 18px;
+        line-height: 1.8;
+        color: #e2e8f0;
+        max-width: 800px;
+        margin: 0 auto 50px;
+    }
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); // Wider cards for text heavy content
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.card {
+    background: rgba(26, 32, 44, 0.6); // More transparent
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($white_color, 0.05);
+    border-radius: 16px;
+    padding: 30px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY(-5px);
+        background: rgba(30, 40, 55, 0.8);
+        border-color: rgba($btn_color, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+        .cardIcon {
+            transform: scale(1.1) rotate(5deg);
+            color: $btn_color;
+        }
+    }
+
+    .cardHeader {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba($white_color, 0.1);
+        padding-bottom: 15px;
+
+        .cardIcon {
+            font-size: 24px;
+            color: rgba($btn_color, 0.8);
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: $white_color;
+            margin: 0;
+        }
+    }
+
+    .cardBody {
+        color: #cbd5e0;
+        line-height: 1.7;
+
+        p {
+            margin-bottom: 15px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            
+            li {
+                position: relative;
+                padding-left: 20px;
+                margin-bottom: 10px;
+                
+                &::before {
+                    content: '•';
+                    color: $btn_color;
+                    position: absolute;
+                    left: 0;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+// Special styling for contact card to make it full width if needed or standout
+.contactCard {
+    grid-column: 1 / -1; // Span full width
+    background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(11, 17, 32, 0.9));
+    border: 1px solid rgba($btn_color, 0.2);
+
+    .contactInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        
+        p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            
+            strong {
+                color: $btn_color;
+                width: 80px;
+                display: inline-block;
+            }
+        }
+    }
+}
+
+// Animations
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.2;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+}
+
+// Responsive
+@include responsive(tablet) {
+    .container {
+        padding: 100px 15px 50px;
+    }
+
+    .header h1 {
+        font-size: 36px;
+    }
+
+    .gridContainer {
+        grid-template-columns: 1fr; // Stack cards on tablet
+    }
+    
+    .contactCard .contactInfo {
+        padding: 15px;
+        font-size: 14px;
+    }
+}

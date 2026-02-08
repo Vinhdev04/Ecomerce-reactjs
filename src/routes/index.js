@@ -21,6 +21,14 @@ const routers = [
     {
         path: '/about',
         component: lazy(() => import('@/components/About/About'))
+    },
+    {
+        path: '/privacy-policy',
+        component: lazy(() => import('@/components/PrivacyPolicy/PrivacyPolicy'))
+    },
+    {
+        path: '/terms-of-service',
+        component: lazy(() => import('@/components/TermsOfService/TermsOfService'))
     }
 ];
 

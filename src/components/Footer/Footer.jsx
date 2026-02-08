@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.scss';
+import footerLogo from '@images/mynameisvinh-gaming.png';
 
 function Footer() {
     return (
@@ -9,9 +11,7 @@ function Footer() {
                     {/* Logo & Description */}
                     <div className='mb-4 col-lg-4 col-md-6'>
                         <div className={styles.logoContainer}>
-                            <div className={styles.logoBox}>
-                                <span>xP</span>
-                            </div>
+                            <img src={footerLogo} alt="XPAD Gaming" className={styles.logoImage} />
                             <h4 className={styles.logoText}>xPad Game</h4>
                         </div>
                         <p className={styles.description}>
@@ -133,8 +133,8 @@ function Footer() {
                     <div className={styles.copyrightContent}>
                         <p>© 2025 xPad Game. Designed by Công Vinh.</p>
                         <div className={styles.policyLinks}>
-                            <a href='#'>Privacy Policy</a>
-                            <a href='#'>Terms of Service</a>
+                            <Link to='/privacy-policy'>Privacy Policy</Link>
+                            <Link to='/terms-of-service'>Terms of Service</Link>
                         </div>
                     </div>
                 </div>
