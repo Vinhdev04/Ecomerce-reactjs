@@ -68,9 +68,10 @@ const About = () => {
     ];
 
     return (
-        <div className={styles.aboutContainer}>
-            {/* Hero Section */}
-            <div className={styles.heroSection}>
+        <Layout>
+            <div className={styles.aboutContainer}>
+                {/* Hero Section */}
+                <div className={styles.heroSection}>
                 <div className={styles.heroContent}>
                     <h1>XPAD GAME STORE</h1>
                     <p>Nâng Tầm Trải Nghiệm Gaming Của Bạn</p>
