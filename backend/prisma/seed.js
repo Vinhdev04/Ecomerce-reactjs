@@ -89,8 +89,8 @@ async function main() {
     },
     {
       image: [
-        "https://images.unsplash.com/photo-1592840062661-5e88e27c1854?w=500",
-        "https://images.unsplash.com/photo-1592840062661-5e88e27c1854?w=600"
+        "https://images.unsplash.com/photo-1592840062661-5e88e27c1854?w=500&fm=jpg",
+        "https://images.unsplash.com/photo-1592840062661-5e88e27c1854?w=600&fm=jpg"
       ],
       title: "SteelSeries Stratus Duo Wireless Controller",
       description:
@@ -358,7 +358,7 @@ async function main() {
       title: "Xbox Game Pass bổ sung thêm nhiều game mới",
       summary: "Microsoft cập nhật danh sách game mới cho dịch vụ Xbox Game Pass trong tháng này.",
       content: "Microsoft tiếp tục mở rộng thư viện game của Xbox Game Pass với sự bổ sung của nhiều tựa game hấp dẫn như Persona 3 Reload, Resident Evil 3 Remake, và Madden NFL 24. Người đăng ký dịch vụ Ultimate cũng sẽ nhận được các perk độc quyền trong game.",
-      image: "https://images.unsplash.com/photo-1621259182902-885a1a9104d7?w=800",
+      image: "https://images.unsplash.com/photo-1621259182902-885a1a9104d7?w=800&fm=jpg",
       author: "Xbox Team",
       category: "Service Update"
     },
@@ -374,7 +374,7 @@ async function main() {
       title: "Steam Summer Sale 2024 bắt đầu",
       summary: "Sự kiện giảm giá lớn nhất năm của Steam đã chính thức bắt đầu với hàng ngàn deal hấp dẫn.",
       content: "Valve đã chính thức khởi động Steam Summer Sale 2024. Hàng ngàn tựa game từ AAA đến Indie đều đang được giảm giá sâu, lên đến 90%. Đây là cơ hội tuyệt vời để game thủ bổ sung vào bộ sưu tập game của mình những cái tên đình đám như Elden Ring, Cyberpunk 2077, hay Baldur's Gate 3.",
-      image: "https://images.unsplash.com/photo-1614145121029-83a9f7cafd8d?w=800",
+      image: "https://images.unsplash.com/photo-1614145121029-83a9f7cafd8d?w=800&fm=jpg",
       author: "Sale Hunter",
       category: "Deals"
     }

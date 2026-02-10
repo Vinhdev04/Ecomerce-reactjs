@@ -60,7 +60,16 @@ function News() {
                     {newsList.map((news) => (
                         <div key={news.id} className={styles.card}>
                             <div className={styles.imageWrapper}>
-                                <img src={news.image} alt={news.title} className={styles.newsImage} />
+                                <img 
+                                    src={news.image} 
+                                    alt={news.title} 
+                                    className={styles.newsImage} 
+                                    loading="lazy"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = 'https://placehold.co/600x400?text=No+Image';
+                                    }}
+                                />
                                 <span className={styles.category}>{news.category || 'News'}</span>
                             </div>
                             <div className={styles.cardContent}>
