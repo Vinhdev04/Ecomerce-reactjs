@@ -323,7 +323,13 @@
         transform: translateX(0);
     }
 
+}
+
+.open {
+    transform: translateX(0);
+
     .mobileMenuHeader {
+        display: flex;
         display: flex;
         justify-content: space-between;
         align-items: center;
