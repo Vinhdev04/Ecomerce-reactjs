@@ -4,20 +4,35 @@
 @use '@styles/_responsive.module.scss' as *;
 
 .navIcons {
-    @include flex_box(center,center,0px);
-    @include radius_base(50%);
-
-    background: linear-gradient(135deg, $primary_color 0%, color.adjust($primary_color, $lightness: -10%) 100%);
-    width: 36px;
-    height: 36px;
+    @include flex_box(center, center, 0px);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.15);
     color: #fff;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.25s ease;
+    text-decoration: none;
+    outline: none;
 
-    &:hover{
-        transform: translateY(-3px) scale(1.1);
-        box-shadow: 0 8px 15px rgba($primary_color, 0.3);
+    &:hover {
+        background: rgba(0, 255, 255, 0.2);
+        transform: translateY(-3px);
+    }
+
+    &:focus-visible {
+        box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.4);
+    }
+
+    @include tablet {
+        width: 36px;
+        height: 36px;
+    }
+
+    @include mobile {
+        width: 34px;
+        height: 34px;
     }
 }
 
