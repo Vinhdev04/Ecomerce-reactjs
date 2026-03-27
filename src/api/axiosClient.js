@@ -5,10 +5,11 @@ import Cookies from "js-cookie";
 // BASE URL (tự động chọn local hoặc production)
 // ==================================================
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_PREFIX = '/api';
 console.log('🌐 API BASE URL:', API_BASE);
 
 const axiosClient = axios.create({
-  baseURL: API_BASE,
+  baseURL: `${API_BASE}${API_PREFIX}`,
   timeout: 60000,
   withCredentials: true,
 });
@@ -41,9 +42,9 @@ axiosClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // GỌI API REFRESH TOKEN ĐÚNG URL (KHÔNG localhost)
+        // GỌI API REFRESH TOKEN ĐÚNG URL
         const response = await axios.post(
-          `${API_BASE}/refresh-token`,
+          `${API_BASE}${API_PREFIX}/refresh-token`,
           {},
           { withCredentials: true }
         );

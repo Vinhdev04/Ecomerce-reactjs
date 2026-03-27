@@ -26,8 +26,7 @@ const PORT = process.env.PORT || 3000;
 ============================== */
 
 const allowedOrigins = [
-  'http://localhost:5173',                 // dev
-  'https://xpadgame-store.netlify.app'     // FE deploy
+  'https://xpadgame-store.netlify.app'
 ];
 
 app.use(cors({
@@ -36,7 +35,12 @@ app.use(cors({
     if (!origin) return callback(null, true);
 
     // Cho phép localhost, domain chính và các subdomains của netlify (deploy preview)
-    if (allowedOrigins.includes(origin) || origin.endsWith('.netlify.app')) {
+    if (
+      origin.startsWith('http://localhost') ||
+      origin.startsWith('http://127.0.0.1') ||
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.netlify.app')
+    ) {
       callback(null, true);
     } else {
       console.log('Blocked by CORS:', origin); // Log để debug trên Render
