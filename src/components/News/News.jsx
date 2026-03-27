@@ -6,6 +6,7 @@ import Loading from '../Loading/Loading';
 import Heading from '../Heading/Heading';
 import BannerHome from '../BannerHome/BannerHome';
 import { Link } from 'react-router-dom';
+import Layout from '@/components/Layout/Layout';
 import imgConsole from '@images/Xbox Series X Controller - Electric.webp';
 import imgReview from '@images/8BitDoUltimate.webp';
 import imgService from '@images/DARE-U H101X.webp';
@@ -60,16 +61,19 @@ function News() {
 
     if (error) {
         return (
+            <Layout>
             <div className={styles.container}>
                 <BannerHome title="Latest News" />
                 <div className={styles.content} style={{ textAlign: 'center', marginTop: '50px' }}>
                     <h2 style={{ color: '#ff4d4f' }}>{error}</h2>
                 </div>
             </div>
+            </Layout>
         );
     }
 
     return (
+        <Layout>
         <div className={styles.container}>
              <BannerHome 
                 title="Latest News" 
@@ -123,6 +127,7 @@ function News() {
                 </div>
             </div>
         </div>
+        </Layout>
     );
 }
 

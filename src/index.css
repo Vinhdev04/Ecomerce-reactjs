@@ -1,0 +1,112 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: #050c16;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-wrapper {
+  min-height: 100vh;
+}
+
+.page-shell {
+  isolation: isolate;
+}
+
+.page-shell.page-motion-ready {
+  animation: page-enter 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-motion='reveal'] {
+  opacity: 0;
+  transform: translate3d(0, 34px, 0) scale(0.985);
+  filter: blur(8px);
+  transition:
+    opacity 0.72s ease,
+    transform 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.72s ease;
+  transition-delay: var(--motion-delay, 0ms);
+  will-change: opacity, transform, filter;
+}
+
+[data-motion='reveal'].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+[data-hover-card='true'] {
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background-color 0.28s ease;
+  transform-origin: center;
+}
+
+[data-hover-card='true']:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+}
+
+[data-interactive='true'] {
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.22s ease,
+    filter 0.22s ease,
+    opacity 0.22s ease,
+    background-color 0.22s ease,
+    color 0.22s ease,
+    border-color 0.22s ease;
+}
+
+[data-interactive='true']:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.05);
+}
+
+[data-interactive='true']:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+@keyframes page-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .page-shell.page-motion-ready {
+    animation: none;
+  }
+
+  [data-motion='reveal'],
+  [data-motion='reveal'].is-visible,
+  [data-hover-card='true'],
+  [data-hover-card='true']:hover,
+  [data-interactive='true'],
+  [data-interactive='true']:hover,
+  [data-interactive='true']:active {
+    transition: none;
+    transform: none;
+    opacity: 1;
+    filter: none;
+  }
+}

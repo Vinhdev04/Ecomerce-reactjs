@@ -11,6 +11,7 @@ import BannerHome from '../BannerHome/BannerHome';
 import Loading from '../Loading/Loading';
 import newService from '@/api/newService';
 import styles from './NewsDetail.module.scss';
+import Layout from '@/components/Layout/Layout';
 import imgConsole from '@images/Xbox Series X Controller - Electric.webp';
 import imgReview from '@images/8BitDoUltimate.webp';
 import imgService from '@images/DARE-U H101X.webp';
@@ -80,6 +81,7 @@ function NewsDetail() {
 
     if (error || !article) {
         return (
+            <Layout>
             <div className={styles.page}>
                 <BannerHome title="News Detail" desc="Read the full story behind each update." />
                 <div className={styles.feedbackBox}>
@@ -90,10 +92,12 @@ function NewsDetail() {
                     </Link>
                 </div>
             </div>
+            </Layout>
         );
     }
 
     return (
+        <Layout>
         <div className={styles.page}>
             <BannerHome title={article.title} desc={article.summary} />
 
@@ -166,6 +170,7 @@ function NewsDetail() {
                 </article>
             </div>
         </div>
+        </Layout>
     );
 }
 
