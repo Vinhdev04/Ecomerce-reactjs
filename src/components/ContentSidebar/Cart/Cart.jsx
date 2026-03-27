@@ -21,7 +21,12 @@ function Cart() {
         qtyBtn,
         removeBtn,
         emptyState,
-        actionGroup
+        actionGroup,
+        totalLabel,
+        totalValue,
+        actionButton,
+        secondaryButton,
+        primaryButton
     } = styles;
 
     const {
@@ -111,20 +116,22 @@ function Cart() {
                     </div>
 
                     <div className={total}>
-                        <h6>Tổng tiền:</h6>
-                        <b>{totalPrice.toLocaleString('vi-VN')}đ</b>
+                        <span className={totalLabel}>Tổng tiền</span>
+                        <b className={totalValue}>
+                            {totalPrice.toLocaleString('vi-VN')}đ
+                        </b>
                     </div>
 
                     <div className={actionGroup}>
                         <button
-                            className="mb-2 btn btn-outline-dark w-100"
+                            className={`${actionButton} ${secondaryButton}`}
                             type="button"
                             onClick={handleOpenCartPage}
                         >
                             Xem giỏ hàng
                         </button>
                         <button
-                            className="mb-2 btn btn-primary w-100"
+                            className={`${actionButton} ${primaryButton}`}
                             type="button"
                             onClick={clearCart}
                         >

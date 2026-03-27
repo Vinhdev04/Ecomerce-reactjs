@@ -73,6 +73,8 @@ function useSiteMotion(rootRef, deps = []) {
             INTERACTIVE_SELECTORS.flatMap((selector) =>
                 Array.from(root.querySelectorAll(selector))
             )
+        ).filter(
+            (element) => !element.closest('[data-motion-static="true"]')
         );
 
         interactiveTargets.forEach((element) => {
@@ -83,7 +85,11 @@ function useSiteMotion(rootRef, deps = []) {
             CARD_SELECTORS.flatMap((selector) =>
                 Array.from(root.querySelectorAll(selector))
             )
-        ).filter((element) => element !== root);
+        ).filter(
+            (element) =>
+                element !== root &&
+                !element.closest('[data-motion-static="true"]')
+        );
 
         cardTargets.forEach((element) => {
             element.setAttribute('data-hover-card', 'true');
