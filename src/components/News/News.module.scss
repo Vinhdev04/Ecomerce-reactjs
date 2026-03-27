@@ -129,6 +129,8 @@
 }
 
 .readMoreBtn {
+    display: inline-flex;
+    align-items: center;
     align-self: flex-start;
     background: transparent;
     color: $btn_color;
@@ -139,6 +141,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 14px;
+    text-decoration: none;
 
     &:hover {
         background: $btn_color;

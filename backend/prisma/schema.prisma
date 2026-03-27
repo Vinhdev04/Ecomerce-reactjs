@@ -63,6 +63,8 @@ model News {
   image     String
   author    String
   category  String?
+  tags      String[] @default([])
+  readTime  Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -1,9 +1,31 @@
 import prisma from "../lib/prisma.lib.js";
 
+const newsListSelect = {
+    id: true,
+    title: true,
+    summary: true,
+    image: true,
+    author: true,
+    category: true,
+    tags: true,
+    readTime: true,
+    createdAt: true,
+    updatedAt: true
+};
+
+const normalizeReadTime = (readTime) => {
+    if (readTime === undefined || readTime === null || readTime === '') {
+        return null;
+    }
+
+    const parsed = Number(readTime);
+    return Number.isNaN(parsed) ? null : parsed;
+};
+
 // Create a new news article
 export const createNews = async (req, res) => {
     try {
-        const { title, summary, content, image, author, category } = req.body;
+        const { title, summary, content, image, author, category, tags, readTime } = req.body;
 
         const newNews = await prisma.news.create({
             data: {
@@ -12,7 +34,9 @@ export const createNews = async (req, res) => {
                 content,
                 image,
                 author,
-                category
+                category,
+                tags: Array.isArray(tags) ? tags : [],
+                readTime: normalizeReadTime(readTime)
             }
         });
 
@@ -33,6 +57,7 @@ export const createNews = async (req, res) => {
 export const getAllNews = async (req, res) => {
     try {
         const news = await prisma.news.findMany({
+            select: newsListSelect,
             orderBy: {
                 createdAt: 'desc'
             }
@@ -85,7 +110,7 @@ export const getNewsById = async (req, res) => {
 export const updateNews = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, summary, content, image, author, category } = req.body;
+        const { title, summary, content, image, author, category, tags, readTime } = req.body;
 
         const updatedNews = await prisma.news.update({
             where: {
@@ -97,7 +122,9 @@ export const updateNews = async (req, res) => {
                 content,
                 image,
                 author,
-                category
+                category,
+                tags: Array.isArray(tags) ? tags : [],
+                readTime: normalizeReadTime(readTime)
             }
         });
 
