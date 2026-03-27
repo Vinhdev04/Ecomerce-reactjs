@@ -12,29 +12,32 @@ import Sidebar from '@components/Sidebar/Sidebar.jsx';
 import { ToastProvider } from '@contexts/ToastProvider.jsx';
 import Loading from '@components/Loading/Loading.jsx';
 import UserInfoProvider from "@contexts/UserInfoProvider.jsx";
+import { CartProvider } from '@contexts/CartProvider.jsx';
 
 function App() {
     return (
-        <UserInfoProvider>
-            <ToastProvider>
-                <SideBarProvider>
-                    <Sidebar/>
-                    <BrowserRouter>
-                        <Suspense fallback={<Loading/>}>
-                            <Routes>
-                                {routers?.map((item, idx) => (
-                                    <Route
-                                        key={idx}
-                                        path={item.path}
-                                        element={<item.component />}
-                                    />
-                                ))}
-                            </Routes>
-                        </Suspense>
-                    </BrowserRouter>
-                </SideBarProvider>
-            </ToastProvider>
-        </UserInfoProvider>
+        <BrowserRouter>
+            <UserInfoProvider>
+                <ToastProvider>
+                    <SideBarProvider>
+                        <CartProvider>
+                            <Sidebar/>
+                            <Suspense fallback={<Loading/>}>
+                                <Routes>
+                                    {routers?.map((item, idx) => (
+                                        <Route
+                                            key={idx}
+                                            path={item.path}
+                                            element={<item.component />}
+                                        />
+                                    ))}
+                                </Routes>
+                            </Suspense>
+                        </CartProvider>
+                    </SideBarProvider>
+                </ToastProvider>
+            </UserInfoProvider>
+        </BrowserRouter>
     );
 }
 

@@ -1,6 +1,6 @@
 import { Heart, Eye, ShoppingCart } from 'lucide-react';
 import styles from './ProductIcons.module.scss';
-// Icon Components
+
 const FavoriteIcon = ({ isFavorite, className = '' }) => (
     <button
         className={`${styles.iconBtn} ${
@@ -23,11 +23,13 @@ const QuickViewIcon = ({ className = '' }) => (
     </button>
 );
 
-const AddToCartIcon = ({ className = '' }) => (
+const AddToCartIcon = ({ className = '', onClick, disabled = false }) => (
     <button
         className={`${styles.iconBtn} ${styles.cartBtn} ${className}`}
         aria-label='Thêm vào giỏ'
         type='button'
+        onClick={onClick}
+        disabled={disabled}
     >
         <ShoppingCart size={20} />
     </button>

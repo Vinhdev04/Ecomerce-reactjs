@@ -11,6 +11,13 @@
   align-items: flex-end;
   transition: all 0.3s ease;
 
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(12px);
+  }
+
   @include tablet {
     right: 20px;
     bottom: 80px; // 20px (BackToTop bottom) + 45px (height) + 15px (gap)

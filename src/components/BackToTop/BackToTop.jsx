@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from './BackToTop.module.scss';
+import { useContext } from 'react';
+import { SideBarContext } from '@contexts/SideBarContext.js';
 
 function BackToTop() {
     const [isVisible, setIsVisible] = useState(false);
+    const { isOpen } = useContext(SideBarContext);
 
     // Theo dõi vị trí scroll
     useEffect(() => {
@@ -31,7 +34,7 @@ function BackToTop() {
 
     return (
         <>
-            {isVisible && (
+            {isVisible && !isOpen && (
                 <button 
                     className={styles.backToTop}
                     onClick={scrollToTop}

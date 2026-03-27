@@ -8,6 +8,7 @@ import {
     EmptyState
 } from '@/components/ProductList/ProductStates.jsx';
 import { OurShopContext } from '@contexts/OurShopContext.js';
+import { CartContext } from '@contexts/CartContext.js';
 
 function ProductListShop() {
     const {
@@ -23,13 +24,10 @@ function ProductListShop() {
     return (
         <div className={styles.productListShop}>
             <div className="container">
-                {/* Loading State */}
                 {loading && <LoadingState />}
 
-                {/* Error State */}
                 {error && !loading && <ErrorState error={error} onRetry={retry} />}
 
-                {/* Products Grid/List */}
                 {!loading && !error && products.length > 0 && (
                     <>
                         {viewMode === 'grid' ? (
@@ -38,7 +36,6 @@ function ProductListShop() {
                             <ProductListView products={products} />
                         )}
 
-                        {/* Pagination */}
                         <Pagination
                             pagination={pagination}
                             onPageChange={handlePageChange}
@@ -46,13 +43,11 @@ function ProductListShop() {
                     </>
                 )}
 
-                {/* Empty State */}
                 {!loading && !error && products.length === 0 && <EmptyState />}
             </div>
         </div>
     );
 }
-
 
 function ProductListView({ products }) {
     return (
@@ -60,6 +55,7 @@ function ProductListView({ products }) {
             {products?.map((product) => (
                 <ProductListItem
                     key={product.id}
+                    product={product}
                     image={product.image[0]}
                     images={product.image}
                     title={product.title}
@@ -75,10 +71,9 @@ function ProductListView({ products }) {
     );
 }
 
-
 function ProductListItem({
+    product,
     image,
-    images,
     title,
     description,
     price,
@@ -87,9 +82,10 @@ function ProductListItem({
     stock,
     category
 }) {
+    const { addToCart } = useContext(CartContext);
+
     return (
         <div className={styles.productListItem}>
-            {/* Image Section */}
             <div className={styles.itemImage}>
                 <img
                     src={image || 'https://via.placeholder.com/200x200'}
@@ -99,7 +95,6 @@ function ProductListItem({
                 {badge && <div className={styles.badge}>{badge}</div>}
             </div>
 
-            {/* Info Section */}
             <div className={styles.itemInfo}>
                 <div className={styles.itemHeader}>
                     <h3 className={styles.itemTitle}>{title}</h3>
@@ -141,10 +136,10 @@ function ProductListItem({
                     </div>
 
                     <div className={styles.actions}>
-                      
                         <button
                             className={styles.btnBuy}
                             disabled={stock === 0}
+                            onClick={() => addToCart(product)}
                         >
                             {stock === 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
                         </button>

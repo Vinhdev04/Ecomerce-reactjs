@@ -3,18 +3,21 @@ import classNames from 'classnames/bind';
 import { FaPhoneAlt, FaFacebookMessenger, FaTimes } from 'react-icons/fa';
 import { SiZalo } from 'react-icons/si';
 import styles from './ContactModal.module.scss';
+import { useContext } from 'react';
+import { SideBarContext } from '@contexts/SideBarContext.js';
 
 const cx = classNames.bind(styles);
 
 const ContactModal = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const { isOpen: isSidebarOpen } = useContext(SideBarContext);
 
     const toggleOpen = () => {
         setIsOpen(!isOpen);
     };
 
     return (
-        <div className={cx('contactWrapper')}>
+        <div className={cx('contactWrapper', { hidden: isSidebarOpen })}>
             {/* Popup Menu */}
             <div className={cx('popup', { open: isOpen })}>
                 <a href="https://m.me/yourpage" target="_blank" rel="noopener noreferrer" className={cx('popupItem')}>

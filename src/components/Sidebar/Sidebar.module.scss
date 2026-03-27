@@ -34,6 +34,7 @@
         top: 0;
         right: 0;
         width: 320px;
+        max-width: 100vw;
         height: 100vh;
         background: #fff;
         z-index: 1000;
@@ -43,7 +44,12 @@
         -moz-transform: translateX(580px);
         -ms-transform: translateX(580px);
         -o-transform: translateX(580px);
-        
+        display: flex;
+        flex-direction: column;
+
+        @media (max-width: 420px) {
+            width: 100vw;
+        }
     }
 
     .slideSideBar {
@@ -72,6 +78,13 @@
         -ms-transition: all 0.3s ease-in;
         -o-transition: all 0.3s ease-in;
         cursor: pointer;
+
+        @media (max-width: 420px) {
+            top: 10px;
+            left: 10px;
+            color: #2c3e50;
+            z-index: 2;
+        }
 
           &:hover{
             opacity: 0.8;

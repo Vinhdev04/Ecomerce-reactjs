@@ -1,13 +1,14 @@
-// components/ProductItem/ProductItem.jsx
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './ProductItem.module.scss';
 import {
     FavoriteIcon,
     QuickViewIcon,
     AddToCartIcon
 } from '@/components/ProductIcons/ProductIcon.jsx';
+import { CartContext } from '@contexts/CartContext.js';
 
 export default function ProductCard({
+    details,
     image,
     images = [],
     title,
@@ -18,6 +19,19 @@ export default function ProductCard({
     stock,
     className = ''
 }) {
+    const { addToCart } = useContext(CartContext);
+
+    const productDetails = details || {
+        id: title,
+        image: images?.length ? images : [image],
+        title,
+        description,
+        price,
+        badge,
+        rating,
+        stock
+    };
+
     return (
         <div className={`${styles.card} ${className}`}>
             <div className={styles.cardBody}>
@@ -46,7 +60,10 @@ export default function ProductCard({
                     <div className={styles.iconOverlay}>
                         <FavoriteIcon />
                         <QuickViewIcon />
-                        <AddToCartIcon />
+                        <AddToCartIcon
+                            onClick={() => addToCart(productDetails)}
+                            disabled={stock === 0}
+                        />
                     </div>
                 </div>
 
@@ -100,8 +117,9 @@ export default function ProductCard({
                         className={styles.btnBuy}
                         type='button'
                         disabled={stock === 0}
+                        onClick={() => addToCart(productDetails)}
                     >
-                        {stock === 0 ? 'Hết hàng' : 'Mua Ngay'}
+                        {stock === 0 ? 'Hết hàng' : 'Thêm vào giỏ'}
                     </button>
                 </div>
             </div>

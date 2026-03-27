@@ -25,16 +25,16 @@ $border-radius: 12px;
     border: 1px solid $border-color;
 
     &:hover {
-        transform: translateY(-8px);
-        box-shadow: $shadow-lg;
-        border-color: $primary-color;
+        transform: translateY(-4px);
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+        border-color: #dbe9f8;
 
         .cardImg img {
-            transform: scale(1.08);
+            transform: scale(1.04);
         }
 
         .badge {
-            transform: scale(1.05);
+            transform: translateY(-1px);
         }
 
         .iconOverlay {
@@ -74,9 +74,9 @@ $border-radius: 12px;
     position: absolute;
     top: 12px;
     left: 12px;
-    background: linear-gradient(135deg, $danger-color 0%, #c0392b 100%);
-    color: white;
-    padding: 6px 14px;
+    background: linear-gradient(135deg, #ff7a59 0%, #ffb36a 100%);
+    color: #ffffff;
+    padding: 7px 14px;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 700;
@@ -95,7 +95,7 @@ $border-radius: 12px;
     flex-direction: column;
     gap: 8px;
     opacity: 0;
-    transform: translateX(10px);
+    transform: translateX(6px);
     transition: all 0.3s ease;
     z-index: 2;
 }
@@ -115,9 +115,9 @@ $border-radius: 12px;
     color: #333;
 
     &:hover {
-        background: #333;
+        background: #16324f;
         color: white;
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
     &.active {
@@ -247,27 +247,29 @@ $border-radius: 12px;
 
 .btnDetail {
     @extend %btn-base;
-    background: $bg-white;
-    color: $primary-color;
-    border: 2px solid $primary-color;
+    background: #f7fbff;
+    color: #1f7aec;
+    border: 1px solid #d7e6fb;
 
     &:hover {
-        background: $primary-color;
+        background: #eaf3ff;
+        border-color: #9cc0f4;
         color: white;
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+        color: #1f7aec;
+        box-shadow: 0 8px 18px rgba(52, 152, 219, 0.18);
     }
 }
 
 .btnBuy {
     @extend %btn-base;
-    background: linear-gradient(135deg, $secondary-color 0%, #27ae60 100%);
+    background: linear-gradient(135deg, #1f7aec 0%, #0f5fd1 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+    box-shadow: 0 8px 18px rgba(31, 122, 236, 0.24);
 
     &:hover {
-        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
-        box-shadow: 0 6px 16px rgba(46, 204, 113, 0.5);
-        transform: translateY(-2px);
+        background: linear-gradient(135deg, #2e86f3 0%, #1668de 100%);
+        box-shadow: 0 10px 22px rgba(31, 122, 236, 0.3);
+        transform: translateY(-1px);
     }
 }
 
