@@ -5,6 +5,10 @@ import { FaNewspaper, FaCalendarAlt, FaUser } from 'react-icons/fa';
 import Loading from '../Loading/Loading';
 import Heading from '../Heading/Heading';
 import BannerHome from '../BannerHome/BannerHome';
+import { API_BASE } from '@/config/api.js';
+import imgConsole from '@images/Xbox Series X Controller - Electric.webp';
+import imgReview from '@images/8BitDoUltimate.webp';
+import imgService from '@images/DARE-U H101X.webp';
 
 function News() {
     const [newsList, setNewsList] = useState([]);
@@ -61,13 +65,21 @@ function News() {
                         <div key={news.id} className={styles.card}>
                             <div className={styles.imageWrapper}>
                                 <img 
-                                    src={news.image} 
+                                    src={
+                                        news.image && !(news.image.includes('images.unsplash.com') || news.image.includes('github.io'))
+                                            ? news.image
+                                            : (news.category === 'Console News'
+                                                ? imgConsole
+                                                : news.category === 'Game Review'
+                                                    ? imgReview
+                                                    : imgService)
+                                    } 
                                     alt={news.title} 
                                     className={styles.newsImage} 
                                     loading="lazy"
                                     onError={(e) => {
                                         e.target.onerror = null;
-                                        e.target.src = 'https://placehold.co/600x400?text=No+Image';
+                                        e.target.src = '/fallbacks/no-image-600x400.png';
                                     }}
                                 />
                                 <span className={styles.category}>{news.category || 'News'}</span>

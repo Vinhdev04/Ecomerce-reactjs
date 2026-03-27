@@ -9,22 +9,25 @@ import {
     ThunderboltOutlined
 } from '@ant-design/icons';
 import styles from './BannerHome.module.scss';
+import img1 from '@images/Xbox Series X Controller - Electric.webp';
+import img2 from '@images/8BitDoUltimate.webp';
+import img3 from '@images/DARE-U H101X.webp';
 
 function BannerHome() {
     const sliderImages = [
         {
             id: 1,
-            url: 'https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=800&h=500&fit=crop',
+            url: img1,
             title: 'PlayStation 5 Controllers'
         },
         {
             id: 2,
-            url: 'https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=800&h=500&fit=crop',
+            url: img2,
             title: 'Xbox Series X|S'
         },
         {
             id: 3,
-            url: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=800&h=500&fit=crop',
+            url: img3,
             title: 'Nintendo Switch'
         }
     ];
