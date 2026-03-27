@@ -348,14 +348,14 @@
     display: grid;
     grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
     gap: 16px;
-    align-items: center;
+    align-items: start;
     margin-top: 14px;
     padding: 14px;
     border-radius: 16px;
     background: #ffffff;
     border: 1px dashed #bfd4ef;
 
-    @media (max-width: 575px) {
+    @media (max-width: 860px) {
         grid-template-columns: 1fr;
     }
 }
@@ -376,6 +376,12 @@
         object-fit: contain;
         border-radius: 12px;
     }
+
+    @media (max-width: 860px) {
+        img {
+            max-width: 240px;
+        }
+    }
 }
 
 .qrMeta {
@@ -383,10 +389,22 @@
     gap: 8px;
     color: #688096;
     font-size: 14px;
+    min-width: 0;
+    align-content: start;
 
     strong {
         color: #16324f;
         font-size: 16px;
+        line-height: 1.4;
+    }
+
+    span {
+        overflow-wrap: anywhere;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 860px) {
+        gap: 10px;
     }
 }
 
@@ -401,13 +419,20 @@
     color: #1f7aec;
     font-weight: 700;
     font-size: 13px;
+    white-space: nowrap;
+    justify-self: start;
+
+    @media (max-width: 860px) {
+        font-size: 12px;
+        padding: 7px 10px;
+    }
 }
 
 .bankBox {
     margin-top: 14px;
 }
 
-@media (max-width: 575px) {
+@media (max-width: 860px) {
     .qrMeta {
         font-size: 13px;
     }
