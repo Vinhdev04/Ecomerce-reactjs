@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Layout from '@/components/Layout/Layout';
+import orderService from '@api/orderService';
 import { CartContext } from '@contexts/CartContext.js';
 import { ToastContext } from '@contexts/ToastContext';
 import { UserInfoContext } from '@contexts/UserInfoContext.js';
@@ -259,6 +260,32 @@ function CartPage() {
 
             try {
                 await sleep(SIMULATED_PAYMENT_DELAY_MS);
+
+                await orderService.createOrder({
+                    orderCode,
+                    customerName: values.fullName.trim(),
+                    customerEmail: values.email.trim(),
+                    customerPhone: values.phone.trim(),
+                    shippingAddress: values.address.trim(),
+                    paymentMethod: selectedPayment.toUpperCase(),
+                    note:
+                        selectedPayment === 'wallet'
+                            ? `Ví điện tử: ${values.walletPhone.trim()}`
+                            : selectedPayment === 'card'
+                              ? `Thẻ: ${values.cardName.trim()}`
+                              : '',
+                    subtotal: totalPrice,
+                    shippingFee,
+                    paymentFee,
+                    total: finalTotal,
+                    items: cartItems.map((item) => ({
+                        id: item.id,
+                        title: item.title,
+                        image: item.image,
+                        price: item.price,
+                        quantity: item.quantity
+                    }))
+                });
 
                 writeStorage(PAYMENT_RECENT_KEY, {
                     user: checkoutUserKey,

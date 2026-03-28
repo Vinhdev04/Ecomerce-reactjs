@@ -56,7 +56,10 @@ const adminService = {
         axiosClient.post('/news', normalizeNewsPayload(payload)),
     updateNews: (id, payload) =>
         axiosClient.put(`/news/${id}`, normalizeNewsPayload(payload)),
-    deleteNews: (id) => axiosClient.delete(`/news/${id}`)
+    deleteNews: (id) => axiosClient.delete(`/news/${id}`),
+
+    getOrders: () => axiosClient.get('/orders'),
+    updateOrderStatus: (id, payload) => axiosClient.put(`/orders/${id}`, payload)
 };
 
 export default adminService;

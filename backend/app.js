@@ -65,11 +65,13 @@ import productsRouter from './routes/products.route.js';
 import userRouter from './routes/users.route.js';
 import newsRouter from './routes/news.route.js';
 import assetsRouter from './routes/assets.route.js';
+import ordersRouter from './routes/orders.route.js';
 
 app.use('/api/products', productsRouter);
 app.use('/api', userRouter);
 app.use('/api/news', newsRouter);
 app.use('/api/assets', assetsRouter);
+app.use('/api/orders', ordersRouter);
 
 /* ==============================
    HEALTH CHECK

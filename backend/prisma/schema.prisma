@@ -76,3 +76,49 @@ model News {
 
   @@map("news")
 }
+
+model Order {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  orderCode      String        @unique
+  userId         String        @db.ObjectId
+  customerName   String
+  customerEmail  String
+  customerPhone  String
+  shippingAddress String
+  paymentMethod  PaymentMethod
+  paymentStatus  PaymentStatus @default(PENDING)
+  orderStatus    OrderStatus   @default(PENDING)
+  note           String?
+  subtotal       Float
+  shippingFee    Float
+  paymentFee     Float
+  total          Float
+  items          Json
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@map("orders")
+}
+
+enum PaymentMethod {
+  COD
+  CARD
+  WALLET
+  BANK
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPING
+  COMPLETED
+  CANCELLED
+}
