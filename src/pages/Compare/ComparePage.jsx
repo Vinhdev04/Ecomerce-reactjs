@@ -1,10 +1,9 @@
 /**
  * Dedicated compare page for users to view product comparison cleanly.
  */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout/Layout';
-import { CartContext } from '@contexts/CartContext.js';
 import styles from './ComparePage.module.scss';
 import {
     PRODUCT_COLLECTION_EVENT,
@@ -15,8 +14,13 @@ import {
 
 function ComparePage() {
     const [items, setItems] = useState([]);
-    const { addToCart } = useContext(CartContext);
     const navigate = useNavigate();
+    const prices = items.map((item) => Number(item.price || 0));
+    const ratings = items.map((item) => Number(item.rating || 0));
+    const stocks = items.map((item) => Number(item.stock || 0));
+    const bestPrice = prices.length ? Math.min(...prices) : 0;
+    const bestRating = ratings.length ? Math.max(...ratings) : 0;
+    const bestStock = stocks.length ? Math.max(...stocks) : 0;
 
     useEffect(() => {
         const syncItems = () => setItems(getCompareProducts());
@@ -36,15 +40,15 @@ function ComparePage() {
             <Layout>
                 <section className={`container ${styles.comparePage}`}>
                     <div className={styles.breadcrumb}>
-                        <Link to="/">Home</Link>
+                        <Link to="/">Trang chủ</Link>
                         <span>/</span>
-                        <strong>Compare</strong>
+                        <strong>So sánh</strong>
                     </div>
                     <div className={styles.emptyState}>
-                        <h1>Compare products</h1>
-                        <p>Ban chua them san pham nao vao danh sach compare.</p>
+                        <h1>So sánh sản phẩm</h1>
+                        <p>Bạn chưa thêm sản phẩm nào vào danh sách so sánh.</p>
                         <Link to="/shop" className={styles.primaryBtn}>
-                            Di den shop
+                            Đi đến cửa hàng
                         </Link>
                     </div>
                 </section>
@@ -56,26 +60,31 @@ function ComparePage() {
         <Layout>
             <section className={`container ${styles.comparePage}`}>
                 <div className={styles.breadcrumb}>
-                    <Link to="/">Home</Link>
+                    <Link to="/">Trang chủ</Link>
                     <span>/</span>
-                    <strong>Compare</strong>
+                    <strong>So sánh</strong>
                 </div>
 
                 <div className={styles.headerRow}>
                     <div>
-                        <p className={styles.kicker}>Realtime compare</p>
-                        <h1>So sanh san pham</h1>
+                        <p className={styles.kicker}>So sánh thời gian thực</p>
+                        <h1>So sánh sản phẩm</h1>
                         <p className={styles.subtitle}>
-                            So sanh nhanh cac thong so quan trong de chon san pham phu
-                            hop.
+                            So sánh nhanh các thông số quan trọng để chọn sản phẩm
+                            phù hợp.
                         </p>
+                        <div className={styles.legendRow}>
+                            <span className={styles.legendTag}>Giá tốt nhất</span>
+                            <span className={styles.legendTag}>Đánh giá cao nhất</span>
+                            <span className={styles.legendTag}>Tồn kho cao nhất</span>
+                        </div>
                     </div>
                     <button
                         type="button"
                         className={styles.clearBtn}
                         onClick={clearCompareProducts}
                     >
-                        Clear all
+                        Xóa tất cả
                     </button>
                 </div>
 
@@ -83,7 +92,7 @@ function ComparePage() {
                     <table className={styles.compareTable}>
                         <thead>
                             <tr>
-                                <th className={styles.criteriaCol}>Tieu chi</th>
+                                <th className={styles.criteriaCol}>Tiêu chí</th>
                                 {items.map((item) => (
                                     <th key={`head-${item.id}`}>
                                         <div className={styles.productHead}>
@@ -108,35 +117,67 @@ function ComparePage() {
                         </thead>
                         <tbody>
                             <tr>
-                                <th>Gia</th>
+                                <th>Giá</th>
                                 {items.map((item) => (
-                                    <td key={`price-${item.id}`}>
+                                    <td
+                                        key={`price-${item.id}`}
+                                        className={
+                                            Number(item.price || 0) === bestPrice
+                                                ? styles.bestCell
+                                                : ''
+                                        }
+                                    >
                                         {Number(item.price || 0).toLocaleString('vi-VN')}d
+                                        {Number(item.price || 0) === bestPrice && (
+                                            <span className={styles.winBadge}>Tốt nhất</span>
+                                        )}
                                     </td>
                                 ))}
                             </tr>
                             <tr>
-                                <th>Rating</th>
+                                <th>Đánh giá</th>
                                 {items.map((item) => (
-                                    <td key={`rating-${item.id}`}>
+                                    <td
+                                        key={`rating-${item.id}`}
+                                        className={
+                                            Number(item.rating || 0) === bestRating
+                                                ? styles.bestCell
+                                                : ''
+                                        }
+                                    >
                                         {item.rating || 0}/5
+                                        {Number(item.rating || 0) === bestRating && (
+                                            <span className={styles.winBadge}>Cao nhất</span>
+                                        )}
                                     </td>
                                 ))}
                             </tr>
                             <tr>
-                                <th>Ton kho</th>
+                                <th>Tồn kho</th>
                                 {items.map((item) => (
-                                    <td key={`stock-${item.id}`}>{item.stock || 0}</td>
+                                    <td
+                                        key={`stock-${item.id}`}
+                                        className={
+                                            Number(item.stock || 0) === bestStock
+                                                ? styles.bestCell
+                                                : ''
+                                        }
+                                    >
+                                        {item.stock || 0}
+                                        {Number(item.stock || 0) === bestStock && (
+                                            <span className={styles.winBadge}>Nhiều nhất</span>
+                                        )}
+                                    </td>
                                 ))}
                             </tr>
                             <tr>
-                                <th>Category</th>
+                                <th>Danh mục</th>
                                 {items.map((item) => (
                                     <td key={`cat-${item.id}`}>{item.category || '-'}</td>
                                 ))}
                             </tr>
                             <tr>
-                                <th>Hanh dong</th>
+                                <th>Hành động</th>
                                 {items.map((item) => (
                                     <td key={`action-${item.id}`}>
                                         <div className={styles.actionGroup}>
@@ -147,14 +188,7 @@ function ComparePage() {
                                                     navigate(`/products/${item.id}`)
                                                 }
                                             >
-                                                Chi tiet
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className={styles.successBtn}
-                                                onClick={() => addToCart(item)}
-                                            >
-                                                Add cart
+                                                Chi tiết
                                             </button>
                                             <button
                                                 type="button"
@@ -163,7 +197,7 @@ function ComparePage() {
                                                     removeComparedProduct(item.id)
                                                 }
                                             >
-                                                Bo
+                                                Bỏ
                                             </button>
                                         </div>
                                     </td>

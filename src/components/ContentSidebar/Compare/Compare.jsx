@@ -2,12 +2,11 @@
  * Compare sidebar:
  * compact preview list + quick navigation to dedicated compare page.
  */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Compare.module.scss';
 import { TfiReload } from 'react-icons/tfi';
 import HeaderSidebar from '@components/ContentSidebar/components/HeaderSidebar/HeaderSidebar.jsx';
 import { useNavigate } from 'react-router-dom';
-import { CartContext } from '@contexts/CartContext.js';
 import {
     PRODUCT_COLLECTION_EVENT,
     clearCompareProducts,
@@ -17,7 +16,6 @@ import {
 
 function Compare() {
     const { reloadIcon, compareBox } = styles;
-    const { addToCart } = useContext(CartContext);
     const navigate = useNavigate();
     const [items, setItems] = useState([]);
 
@@ -37,14 +35,14 @@ function Compare() {
     return (
         <div className={compareBox}>
             <HeaderSidebar
-                title={`Compare Product (${items.length}/4)`}
+                title={`Sản phẩm so sánh (${items.length}/4)`}
                 icon={<TfiReload className={reloadIcon} />}
             />
 
             {items.length === 0 ? (
                 <div className="d-flex flex-column justify-content-center align-items-center h-100 text-secondary">
-                    <p className="mb-1">Chua co san pham compare.</p>
-                    <small>Them tu card hoac trang chi tiet.</small>
+                    <p className="mb-1">Chưa có sản phẩm so sánh.</p>
+                    <small>Thêm từ thẻ sản phẩm hoặc trang chi tiết.</small>
                 </div>
             ) : (
                 <div className="d-flex flex-column gap-2 p-3 overflow-auto">
@@ -74,21 +72,14 @@ function Compare() {
                                         type="button"
                                         onClick={() => navigate(`/products/${item.id}`)}
                                     >
-                                        Chi tiet
-                                    </button>
-                                    <button
-                                        className="btn btn-sm btn-outline-success"
-                                        type="button"
-                                        onClick={() => addToCart(item)}
-                                    >
-                                        Add cart
+                                        Chi tiết
                                     </button>
                                     <button
                                         className="btn btn-sm btn-outline-danger"
                                         type="button"
                                         onClick={() => removeComparedProduct(item.id)}
                                     >
-                                        Bo
+                                        Bỏ
                                     </button>
                                 </div>
                             </div>
@@ -103,7 +94,7 @@ function Compare() {
                     type="button"
                     onClick={() => navigate('/compare')}
                 >
-                    Open compare page
+                    Mở trang so sánh
                 </button>
                 <button
                     className="btn btn-outline-danger"
@@ -111,7 +102,7 @@ function Compare() {
                     onClick={clearCompareProducts}
                     disabled={items.length === 0}
                 >
-                    Clear compare
+                    Xóa danh sách so sánh
                 </button>
             </div>
         </div>

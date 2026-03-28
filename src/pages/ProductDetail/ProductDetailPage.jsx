@@ -30,7 +30,7 @@ function ProductDetailPage() {
     if (loading) {
         return (
             <Layout>
-                <div className={`container ${styles.stateBox}`}>Dang tai chi tiet...</div>
+                <div className={`container ${styles.stateBox}`}>Đang tải chi tiết...</div>
             </Layout>
         );
     }
@@ -39,9 +39,9 @@ function ProductDetailPage() {
         return (
             <Layout>
                 <div className={`container ${styles.stateBox}`}>
-                    <p>{error || 'Khong tim thay san pham.'}</p>
+                    <p>{error || 'Không tìm thấy sản phẩm.'}</p>
                     <Link to="/shop" className={styles.backLink}>
-                        Quay lai shop
+                        Quay lại cửa hàng
                     </Link>
                 </div>
             </Layout>
@@ -52,9 +52,9 @@ function ProductDetailPage() {
         <Layout>
             <div className={`container ${styles.detailPage}`}>
                 <div className={styles.breadcrumb}>
-                    <Link to="/">Home</Link>
+                    <Link to="/">Trang chủ</Link>
                     <span>/</span>
-                    <Link to="/shop">Shop</Link>
+                    <Link to="/shop">Cửa hàng</Link>
                     <span>/</span>
                     <strong>{product.title}</strong>
                 </div>
@@ -103,21 +103,23 @@ function ProductDetailPage() {
                     </section>
 
                     <section className={styles.info}>
-                        <span className={styles.category}>{product.category || 'General'}</span>
+                        <span className={styles.category}>
+                            {product.category || 'Tổng hợp'}
+                        </span>
                         <h1>{product.title}</h1>
                         <p className={styles.price}>
-                            {Number(product.price || 0).toLocaleString('vi-VN')}d
+                            {Number(product.price || 0).toLocaleString('vi-VN')}đ
                         </p>
                         <p className={styles.desc}>{product.description}</p>
                         <p className={styles.meta}>
-                            Ton kho: <strong>{product.stock ?? 0}</strong>
+                            Tồn kho: <strong>{product.stock ?? 0}</strong>
                         </p>
                         <p className={styles.meta}>
-                            Rating: <strong>{product.rating ?? 0}/5</strong>
+                            Đánh giá: <strong>{product.rating ?? 0}/5</strong>
                         </p>
                         {Array.isArray(product.size) && product.size.length > 0 && (
                             <p className={styles.meta}>
-                                Size: <strong>{product.size.join(', ')}</strong>
+                                Kích cỡ: <strong>{product.size.join(', ')}</strong>
                             </p>
                         )}
                         <div className={styles.actions}>
@@ -128,8 +130,8 @@ function ProductDetailPage() {
                                 onClick={addProductToCart}
                             >
                                 {Number(product.stock || 0) <= 0
-                                    ? 'Het hang'
-                                    : 'Them vao gio hang'}
+                                    ? 'Hết hàng'
+                                    : 'Thêm vào giỏ hàng'}
                             </button>
                             <button
                                 type="button"
@@ -138,7 +140,7 @@ function ProductDetailPage() {
                                 }`}
                                 onClick={toggleFavorite}
                             >
-                                {isFavorite ? 'Da yeu thich' : 'Yeu thich'}
+                                {isFavorite ? 'Đã yêu thích' : 'Yêu thích'}
                             </button>
                             <button
                                 type="button"
@@ -147,7 +149,7 @@ function ProductDetailPage() {
                                 }`}
                                 onClick={toggleCompare}
                             >
-                                {isCompared ? 'Da compare' : 'Compare san pham'}
+                                {isCompared ? 'Đã so sánh' : 'So sánh sản phẩm'}
                             </button>
                         </div>
                     </section>

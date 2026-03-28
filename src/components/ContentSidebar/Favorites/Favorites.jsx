@@ -6,7 +6,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from './Favorites.module.scss';
 import HeaderSidebar from '@components/ContentSidebar/components/HeaderSidebar/HeaderSidebar.jsx';
 import { FaRegHeart } from 'react-icons/fa';
-import { CartContext } from '@contexts/CartContext.js';
 import { SideBarContext } from '@contexts/SideBarContext.js';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -16,8 +15,26 @@ import {
 } from '@/utils/productCollections';
 
 function Favorites() {
-    const { favoritesBox, favoritesIcon } = styles;
-    const { addToCart } = useContext(CartContext);
+    const {
+        favoritesBox,
+        favoritesIcon,
+        emptyState,
+        list,
+        itemCard,
+        thumb,
+        itemInfo,
+        price,
+        badgeRow,
+        badge,
+        badgeBlue,
+        badgeGreen,
+        actionRow,
+        actionBtn,
+        btnInfo,
+        btnRemove,
+        footerActions,
+        solidBtn
+    } = styles;
     const { setType } = useContext(SideBarContext);
     const navigate = useNavigate();
     const [items, setItems] = useState([]);
@@ -38,21 +55,22 @@ function Favorites() {
     return (
         <div className={favoritesBox}>
             <HeaderSidebar
-                title={`Favorites Product (${items.length})`}
+                title={`Sản phẩm yêu thích (${items.length})`}
                 icon={<FaRegHeart className={favoritesIcon} />}
             />
 
             {items.length === 0 ? (
-                <div className="d-flex flex-column justify-content-center align-items-center h-100 text-secondary">
-                    <p className="mb-1">Chua co san pham yeu thich.</p>
-                    <small>Click icon tim tren card de them.</small>
+                <div className={emptyState}>
+                    <p className="mb-1">Chưa có sản phẩm yêu thích.</p>
+                    <small>Nhấn biểu tượng tim trên thẻ sản phẩm để thêm.</small>
                 </div>
             ) : (
-                <div className="d-flex flex-column gap-2 p-3 overflow-auto">
-                    {items.map((item) => (
+                <div className={list}>
+                    {items.map((item, index) => (
                         <div
                             key={item.id}
-                            className="border rounded-3 p-2 bg-white d-flex gap-2"
+                            className={itemCard}
+                            style={{ animationDelay: `${index * 45}ms` }}
                         >
                             <img
                                 src={
@@ -60,36 +78,35 @@ function Favorites() {
                                     'https://via.placeholder.com/64x64?text=Item'
                                 }
                                 alt={item.title}
-                                width={64}
-                                height={64}
-                                style={{ objectFit: 'cover', borderRadius: 8 }}
+                                className={thumb}
                             />
-                            <div className="d-flex flex-column flex-grow-1">
-                                <strong className="small">{item.title}</strong>
-                                <small className="text-muted">
+                            <div className={itemInfo}>
+                                <h6>{item.title}</h6>
+                                <p className={price}>
                                     {Number(item.price || 0).toLocaleString('vi-VN')}d
-                                </small>
-                                <div className="d-flex gap-2 mt-2">
+                                </p>
+                                <div className={badgeRow}>
+                                    <span className={`${badge} ${badgeBlue}`}>
+                                        {item.category || 'General'}
+                                    </span>
+                                    <span className={`${badge} ${badgeGreen}`}>
+                                        {item.rating || 0}/5
+                                    </span>
+                                </div>
+                                <div className={actionRow}>
                                     <button
-                                        className="btn btn-sm btn-outline-primary"
+                                        className={`${actionBtn} ${btnInfo}`}
                                         type="button"
                                         onClick={() => navigate(`/products/${item.id}`)}
                                     >
-                                        Chi tiet
+                                        Chi tiết
                                     </button>
                                     <button
-                                        className="btn btn-sm btn-outline-success"
-                                        type="button"
-                                        onClick={() => addToCart(item)}
-                                    >
-                                        Add cart
-                                    </button>
-                                    <button
-                                        className="btn btn-sm btn-outline-danger"
+                                        className={`${actionBtn} ${btnRemove}`}
                                         type="button"
                                         onClick={() => removeFavoriteProduct(item.id)}
                                     >
-                                        Bo
+                                        Bỏ
                                     </button>
                                 </div>
                             </div>
@@ -98,21 +115,13 @@ function Favorites() {
                 </div>
             )}
 
-            <div className="d-flex flex-column gap-2 p-3">
+            <div className={footerActions}>
                 <button
-                    className="btn btn-dark"
+                    className={solidBtn}
                     type="button"
                     onClick={() => setType('compare')}
                 >
-                    View Compare
-                </button>
-                <button
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={() => items.forEach((item) => addToCart(item))}
-                    disabled={items.length === 0}
-                >
-                    Add all to cart
+                    Xem so sánh
                 </button>
             </div>
         </div>

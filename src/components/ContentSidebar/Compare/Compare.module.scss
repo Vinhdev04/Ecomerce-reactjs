@@ -6,6 +6,9 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(64, 176, 255, 0.18), transparent 30%),
+        linear-gradient(180deg, #f8fbff 0%, #f2f7ff 100%);
     
   .reloadIcon{
             width: 30px;
