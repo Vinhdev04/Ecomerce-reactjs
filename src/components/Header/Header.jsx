@@ -6,6 +6,7 @@ import MenuItem from './MenuItem/MenuItem.jsx';
 import useScrollHandling from '@hooks/useScrollHandling.js';
 import classNames from 'classnames';
 import { SideBarContext } from '@contexts/SideBarContext.js';
+import { CartContext } from '@contexts/CartContext.js';
 
 
 import { TfiReload } from "react-icons/tfi";
@@ -29,6 +30,8 @@ function Header() {
         container,
         topHeader,
         fixedXHeader,boxIcons,
+        iconButton,
+        cartBadge,
         hamburgerBtn,
         desktopOnly,
         mobileMenu,
@@ -43,6 +46,7 @@ function Header() {
     const [fixedHeader,setFixedHeader] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const {isOpen,setIsOpen,setType} = useContext(SideBarContext);
+    const { totalQuantity } = useContext(CartContext);
 
     const handleShowSidebar = (type)=> {
         setIsOpen(true);
@@ -108,8 +112,20 @@ function Header() {
                     </div>
                     <div className={classNames(containerBox, actionIcons)} >
                         <TfiReload width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("compare")}/>
-                        <FaRegHeart width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("favorites")}/>   
-                        <BsCart width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("cart")}/>
+                        <FaRegHeart width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("favorites")}/>
+                        <button
+                            type="button"
+                            className={iconButton}
+                            onClick={() => handleShowSidebar("cart")}
+                            aria-label={`Open cart${totalQuantity ? ` (${totalQuantity} items)` : ''}`}
+                        >
+                            <BsCart width={26} height={26} className={boxIcons}/>
+                            {totalQuantity > 0 && (
+                                <span className={cartBadge}>
+                                    {totalQuantity > 99 ? '99+' : totalQuantity}
+                                </span>
+                            )}
+                        </button>
                        
                     </div>
                 </div>
