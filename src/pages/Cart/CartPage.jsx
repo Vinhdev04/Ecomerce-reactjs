@@ -1,7 +1,11 @@
 import React, { useContext, useMemo, useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import Layout from '@/components/Layout/Layout';
 import { CartContext } from '@contexts/CartContext.js';
 import { ToastContext } from '@contexts/ToastContext';
+import { UserInfoContext } from '@contexts/UserInfoContext.js';
+import { SideBarContext } from '@contexts/SideBarContext.js';
 import styles from './CartPage.module.scss';
 import {
     FaCreditCard,
@@ -12,6 +16,12 @@ import {
     FaQrcode
 } from 'react-icons/fa';
 import { SiZalo, SiVisa } from 'react-icons/si';
+
+const PAYMENT_LOCK_KEY = 'xpad-checkout-active-lock';
+const PAYMENT_RECENT_KEY = 'xpad-checkout-recent-success';
+const ACTIVE_LOCK_TTL_MS = 90 * 1000;
+const RECENT_PAYMENT_TTL_MS = 45 * 1000;
+const SIMULATED_PAYMENT_DELAY_MS = 1200;
 
 const BANK_ACCOUNT = {
     bankCode: 'MB',
@@ -61,22 +71,34 @@ const PAYMENT_OPTIONS = [
     }
 ];
 
-const INITIAL_FORM = {
-    fullName: '',
-    phone: '',
-    email: '',
-    address: '',
-    cardName: '',
-    cardNumber: '',
-    walletPhone: ''
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const readStorage = (key) => {
+    try {
+        const rawValue = localStorage.getItem(key);
+        return rawValue ? JSON.parse(rawValue) : null;
+    } catch {
+        localStorage.removeItem(key);
+        return null;
+    }
+};
+
+const writeStorage = (key, value) => {
+    localStorage.setItem(key, JSON.stringify(value));
+};
+
+const removeStorage = (key) => {
+    localStorage.removeItem(key);
 };
 
 function CartPage() {
     const { cartItems, totalPrice, updateQuantity, removeFromCart, clearCart } =
         useContext(CartContext);
     const { toast } = useContext(ToastContext);
+    const { userInfo, userId, isLoading } = useContext(UserInfoContext);
+    const { setIsOpen, setType } = useContext(SideBarContext);
     const [selectedPayment, setSelectedPayment] = useState('cod');
-    const [formData, setFormData] = useState(INITIAL_FORM);
+    const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
 
     const selectedPaymentOption = useMemo(
         () =>
@@ -88,10 +110,184 @@ function CartPage() {
     const shippingFee = cartItems.length > 0 ? 30000 : 0;
     const paymentFee = cartItems.length > 0 ? selectedPaymentOption.fee : 0;
     const finalTotal = totalPrice + shippingFee + paymentFee;
+    const checkoutUserKey =
+        userInfo?.id || userId || userInfo?.email || 'guest-user';
     const orderCode = useMemo(
         () => `XPAD-${Date.now().toString().slice(-6)}`,
         []
     );
+
+    const baseInitialValues = useMemo(
+        () => ({
+            fullName: userInfo?.name || '',
+            phone: userInfo?.phone || '',
+            email: userInfo?.email || '',
+            address: userInfo?.address || '',
+            cardName: userInfo?.name || '',
+            cardNumber: '',
+            walletPhone: userInfo?.phone || ''
+        }),
+        [userInfo]
+    );
+
+    const validationSchema = useMemo(() => {
+        const shape = {
+            fullName: Yup.string()
+                .trim()
+                .min(2, 'Họ và tên phải có ít nhất 2 ký tự.')
+                .required('Vui lòng nhập họ và tên.'),
+            phone: Yup.string()
+                .trim()
+                .matches(
+                    /^(0|\+84)[0-9]{9,10}$/,
+                    'Số điện thoại không hợp lệ.'
+                )
+                .required('Vui lòng nhập số điện thoại.'),
+            email: Yup.string()
+                .trim()
+                .email('Email không hợp lệ.')
+                .required('Vui lòng nhập email.'),
+            address: Yup.string()
+                .trim()
+                .min(8, 'Địa chỉ giao hàng quá ngắn.')
+                .required('Vui lòng nhập địa chỉ giao hàng.'),
+            cardName: Yup.string().trim(),
+            cardNumber: Yup.string().trim(),
+            walletPhone: Yup.string().trim()
+        };
+
+        if (selectedPayment === 'card') {
+            shape.cardName = Yup.string()
+                .trim()
+                .min(2, 'Tên chủ thẻ quá ngắn.')
+                .required('Vui lòng nhập tên chủ thẻ.');
+            shape.cardNumber = Yup.string()
+                .trim()
+                .matches(/^[0-9 ]{8,25}$/, 'Số thẻ không hợp lệ.')
+                .required('Vui lòng nhập số thẻ.');
+        }
+
+        if (selectedPayment === 'wallet') {
+            shape.walletPhone = Yup.string()
+                .trim()
+                .matches(
+                    /^(0|\+84)[0-9]{9,10}$/,
+                    'Số điện thoại ví không hợp lệ.'
+                )
+                .required('Vui lòng nhập số điện thoại ví điện tử.');
+        }
+
+        return Yup.object(shape);
+    }, [selectedPayment]);
+
+    const formik = useFormik({
+        initialValues: baseInitialValues,
+        enableReinitialize: true,
+        validationSchema,
+        onSubmit: async (values, helpers) => {
+            if (!userInfo) {
+                toast?.error?.(
+                    'Bạn cần đăng nhập trước khi có thể thanh toán.'
+                );
+                setType('login');
+                setIsOpen(true);
+                helpers.setSubmitting(false);
+                return;
+            }
+
+            if (isLoading) {
+                toast?.info?.('Đang tải thông tin tài khoản, vui lòng thử lại.');
+                helpers.setSubmitting(false);
+                return;
+            }
+
+            if (!cartItems.length) {
+                toast?.error?.('Giỏ hàng đang trống.');
+                helpers.setSubmitting(false);
+                return;
+            }
+
+            const cartSignature = cartItems
+                .map((item) => `${item.id}:${item.quantity}:${item.price}`)
+                .join('|');
+            const fingerprint = JSON.stringify({
+                user: checkoutUserKey,
+                paymentMethod: selectedPayment,
+                total: finalTotal,
+                address: values.address.trim(),
+                phone: values.phone.trim(),
+                cartSignature
+            });
+
+            const now = Date.now();
+            const activeLock = readStorage(PAYMENT_LOCK_KEY);
+
+            if (
+                activeLock &&
+                activeLock.user === checkoutUserKey &&
+                activeLock.expiresAt > now
+            ) {
+                toast?.error?.(
+                    'Thanh toán đang được xử lý. Vui lòng không bấm lặp lại.'
+                );
+                helpers.setSubmitting(false);
+                return;
+            }
+
+            const recentPayment = readStorage(PAYMENT_RECENT_KEY);
+            if (
+                recentPayment &&
+                recentPayment.user === checkoutUserKey &&
+                recentPayment.fingerprint === fingerprint &&
+                now - recentPayment.createdAt < RECENT_PAYMENT_TTL_MS
+            ) {
+                toast?.error?.(
+                    'Đơn thanh toán này vừa được tạo. Vui lòng chờ thêm một chút trước khi thử lại.'
+                );
+                helpers.setSubmitting(false);
+                return;
+            }
+
+            const lockPayload = {
+                user: checkoutUserKey,
+                fingerprint,
+                expiresAt: now + ACTIVE_LOCK_TTL_MS
+            };
+
+            writeStorage(PAYMENT_LOCK_KEY, lockPayload);
+            setIsPaymentProcessing(true);
+
+            try {
+                await sleep(SIMULATED_PAYMENT_DELAY_MS);
+
+                writeStorage(PAYMENT_RECENT_KEY, {
+                    user: checkoutUserKey,
+                    fingerprint,
+                    createdAt: Date.now()
+                });
+
+                toast?.success?.(
+                    `Đơn hàng đã được xác nhận với hình thức ${selectedPaymentOption.label.toLowerCase()}.`
+                );
+                clearCart();
+                helpers.resetForm({ values: baseInitialValues });
+                setSelectedPayment('cod');
+            } finally {
+                const latestLock = readStorage(PAYMENT_LOCK_KEY);
+                if (
+                    latestLock &&
+                    latestLock.user === checkoutUserKey &&
+                    latestLock.fingerprint === fingerprint
+                ) {
+                    removeStorage(PAYMENT_LOCK_KEY);
+                }
+
+                setIsPaymentProcessing(false);
+                helpers.setSubmitting(false);
+            }
+        }
+    });
+
     const bankQrUrl = useMemo(() => {
         const amount = finalTotal > 0 ? `&amount=${finalTotal}` : '';
         const addInfo = encodeURIComponent(`Thanh toan ${orderCode}`);
@@ -99,6 +295,7 @@ function CartPage() {
 
         return `https://img.vietqr.io/image/${BANK_ACCOUNT.bankCode}-${BANK_ACCOUNT.accountNumber}-compact2.png?addInfo=${addInfo}&accountName=${accountName}${amount}`;
     }, [finalTotal, orderCode]);
+
     const walletQrUrl = useMemo(() => {
         const walletPayload = [
             WALLET_ACCOUNT.provider,
@@ -113,57 +310,18 @@ function CartPage() {
         )}`;
     }, [finalTotal, orderCode]);
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+    const getFieldClassName = (fieldName) =>
+        formik.touched[fieldName] && formik.errors[fieldName]
+            ? styles.inputError
+            : '';
 
-    const validateCheckout = () => {
-        if (!formData.fullName.trim()) {
-            return 'Vui lòng nhập họ và tên.';
-        }
+    const renderFieldError = (fieldName) =>
+        formik.touched[fieldName] && formik.errors[fieldName] ? (
+            <span className={styles.fieldError}>{formik.errors[fieldName]}</span>
+        ) : null;
 
-        if (!formData.phone.trim()) {
-            return 'Vui lòng nhập số điện thoại.';
-        }
-
-        if (!formData.address.trim()) {
-            return 'Vui lòng nhập địa chỉ giao hàng.';
-        }
-
-        if (selectedPayment === 'card') {
-            if (!formData.cardName.trim()) {
-                return 'Vui lòng nhập tên chủ thẻ.';
-            }
-
-            if (formData.cardNumber.replace(/\s/g, '').length < 8) {
-                return 'Số thẻ chưa hợp lệ.';
-            }
-        }
-
-        if (selectedPayment === 'wallet' && !formData.walletPhone.trim()) {
-            return 'Vui lòng nhập số điện thoại ví điện tử.';
-        }
-
-        return '';
-    };
-
-    const handleCheckout = () => {
-        const errorMessage = validateCheckout();
-
-        if (errorMessage) {
-            toast?.error?.(errorMessage);
-            return;
-        }
-
-        const methodName = selectedPaymentOption.label.toLowerCase();
-        toast?.success?.(
-            `Đơn hàng đã được xác nhận với hình thức ${methodName}.`
-        );
-        clearCart();
-        setFormData(INITIAL_FORM);
-        setSelectedPayment('cod');
-    };
+    const isCheckoutDisabled =
+        formik.isSubmitting || isPaymentProcessing || cartItems.length === 0;
 
     return (
         <Layout>
@@ -205,8 +363,8 @@ function CartPage() {
                                                 <div className={styles.itemHeading}>
                                                     <h3>{item.title}</h3>
                                                     <p className={styles.itemCaption}>
-                                                        Hàng chính hãng, giao
-                                                        nhanh toàn quốc
+                                                        Hàng chính hãng, giao nhanh
+                                                        toàn quốc
                                                     </p>
                                                 </div>
                                                 <button
@@ -314,37 +472,89 @@ function CartPage() {
 
                                 <form
                                     className={styles.checkoutForm}
-                                    onSubmit={(event) => event.preventDefault()}
+                                    onSubmit={formik.handleSubmit}
                                 >
                                     <h3>Thông tin thanh toán</h3>
-                                    <input
-                                        type="text"
-                                        name="fullName"
-                                        value={formData.fullName}
-                                        onChange={handleInputChange}
-                                        placeholder="Họ và tên"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleInputChange}
-                                        placeholder="Số điện thoại"
-                                    />
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                        placeholder="Email"
-                                    />
-                                    <textarea
-                                        rows="4"
-                                        name="address"
-                                        value={formData.address}
-                                        onChange={handleInputChange}
-                                        placeholder="Địa chỉ giao hàng"
-                                    />
+
+                                    {!userInfo && (
+                                        <div className={styles.loginNotice}>
+                                            <span>
+                                                Bạn cần đăng nhập trước khi có thể
+                                                thanh toán.
+                                            </span>
+                                            <button
+                                                type="button"
+                                                className={styles.loginAction}
+                                                onClick={() => {
+                                                    setType('login');
+                                                    setIsOpen(true);
+                                                }}
+                                            >
+                                                Mở đăng nhập
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    <div className={styles.formField}>
+                                        <input
+                                            type="text"
+                                            name="fullName"
+                                            value={formik.values.fullName}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            className={getFieldClassName(
+                                                'fullName'
+                                            )}
+                                            placeholder="Họ và tên"
+                                        />
+                                        {renderFieldError('fullName')}
+                                    </div>
+
+                                    <div className={styles.formField}>
+                                        <input
+                                            type="text"
+                                            name="phone"
+                                            value={formik.values.phone}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            className={getFieldClassName(
+                                                'phone'
+                                            )}
+                                            placeholder="Số điện thoại"
+                                        />
+                                        {renderFieldError('phone')}
+                                    </div>
+
+                                    <div className={styles.formField}>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={formik.values.email}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            className={getFieldClassName(
+                                                'email'
+                                            )}
+                                            placeholder="Email"
+                                        />
+                                        {renderFieldError('email')}
+                                    </div>
+
+                                    <div className={styles.formField}>
+                                        <textarea
+                                            rows="4"
+                                            name="address"
+                                            value={formik.values.address}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            className={getFieldClassName(
+                                                'address'
+                                            )}
+                                            placeholder="Địa chỉ giao hàng"
+                                        />
+                                        {renderFieldError('address')}
+                                    </div>
+
                                     <div className={styles.paymentMethods}>
                                         {PAYMENT_OPTIONS.map((option) => (
                                             <label
@@ -399,20 +609,56 @@ function CartPage() {
                                                     styles.paymentFieldGroup
                                                 }
                                             >
-                                                <input
-                                                    type="text"
-                                                    name="cardName"
-                                                    value={formData.cardName}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Tên chủ thẻ"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    name="cardNumber"
-                                                    value={formData.cardNumber}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Số thẻ"
-                                                />
+                                                <div
+                                                    className={styles.formField}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        name="cardName"
+                                                        value={
+                                                            formik.values
+                                                                .cardName
+                                                        }
+                                                        onChange={
+                                                            formik.handleChange
+                                                        }
+                                                        onBlur={
+                                                            formik.handleBlur
+                                                        }
+                                                        className={getFieldClassName(
+                                                            'cardName'
+                                                        )}
+                                                        placeholder="Tên chủ thẻ"
+                                                    />
+                                                    {renderFieldError(
+                                                        'cardName'
+                                                    )}
+                                                </div>
+                                                <div
+                                                    className={styles.formField}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        name="cardNumber"
+                                                        value={
+                                                            formik.values
+                                                                .cardNumber
+                                                        }
+                                                        onChange={
+                                                            formik.handleChange
+                                                        }
+                                                        onBlur={
+                                                            formik.handleBlur
+                                                        }
+                                                        className={getFieldClassName(
+                                                            'cardNumber'
+                                                        )}
+                                                        placeholder="Số thẻ"
+                                                    />
+                                                    {renderFieldError(
+                                                        'cardNumber'
+                                                    )}
+                                                </div>
                                             </div>
                                         )}
 
@@ -422,14 +668,34 @@ function CartPage() {
                                                     styles.paymentFieldGroup
                                                 }
                                             >
-                                                <input
-                                                    type="text"
-                                                    name="walletPhone"
-                                                    value={formData.walletPhone}
-                                                    onChange={handleInputChange}
-                                                    placeholder="Số điện thoại ví"
-                                                />
-                                                <div className={styles.qrPanel}>
+                                                <div
+                                                    className={styles.formField}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        name="walletPhone"
+                                                        value={
+                                                            formik.values
+                                                                .walletPhone
+                                                        }
+                                                        onChange={
+                                                            formik.handleChange
+                                                        }
+                                                        onBlur={
+                                                            formik.handleBlur
+                                                        }
+                                                        className={getFieldClassName(
+                                                            'walletPhone'
+                                                        )}
+                                                        placeholder="Số điện thoại ví"
+                                                    />
+                                                    {renderFieldError(
+                                                        'walletPhone'
+                                                    )}
+                                                </div>
+                                                <div
+                                                    className={styles.qrPanel}
+                                                >
                                                     <div
                                                         className={
                                                             styles.qrPreview
@@ -485,7 +751,9 @@ function CartPage() {
 
                                         {selectedPayment === 'bank' && (
                                             <div className={styles.bankBox}>
-                                                <div className={styles.qrPanel}>
+                                                <div
+                                                    className={styles.qrPanel}
+                                                >
                                                     <div
                                                         className={
                                                             styles.qrPreview
@@ -543,11 +811,15 @@ function CartPage() {
                                     </div>
 
                                     <button
-                                        type="button"
+                                        type="submit"
                                         className={styles.checkoutBtn}
-                                        onClick={handleCheckout}
+                                        disabled={isCheckoutDisabled}
                                     >
-                                        {selectedPaymentOption.buttonLabel}
+                                        {isPaymentProcessing
+                                            ? 'Đang xử lý thanh toán...'
+                                            : !userInfo
+                                              ? 'Đăng nhập để thanh toán'
+                                              : selectedPaymentOption.buttonLabel}
                                     </button>
                                 </form>
                             </div>

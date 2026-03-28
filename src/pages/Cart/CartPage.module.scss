@@ -268,6 +268,50 @@
     }
 }
 
+.formField {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.inputError {
+    border-color: #e45b5b !important;
+    box-shadow: 0 0 0 4px rgba(228, 91, 91, 0.12);
+}
+
+.fieldError {
+    color: #d64545;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.loginNotice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: #fff7e8;
+    border: 1px solid #f5d6a3;
+    color: #7a5a21;
+
+    @media (max-width: 575px) {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+.loginAction {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: #1f7aec;
+    color: #ffffff;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
 .paymentMethods {
     display: grid;
     gap: 10px;
@@ -445,6 +489,12 @@
     color: #ffffff;
     font-weight: 700;
     background: linear-gradient(135deg, #1f7aec 0%, #0f5fd1 100%);
+
+    &:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
 }
 
 @media (max-width: 991px) {
