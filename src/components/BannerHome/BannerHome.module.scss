@@ -1,97 +1,64 @@
 @use '@styles/_responsive.module.scss' as *;
 
 .bannerSection {
-    background: linear-gradient(180deg, #0a1628 0%, #050c16 100%);
-    padding: 60px 0;
     position: relative;
+    padding: 92px 0 74px;
     overflow: hidden;
+    background:
+        radial-gradient(circle at 12% 12%, rgba(25, 119, 255, 0.17), transparent 34%),
+        radial-gradient(circle at 88% 20%, rgba(255, 123, 61, 0.18), transparent 35%),
+        linear-gradient(180deg, #0d1728 0%, #101f36 58%, #132641 100%);
 
-    // Animated background
     &::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: radial-gradient(
-                2px 2px at 20% 30%,
-                rgba(0, 255, 255, 0.2),
-                transparent
-            ),
-            radial-gradient(
-                2px 2px at 60% 70%,
-                rgba(102, 126, 234, 0.2),
-                transparent
-            ),
-            radial-gradient(
-                1px 1px at 50% 50%,
-                rgba(0, 255, 255, 0.1),
-                transparent
-            );
-        background-size: 200% 200%;
-        animation: particleMove 20s ease-in-out infinite;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(255, 255, 255, 0.06), transparent 32%, rgba(255, 255, 255, 0.02) 60%, transparent 80%);
         pointer-events: none;
     }
 }
 
-@keyframes particleMove {
-    0%,
-    100% {
-        background-position: 0% 0%;
-    }
-    50% {
-        background-position: 100% 100%;
-    }
-}
-
 .carouselWrapper {
-    position: relative;
-    border-radius: 20px;
+    border-radius: 22px;
     overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 24px 48px rgba(5, 12, 24, 0.36);
+    animation: liftIn 0.65s ease both;
 
     :global(.ant-carousel) {
         .slick-dots {
-            bottom: 20px;
+            bottom: 14px;
 
-            li {
-                button {
-                    background: rgba(255, 255, 255, 0.3);
-                    height: 4px;
-                    border-radius: 2px;
-                }
+            li button {
+                height: 4px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.38);
+            }
 
-                &.slick-active button {
-                    background: #00ffff;
-                    width: 30px;
-                }
+            li.slick-active button {
+                width: 30px;
+                background: #ff7d41;
             }
         }
 
         .slick-prev,
         .slick-next {
-            width: 50px;
-            height: 50px;
+            width: 42px;
+            height: 42px;
             z-index: 10;
 
             &::before {
-                font-size: 50px;
-                color: #00ffff;
-                opacity: 0.7;
-            }
-
-            &:hover::before {
-                opacity: 1;
+                font-size: 42px;
+                color: rgba(255, 255, 255, 0.85);
             }
         }
 
         .slick-prev {
-            left: 20px;
+            left: 10px;
         }
 
         .slick-next {
-            right: 20px;
+            right: 10px;
         }
     }
 }
@@ -99,296 +66,226 @@
 .slideItem {
     position: relative;
     height: 500px;
+    display: flex !important;
+    align-items: end;
+    justify-content: start;
     background-size: cover;
     background-position: center;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
 
-    &::before {
+    &::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            135deg,
-            rgba(0, 255, 255, 0.1) 0%,
-            rgba(102, 126, 234, 0.1) 100%
-        );
+        inset: 0;
+        background: linear-gradient(180deg, rgba(4, 12, 26, 0.05), rgba(4, 12, 26, 0.62));
     }
+}
 
-    .slideContent {
-        position: relative;
-        z-index: 2;
-        text-align: center;
+.slideContent {
+    position: relative;
+    z-index: 1;
+    padding: 24px;
+
+    h3 {
+        margin: 0;
         color: #fff;
-        padding: 2rem;
-
-        h3 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+        font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+        text-shadow: 0 8px 16px rgba(0, 0, 0, 0.42);
     }
 }
 
 .contentWrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    padding: 0 40px;
-    animation: fadeInRight 0.8s ease-out;
-}
-
-@keyframes fadeInRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    animation: liftIn 0.72s ease both;
+    animation-delay: 0.1s;
+    display: grid;
+    gap: 1rem;
 }
 
 .badge {
-    display: inline-block;
-    padding: 8px 20px;
-    background: linear-gradient(
-        135deg,
-        rgba(0, 255, 255, 0.2) 0%,
-        rgba(102, 126, 234, 0.2) 100%
-    );
-    border: 1px solid rgba(0, 255, 255, 0.5);
-    border-radius: 50px;
-    color: #00ffff;
-    font-size: 14px;
-    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.07);
+    color: #dceaff;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 1.5rem;
+    font-weight: 700;
 }
 
 .mainTitle {
-    font-size: 56px;
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(90deg, #ffffff 0%, #00ffff 50%, #667eea 100%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientFlow 3s linear infinite;
+    margin: 0;
+    color: #f7fbff;
+    line-height: 1.05;
+    font-size: clamp(2rem, 5vw, 3.9rem);
+    font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
 
     .highlight {
-        color: #00ffff;
         display: block;
-        text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-    }
-}
-
-@keyframes gradientFlow {
-    0% {
-        background-position: 0% center;
-    }
-    100% {
-        background-position: 200% center;
+        margin-top: 0.2rem;
+        color: #ff9a62;
+        text-shadow: 0 10px 24px rgba(255, 155, 98, 0.25);
     }
 }
 
 .description {
-    font-size: 18px;
-    color: #a0aec0;
+    margin: 0;
+    color: #9fb1cb;
     line-height: 1.8;
-    margin-bottom: 2.5rem;
-    max-width: 500px;
+    max-width: 560px;
 }
 
 .buttonGroup {
     display: flex;
-    gap: 1rem;
+    gap: 0.85rem;
     flex-wrap: wrap;
 }
 
-.primaryBtn {
-    padding: 16px 36px !important;
+.primaryBtn,
+.secondaryBtn {
     height: auto !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    border: none !important;
+    padding: 14px 30px !important;
     border-radius: 12px !important;
-    background: linear-gradient(135deg, #00ffff 0%, #667eea 100%) !important;
-    color: #0a1628 !important;
-    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3) !important;
-    transition: all 0.3s ease !important;
-    position: relative;
-    overflow: hidden;
+    font-weight: 700 !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
 
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.3),
-            transparent
-        );
-        transition: left 0.5s;
-    }
+.primaryBtn {
+    border: none !important;
+    color: #fff !important;
+    background: linear-gradient(135deg, #ff6f3d, #f24e1e) !important;
+    box-shadow: 0 14px 28px rgba(242, 78, 30, 0.32) !important;
 
     &:hover {
-        transform: translateY(-3px) !important;
-        box-shadow: 0 6px 25px rgba(0, 255, 255, 0.5) !important;
-        color: #0a1628 !important;
-
-        &::before {
-            left: 100%;
-        }
+        transform: translateY(-2px) !important;
+        box-shadow: 0 20px 36px rgba(242, 78, 30, 0.36) !important;
     }
 }
 
 .secondaryBtn {
-    padding: 16px 36px !important;
-    height: auto !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    border: 2px solid #00ffff !important;
-    border-radius: 12px !important;
-    background: transparent !important;
-    color: #00ffff !important;
-    transition: all 0.3s ease !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
+    color: #e4efff !important;
+    background: rgba(255, 255, 255, 0.07) !important;
 
     &:hover {
-        background: rgba(0, 255, 255, 0.1) !important;
-        transform: translateY(-3px) !important;
-        box-shadow: 0 6px 25px rgba(0, 255, 255, 0.2) !important;
-        color: #00ffff !important;
-        border-color: #00ffff !important;
+        transform: translateY(-2px) !important;
+        border-color: rgba(255, 255, 255, 0.45) !important;
+        background: rgba(255, 255, 255, 0.12) !important;
     }
 }
 
 .features {
     display: flex;
-    gap: 2rem;
-    margin-top: 3rem;
+    gap: 12px;
+    margin-top: 8px;
     flex-wrap: wrap;
 }
 
 .featureItem {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 10px;
+    min-width: 210px;
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(7, 18, 34, 0.46);
+}
 
-    .featureIcon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: linear-gradient(
-            135deg,
-            rgba(0, 255, 255, 0.2) 0%,
-            rgba(102, 126, 234, 0.2) 100%
-        );
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #00ffff;
-        font-size: 24px;
+.featureIcon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: linear-gradient(135deg, #2d8bff, #1d63dd);
+}
+
+.featureText {
+    display: grid;
+    gap: 2px;
+}
+
+.featureTitle {
+    color: #f3f8ff;
+    font-weight: 700;
+    font-size: 0.94rem;
+}
+
+.featureDesc {
+    margin: 0;
+    color: #96a9c7;
+    font-size: 0.78rem;
+}
+
+@keyframes liftIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
     }
 
-    .featureText {
-        .featureTitle {
-            font-size: 16px;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 0.25rem;
-        }
-
-        .featureDesc {
-            font-size: 14px;
-            color: #a0aec0;
-            margin: 0;
-        }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-// Responsive
 @include laptop {
     .contentWrapper {
-        padding: 40px 20px;
-        text-align: center;
-
-        .description {
-            max-width: 100%;
-        }
-
-        .buttonGroup {
-            justify-content: center;
-        }
-
-        .features {
-            justify-content: center;
-        }
-    }
-
-    .mainTitle {
-        font-size: 40px;
+        margin-top: 10px;
     }
 
     .slideItem {
-        height: 400px;
+        height: 420px;
     }
 }
 
 @include tablet {
     .bannerSection {
-        padding: 40px 0;
-    }
-
-    .mainTitle {
-        font-size: 32px;
-    }
-
-    .description {
-        font-size: 16px;
+        padding: 64px 0 54px;
     }
 
     .slideItem {
-        height: 300px;
-
-        .slideContent h3 {
-            font-size: 32px;
-        }
+        height: 340px;
     }
 
-    .features {
-        flex-direction: column;
-        gap: 1rem;
+    .contentWrapper {
+        margin-top: 20px;
     }
 }
 
 @include mobile {
-    .contentWrapper {
-        padding: 30px 15px;
+    .bannerSection {
+        padding: 52px 0 44px;
     }
 
-    .mainTitle {
-        font-size: 28px;
+    .slideItem {
+        height: 290px;
+    }
+
+    .slideContent {
+        padding: 16px;
     }
 
     .buttonGroup {
         flex-direction: column;
 
-        button {
+        > * {
             width: 100%;
         }
+    }
+
+    .primaryBtn,
+    .secondaryBtn {
+        width: 100%;
+    }
+
+    .featureItem {
+        min-width: 0;
+        width: 100%;
     }
 }

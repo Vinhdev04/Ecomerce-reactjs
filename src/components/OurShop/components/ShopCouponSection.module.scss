@@ -1,0 +1,117 @@
+.wrap {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.bannerSwiper {
+    width: 100%;
+    padding-bottom: 26px;
+
+    :global(.swiper-slide) {
+        height: auto;
+    }
+
+    :global(.swiper-pagination-bullet) {
+        width: 8px;
+        height: 8px;
+        background: #9db6db;
+        opacity: 1;
+    }
+
+    :global(.swiper-pagination-bullet-active) {
+        background: #2f6fd8;
+    }
+}
+
+.bannerCard {
+    border-radius: 14px;
+    border: 1px solid rgba(36, 73, 128, 0.12);
+    background: linear-gradient(135deg, #152945, #22406d);
+    color: #f2f7ff;
+    padding: 16px;
+    box-shadow: 0 14px 24px rgba(14, 34, 62, 0.25);
+
+    span {
+        display: inline-block;
+        margin-bottom: 8px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+    }
+
+    h3 {
+        margin: 0 0 4px;
+        font-size: 1.15rem;
+    }
+
+    p {
+        margin: 0;
+        color: #c7d7ef;
+    }
+}
+
+.couponBlock {
+    border-radius: 14px;
+    border: 1px solid #dce6f4;
+    background: linear-gradient(180deg, #ffffff, #f8fbff);
+    padding: 14px;
+}
+
+.head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    h3 {
+        margin: 0;
+        color: #142744;
+        font-size: 1.05rem;
+    }
+
+    small {
+        color: #6d809b;
+    }
+}
+
+.couponGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.couponCard {
+    border: 1px dashed #c7d8f2;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fcfdff;
+
+    strong {
+        color: #1f5096;
+        font-size: 0.95rem;
+    }
+
+    span {
+        display: block;
+        margin-top: 4px;
+        color: #1a3359;
+        font-weight: 700;
+        font-size: 0.84rem;
+    }
+
+    p {
+        margin: 4px 0 0;
+        color: #5b6f89;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .couponGrid {
+        grid-template-columns: 1fr;
+    }
+}

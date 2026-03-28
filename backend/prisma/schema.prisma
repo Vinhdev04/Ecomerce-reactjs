@@ -18,6 +18,12 @@ model Product {
   rating      Float
   badge       String?
   size        String[]
+  heroBanner  Json?
+  promotions  Json?
+  paymentOffers Json?
+  coupons     Json?
+  specs       Json?
+  bundles     Json?
   status      ProductStatus? @default(ACTIVE)
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt

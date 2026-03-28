@@ -36,7 +36,7 @@ const parseSort = (sortType) => {
     }
 };
 
-const PRODUCT_SELECT = {
+const PRODUCT_LIST_SELECT = {
     id: true,
     image: true,
     title: true,
@@ -50,6 +50,49 @@ const PRODUCT_SELECT = {
     status: true,
     createdAt: true,
     updatedAt: true
+};
+
+const PRODUCT_DETAIL_SELECT = {
+    ...PRODUCT_LIST_SELECT,
+    heroBanner: true,
+    promotions: true,
+    paymentOffers: true,
+    coupons: true,
+    specs: true,
+    bundles: true
+};
+
+const DEFAULT_DETAIL_DATA = {
+    heroBanner: null,
+    promotions: [],
+    paymentOffers: [],
+    coupons: [],
+    specs: [],
+    bundles: []
+};
+
+const isUnknownFieldSelectError = (error) =>
+    String(error?.message || '').includes('Unknown field') &&
+    String(error?.message || '').includes('for select statement on model `Product`');
+
+const findProductDetailSafe = async (id) => {
+    try {
+        return await prisma.product.findUnique({
+            where: { id },
+            select: PRODUCT_DETAIL_SELECT
+        });
+    } catch (error) {
+        if (!isUnknownFieldSelectError(error)) throw error;
+
+        const basicProduct = await prisma.product.findUnique({
+            where: { id },
+            select: PRODUCT_LIST_SELECT
+        });
+
+        return basicProduct
+            ? { ...basicProduct, ...DEFAULT_DETAIL_DATA }
+            : null;
+    }
 };
 
 const getProducts = async (req, res, options = { includeDisabled: false }) => {
@@ -71,7 +114,7 @@ const getProducts = async (req, res, options = { includeDisabled: false }) => {
                 skip,
                 take: limit,
                 orderBy: parseSort(sortType),
-                select: PRODUCT_SELECT
+                select: PRODUCT_LIST_SELECT
             }),
             prisma.product.count({ where })
         ]);
@@ -127,10 +170,7 @@ const getAllProductsAdmin = async (req, res) => {
 const getProductByID = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = await prisma.product.findUnique({
-            where: { id },
-            select: PRODUCT_SELECT
-        });
+        const product = await findProductDetailSafe(id);
 
         if (!product) {
             return res.status(404).json({
@@ -184,7 +224,13 @@ const createProduct = async (req, res) => {
             stock,
             rating,
             badge,
-            size
+            size,
+            heroBanner,
+            promotions,
+            paymentOffers,
+            coupons,
+            specs,
+            bundles
         } = req.body;
 
         const newProduct = await prisma.product.create({
@@ -198,9 +244,15 @@ const createProduct = async (req, res) => {
                 rating,
                 badge,
                 size,
+                heroBanner,
+                promotions,
+                paymentOffers,
+                coupons,
+                specs,
+                bundles,
                 status: 'ACTIVE'
             },
-            select: PRODUCT_SELECT
+            select: PRODUCT_LIST_SELECT
         });
 
         res.status(201).json({
@@ -230,7 +282,7 @@ const updatedProduct = async (req, res) => {
         const updatedProductData = await prisma.product.update({
             where: { id },
             data: updateData,
-            select: PRODUCT_SELECT
+            select: PRODUCT_LIST_SELECT
         });
 
         res.status(200).json({

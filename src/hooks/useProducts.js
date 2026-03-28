@@ -2,7 +2,7 @@
  * Shared product data hook:
  * filtering, pagination and infinite append behaviors.
  */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { getAllProducts } from '@api/productsService.js';
 
 export const useProducts = (initialLimit = 8) => {
@@ -21,12 +21,37 @@ export const useProducts = (initialLimit = 8) => {
         sortType: '0',
         category: null
     });
+    const paginationRef = useRef({
+        page: 1,
+        limit: initialLimit
+    });
+    const filtersRef = useRef({
+        sortType: '0',
+        category: null
+    });
+    const isRequestInFlightRef = useRef(false);
+
+    useEffect(() => {
+        paginationRef.current = {
+            page: pagination.page,
+            limit: pagination.limit
+        };
+    }, [pagination.page, pagination.limit]);
+
+    useEffect(() => {
+        filtersRef.current = {
+            sortType: filters.sortType,
+            category: filters.category
+        };
+    }, [filters.sortType, filters.category]);
 
     const fetchProducts = useCallback(
         async (queryParams = {}, options = {}) => {
             const { append = false } = options;
+            if (isRequestInFlightRef.current) return;
 
             try {
+                isRequestInFlightRef.current = true;
                 if (append) {
                     setIsFetchingMore(true);
                 } else {
@@ -36,10 +61,10 @@ export const useProducts = (initialLimit = 8) => {
                 setError(null);
 
                 const finalParams = {
-                    page: queryParams.page ?? pagination.page,
-                    limit: queryParams.limit ?? pagination.limit,
-                    sortType: queryParams.sortType ?? filters.sortType,
-                    category: queryParams.category ?? filters.category
+                    page: queryParams.page ?? paginationRef.current.page,
+                    limit: queryParams.limit ?? paginationRef.current.limit,
+                    sortType: queryParams.sortType ?? filtersRef.current.sortType,
+                    category: queryParams.category ?? filtersRef.current.category
                 };
 
                 const response = await getAllProducts(finalParams);
@@ -98,11 +123,12 @@ export const useProducts = (initialLimit = 8) => {
 
                 setHasMore(false);
             } finally {
+                isRequestInFlightRef.current = false;
                 setLoading(false);
                 setIsFetchingMore(false);
             }
         },
-        [pagination.page, pagination.limit, filters.sortType, filters.category]
+        []
     );
 
     const handlePageChange = useCallback(

@@ -7,6 +7,13 @@ const useInfiniteScroll = ({
     onLoadMore
 }) => {
     const sentinelRef = useRef(null);
+    const triggerLockRef = useRef(false);
+
+    useEffect(() => {
+        if (!loading) {
+            triggerLockRef.current = false;
+        }
+    }, [loading]);
 
     useEffect(() => {
         if (!enabled || loading || !hasMore || !sentinelRef.current) return;
@@ -14,14 +21,15 @@ const useInfiniteScroll = ({
         const observer = new IntersectionObserver(
             (entries) => {
                 const firstEntry = entries[0];
-                if (firstEntry?.isIntersecting) {
+                if (firstEntry?.isIntersecting && !triggerLockRef.current) {
+                    triggerLockRef.current = true;
                     onLoadMore?.();
                 }
             },
             {
                 root: null,
-                rootMargin: '320px 0px 240px 0px',
-                threshold: 0.01
+                rootMargin: '120px 0px 120px 0px',
+                threshold: 0.08
             }
         );
 

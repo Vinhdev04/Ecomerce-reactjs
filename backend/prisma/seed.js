@@ -29,6 +29,75 @@ async function main() {
   await prisma.product.deleteMany({});
   console.log("🗑️  Đã xóa dữ liệu sản phẩm cũ");
 
+  const buildRichProductData = (product, index) => {
+    const basePrice = Number(product.price || 0);
+    const categoryToken = (product.category || "Controller")
+      .replace(/\s+/g, "")
+      .toUpperCase()
+      .slice(0, 4);
+    const releaseYear = 2024 + (index % 3);
+
+    return {
+      heroBanner: {
+        title: `${product.title} - Official Launch`,
+        subtitle: "Premium build, fast shipping, and official warranty.",
+        mediaType: "image",
+        mediaUrl: product.image?.[0] || null
+      },
+      promotions: [
+        "2-hour express delivery in major cities.",
+        `Official 12-month warranty for ${product.category || "gaming"} line.`,
+        `Trade-in bonus up to ${Math.round(basePrice * 0.25).toLocaleString("vi-VN")}d.`
+      ],
+      paymentOffers: [
+        `0% installment from 6 to 12 months for orders over ${Math.round(basePrice * 0.7).toLocaleString("vi-VN")}d.`,
+        `Discount up to ${Math.round(basePrice * 0.1).toLocaleString("vi-VN")}d via e-wallet campaigns.`,
+        "Business orders receive dedicated B2B quote support."
+      ],
+      coupons: [
+        {
+          code: `${categoryToken}VIP${releaseYear}`,
+          title: "VIP Member Deal",
+          description: "Save more instantly for logged-in members.",
+          discountText: `${Math.round(basePrice * 0.08).toLocaleString("vi-VN")}d off`,
+          expiresAt: "2026-12-31"
+        },
+        {
+          code: `FREESHIP${releaseYear}`,
+          title: "Free Ship Nationwide",
+          description: "No shipping fee for checkout over 1,500,000d.",
+          discountText: "Free shipping",
+          expiresAt: "2026-11-30"
+        }
+      ],
+      specs: [
+        { label: "Connection", value: "Wireless + USB-C" },
+        { label: "Compatibility", value: "PC, Console, Mobile" },
+        { label: "Battery", value: `${18 + (index % 8)}h typical use` },
+        { label: "Weight", value: `${220 + index * 5} g` },
+        { label: "Material", value: "Matte anti-slip polymer shell" },
+        { label: "Colorway", value: ["Black", "White", "Blue", "Red"][index % 4] }
+      ],
+      bundles: [
+        {
+          title: `${product.title} Carry Case`,
+          image: product.image?.[1] || product.image?.[0] || null,
+          price: 390000,
+          oldPrice: 490000,
+          discountLabel: "Save 20%",
+          ctaLabel: "Add bundle"
+        },
+        {
+          title: `${product.category || "Controller"} Thumb Grip Kit`,
+          image: product.image?.[2] || product.image?.[0] || null,
+          price: 190000,
+          oldPrice: 260000,
+          discountLabel: "Combo deal",
+          ctaLabel: "Add bundle"
+        }
+      ]
+    };
+  };
   const products = [
     {
       image: [
@@ -341,9 +410,13 @@ async function main() {
       badge: "Retro"
     }
   ];
+  const enrichedProducts = products.map((item, index) => ({
+    ...item,
+    ...buildRichProductData(item, index)
+  }));
 
-  // Insert từng sản phẩm để tránh lỗi
-  for (const product of products) {
+  // Insert tung san pham de tranh loi
+  for (const product of enrichedProducts) {
     await prisma.product.create({
       data: product
     });
@@ -375,3 +448,6 @@ main()
     await prisma.$disconnect();
     console.log("🔌 Đã ngắt kết nối database");
   });
+
+
+

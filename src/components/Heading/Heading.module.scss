@@ -1,70 +1,84 @@
 @use '@styles/mixin.module.scss' as *;
-@use '@styles/variable.module.scss' as *;
 
 .containerX {
-    @include flex_box(center, center, 10px);
-    @include margin(65px, 0px, 40px, 0px);
-    @include padding(0px, 20px, 0px, 20px);
-
-    @include responsive(tablet) {
-        @include margin(50px, 0px, 30px, 0px);
-        gap: 8px;
-    }
-
-    @include responsive(mobile) {
-        @include margin(40px, 0px, 25px, 0px);
-        @include padding(0px, 15px, 0px, 15px);
-        gap: 6px;
-    }
+    @include flex_box(center, center, 16px);
+    margin: 70px 0 34px;
+    padding: 0 20px;
 }
 
 .desc {
-    font-size: 14px;
-    color: $third_color;
+    margin: 0;
+    font-size: 0.72rem;
+    color: #f0642f;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-
-    @include responsive(mobile) {
-        font-size: 12px;
-    }
+    letter-spacing: 0.18em;
+    font-weight: 800;
 }
 
 .title {
-    font-size: 24px;
-    color: $primary_color;
-    font-weight: 600;
-    white-space: nowrap;
-
-    @include responsive(tablet) {
-        font-size: 20px;
-    }
-
-    @include responsive(mobile) {
-        font-size: 18px;
-    }
+    margin: 6px 0 0;
+    font-size: clamp(1.35rem, 3vw, 2.1rem);
+    color: #162947;
+    font-weight: 700;
+    font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
 }
 
 .headline {
     width: 100%;
-    height: 2px;
-    border-top: 1px solid #e1e1e1;
+    height: 1px;
     flex-shrink: 1;
+    background: linear-gradient(90deg, rgba(28, 88, 180, 0), rgba(28, 88, 180, 0.3), rgba(255, 115, 73, 0.26), rgba(28, 88, 180, 0));
 }
 
 .containerBox {
     @include flex_box(center, center, 0px);
-    @include padding(0px, 30px, 0px, 30px);
-
     flex-direction: column;
-    line-height: 1.2;
     text-align: center;
     flex-shrink: 0;
+    min-width: min(90vw, 420px);
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(34, 78, 137, 0.1);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(246, 250, 255, 0.92));
+    box-shadow: 0 14px 32px rgba(18, 31, 53, 0.08);
+    animation: fadeIn 0.65s ease both;
+}
 
-    @include responsive(tablet) {
-        @include padding(0px, 20px, 0px, 20px);
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
     }
 
-    @include responsive(mobile) {
-        @include padding(0px, 15px, 0px, 15px);
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@include responsive(tablet) {
+    .containerX {
+        margin-top: 46px;
+        gap: 10px;
+    }
+
+    .containerBox {
+        padding: 0.85rem 0.9rem;
+    }
+}
+
+@include responsive(mobile) {
+    .containerX {
+        margin: 34px 0 24px;
+        gap: 8px;
+        padding: 0 14px;
+    }
+
+    .desc {
+        font-size: 0.63rem;
+    }
+
+    .headline {
+        opacity: 0.55;
     }
 }

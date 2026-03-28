@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { OurShopProvider, OurShopContext } from '@/contexts/OurShopProvider';
 import FilterProduct from '@components/OurShop/components/FilterProduct';
 import ProductListShop from '@components/OurShop/components/ProductListShop';
+import ShopCouponSection from '@components/OurShop/components/ShopCouponSection';
 
 /* ==============================
    COMPONENT CONTENT (Sử dụng Context)
@@ -69,6 +70,7 @@ function OurShopContent() {
 
                 {/* Banner */}
                 <BannerShop />
+                <ShopCouponSection />
 
                 {/* Filter Section */}
                 <FilterProduct />
