@@ -11,7 +11,7 @@ const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@
      REGISTER - Đăng ký
  ============================== */
 const register = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, name } = req.body;
 
     // Validation
     if (!username || !password) {
@@ -57,13 +57,13 @@ const register = async (req, res) => {
 
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const name = username.split('@')[0];
+        const displayName = name?.trim() || username.split('@')[0];
 
         const newUser = await prisma.user.create({
             data: {
                 email: username,
                 password: hashedPassword,
-                name: name
+                name: displayName
             },
             select: {
                 id: true,
@@ -396,11 +396,123 @@ const getUserById = async (req, res) => {
     }
 };
 
+/* ==============================
+     UPDATE USER BY ID
+ ============================== */
+const updateUserById = async (req, res) => {
+    const { id } = req.params;
+    const { email, name, password } = req.body;
+
+    try {
+        const existingUser = await prisma.user.findUnique({
+            where: { id }
+        });
+
+        if (!existingUser) {
+            return res.status(404).json({
+                success: false,
+                message: 'Không tìm thấy người dùng!'
+            });
+        }
+
+        if (email && email !== existingUser.email) {
+            const duplicatedEmail = await prisma.user.findUnique({
+                where: { email }
+            });
+
+            if (duplicatedEmail) {
+                return res.status(409).json({
+                    success: false,
+                    message: 'Email đã được sử dụng bởi tài khoản khác!'
+                });
+            }
+        }
+
+        let hashedPassword;
+        if (password) {
+            if (!PASSWORD_REGEX.test(password)) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        'Mật khẩu phải chứa ít nhất: 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt (@$!%*?&)!'
+                });
+            }
+
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { id },
+            data: {
+                ...(email ? { email } : {}),
+                ...(name ? { name } : {}),
+                ...(hashedPassword ? { password: hashedPassword } : {})
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                createdAt: true,
+                updatedAt: true
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'Cập nhật người dùng thành công!',
+            data: updatedUser
+        });
+    } catch (error) {
+        console.error('Lỗi cập nhật người dùng:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi hệ thống, vui lòng thử lại sau!'
+        });
+    }
+};
+
+/* ==============================
+     DELETE USER BY ID
+ ============================== */
+const deleteUserById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const existingUser = await prisma.user.findUnique({
+            where: { id }
+        });
+
+        if (!existingUser) {
+            return res.status(404).json({
+                success: false,
+                message: 'Không tìm thấy người dùng!'
+            });
+        }
+
+        await prisma.user.delete({
+            where: { id }
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'Xóa người dùng thành công!'
+        });
+    } catch (error) {
+        console.error('Lỗi xóa người dùng:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi hệ thống, vui lòng thử lại sau!'
+        });
+    }
+};
+
 export {
     register,
     login,
     logout,
     getAllUsers,
     getUserById,
-    refreshToken
+    refreshToken,
+    updateUserById,
+    deleteUserById
 };

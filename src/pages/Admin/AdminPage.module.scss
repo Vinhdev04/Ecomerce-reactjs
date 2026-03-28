@@ -1,0 +1,448 @@
+.adminPage {
+    min-height: 100vh;
+    padding: 140px 0 80px;
+    background:
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 24%),
+        linear-gradient(180deg, #f7fbff 0%, #eef4fb 100%);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: flex-start;
+    margin-bottom: 28px;
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        color: #17324d;
+    }
+}
+
+.kicker,
+.sectionHeader p {
+    margin: 0 0 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #2f80ed;
+}
+
+.subText,
+.syncText,
+.itemCard span,
+.itemCard small,
+.activityItem p,
+.activityItem small,
+.metricList span,
+.emptyMini {
+    color: #617892;
+}
+
+.subText {
+    max-width: 760px;
+    margin: 12px 0 0;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.headerActions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+}
+
+.sidebar,
+.panel,
+.cardBox,
+.formCard,
+.tableCard,
+.statCard,
+.emptyState {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(127, 156, 189, 0.18);
+    border-radius: 28px;
+    box-shadow: 0 24px 60px rgba(21, 43, 76, 0.08);
+    backdrop-filter: blur(20px);
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+    position: sticky;
+    top: 110px;
+    height: fit-content;
+}
+
+.tabButton,
+.primaryBtn,
+.secondaryBtn,
+.rowActions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.tabButton {
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: #eff5fb;
+    color: #31506f;
+    font-weight: 700;
+    justify-content: flex-start;
+}
+
+.activeTab {
+    background: linear-gradient(135deg, #2f80ed, #13c2c2);
+    color: #fff;
+    box-shadow: 0 16px 30px rgba(47, 128, 237, 0.2);
+}
+
+.panel {
+    padding: 24px;
+}
+
+.sectionStack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.statsGrid,
+.dualGrid {
+    display: grid;
+    gap: 20px;
+}
+
+.statsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dualGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.statCard,
+.cardBox,
+.formCard,
+.tableCard {
+    padding: 24px;
+}
+
+.statCard {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    span {
+        color: #5f7895;
+        font-weight: 600;
+    }
+
+    strong {
+        font-size: clamp(1.7rem, 4vw, 2.4rem);
+        color: #16314d;
+    }
+}
+
+.cardBox h3,
+.formCard h3,
+.tableCard h3 {
+    margin: 0;
+    font-size: 1.35rem;
+    color: #17324d;
+}
+
+.metricList,
+.activityList,
+.cardList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.metricList div,
+.activityItem,
+.itemCard {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border-radius: 20px;
+    background: #f8fbff;
+    border: 1px solid #e0ebf7;
+}
+
+.metricList strong,
+.activityItem strong,
+.itemCard strong,
+.itemCard b {
+    color: #16314d;
+}
+
+.activityItem,
+.itemCard {
+    align-items: flex-start;
+}
+
+.activityItem {
+    flex-direction: column;
+}
+
+.activityItem span {
+    display: inline-flex;
+    width: fit-content;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(47, 128, 237, 0.12);
+    color: #2f80ed;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+
+    label {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        color: #31506f;
+        font-weight: 700;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid #d9e6f2;
+        background: #fff;
+        color: #17324d;
+        outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #2f80ed;
+        box-shadow: 0 0 0 4px rgba(47, 128, 237, 0.12);
+    }
+}
+
+.fullField {
+    grid-column: 1 / -1;
+}
+
+.formActions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.tableWrap {
+    overflow-x: auto;
+}
+
+.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: 14px 12px;
+        border-bottom: 1px solid #e2edf8;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    th {
+        color: #5b7491;
+        font-size: 0.86rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    td {
+        color: #17324d;
+    }
+}
+
+.itemCard {
+    align-items: center;
+}
+
+.itemCardMain {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rowActions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.rowActions button {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    background: #edf4fb;
+    color: #17324d;
+}
+
+.rowActions button:hover,
+.tabButton:hover,
+.primaryBtn:hover,
+.secondaryBtn:hover {
+    transform: translateY(-2px);
+}
+
+.primaryBtn,
+.secondaryBtn {
+    padding: 14px 20px;
+    border-radius: 16px;
+    font-weight: 700;
+}
+
+.primaryBtn {
+    background: linear-gradient(135deg, #2f80ed, #175cd3);
+    color: #fff;
+    box-shadow: 0 18px 32px rgba(47, 128, 237, 0.22);
+}
+
+.secondaryBtn {
+    background: #edf5ff;
+    color: #1e5da8;
+}
+
+.emptyState {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 40px 28px;
+    text-align: center;
+
+    h3 {
+        margin-bottom: 12px;
+        color: #17324d;
+    }
+
+    p {
+        margin-bottom: 24px;
+        color: #617892;
+        line-height: 1.7;
+    }
+}
+
+.emptyMini {
+    padding: 16px;
+    border-radius: 18px;
+    background: #f8fbff;
+    border: 1px dashed #d8e6f5;
+}
+
+@media (max-width: 1199px) {
+    .statsGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 991px) {
+    .adminPage {
+        padding-top: 120px;
+    }
+
+    .header,
+    .layout,
+    .dualGrid {
+        grid-template-columns: 1fr;
+        display: grid;
+    }
+
+    .headerActions {
+        align-items: flex-start;
+    }
+
+    .sidebar {
+        position: static;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .tabButton {
+        white-space: nowrap;
+    }
+
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 575px) {
+    .adminPage {
+        padding: 108px 0 56px;
+    }
+
+    .panel,
+    .sidebar,
+    .statCard,
+    .cardBox,
+    .formCard,
+    .tableCard,
+    .emptyState {
+        border-radius: 22px;
+        padding: 18px;
+    }
+
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .metricList div,
+    .activityItem,
+    .itemCard {
+        padding: 14px;
+    }
+
+    .itemCard {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .formActions {
+        justify-content: stretch;
+    }
+
+    .primaryBtn,
+    .secondaryBtn {
+        width: 100%;
+    }
+}

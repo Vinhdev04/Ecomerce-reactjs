@@ -9,7 +9,9 @@ import {
     logout,
     getAllUsers, 
     getUserById,
-    refreshToken
+    refreshToken,
+    updateUserById,
+    deleteUserById
 } from '../controller/users.controller.js';
 import authLimiter from '../helpers/authLimiter.js';
 import refreshLimiter from '../helpers/refreshLimiter.js';
@@ -28,5 +30,7 @@ router.post('/refresh-token', refreshLimiter, refreshToken);
 // ============================================
 router.get('/users', verifyToken, getAllUsers);
 router.get('/users/:id', verifyToken, getUserById);
+router.put('/users/:id', verifyToken, updateUserById);
+router.delete('/users/:id', verifyToken, deleteUserById);
 
 export default router;
