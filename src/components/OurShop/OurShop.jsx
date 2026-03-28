@@ -8,7 +8,7 @@ import BannerShop from './components/BannerShop';
 import { useNavigate } from 'react-router-dom';
 import { OurShopProvider, OurShopContext } from '@/contexts/OurShopProvider';
 import FilterProduct from '@components/OurShop/components/FilterProduct';
-import ProductList from '@components/ProductList/ProductList';
+import ProductListShop from '@components/OurShop/components/ProductListShop';
 
 /* ==============================
    COMPONENT CONTENT (Sử dụng Context)
@@ -40,15 +40,6 @@ function OurShopContent() {
             </Layout>
         );
     }
-
-    const {
-        products,
-        loading,
-        error,
-        pagination,
-        handlePageChange,
-        retry
-    } = context;
 
     const items = [
         { title: 'Home' },
@@ -83,26 +74,7 @@ function OurShopContent() {
                 <FilterProduct />
 
                 {/* Product List */}
-                <ProductList
-                    products={products}
-                    loading={loading}
-                    error={error}
-                    pagination={pagination}
-                    handlePageChange={handlePageChange}
-                    retry={retry}
-                />
-
-         
-                {!loading && products.length > 0 && pagination.page < pagination.totalPages && (
-                    <div className="mt-4 text-center">
-                        <button
-                            className="btn btn-primary"
-                            onClick={() => handlePageChange(pagination.page + 1)}
-                        >
-                            Load More
-                        </button>
-                    </div>
-                )}
+                <ProductListShop />
             </div>
         </Layout>
     );

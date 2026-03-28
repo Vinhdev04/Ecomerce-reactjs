@@ -96,6 +96,33 @@
     }
 }
 
+.leftGroup,
+.rightGroup {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.leftGroup {
+    justify-content: flex-start;
+}
+
+.rightGroup {
+    justify-content: flex-end;
+}
+
+.navLinks {
+    min-width: 0;
+    gap: 26px;
+
+    @include laptop {
+        gap: 18px;
+    }
+}
+
+.actionIcons {
+    flex-shrink: 0;
+}
+
 .containerBox {
     @include flex_box(center, center, 12px);
 
@@ -188,6 +215,7 @@
     color: #00ffff;
     white-space: nowrap;
     position: relative;
+    min-width: 0;
 
     @include laptop {
         font-size: 13px;
@@ -202,49 +230,68 @@
         display: none;
     }
 
-    .subMenu {
+}
+
+.accountItem {
+    max-width: 180px;
+
+    @include laptop {
+        max-width: 140px;
+    }
+}
+
+.accountLabel {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+}
+
+.subMenu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 120px;
+    background-color: #1a202c; 
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    padding: 8px 0;
+    z-index: 1000;
+    margin-top: 10px;
+
+    div {
+        padding: 8px 16px;
+        color: #fff;
+        font-size: 14px;
+        transition: background-color 0.2s;
+        white-space: nowrap;
+
+        &:hover {
+            background-color: #2d3748;
+            color: #00ffff;
+        }
+    }
+    
+    &::before {
+        content: '';
         position: absolute;
-        top: 100%;
+        top: -6px;
         left: 50%;
         transform: translateX(-50%);
-        min-width: 120px;
-        background-color: #1a202c; 
-        border: 1px solid #2d3748;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        padding: 8px 0;
-        z-index: 1000;
-        margin-top: 10px;
-
-        div {
-            padding: 8px 16px;
-            color: #fff;
-            font-size: 14px;
-            transition: background-color 0.2s;
-            white-space: nowrap;
-
-            &:hover {
-                background-color: #2d3748;
-                color: #00ffff;
-            }
-        }
-        
-        &::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-bottom: 6px solid #2d3748;
-        }
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid #2d3748;
     }
 }
 
 .headerContent {
     @include flex_box(center, center, 0px);
     flex-direction: column;
+    flex: 0 0 auto;
+    padding: 0 18px;
 }
 
 .titleBox {

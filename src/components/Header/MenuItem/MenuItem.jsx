@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from '../Header.module.scss';
 import { SideBarContext } from '@contexts/SideBarContext.js';
-import { UserInfoContext } from "@contexts/UserInfoContext.js";
+import { UserInfoContext } from '@contexts/UserInfoContext.js';
 
 function MenuItem({ title, href, className, onClick }) {
-    const { navItem, subMenu } = styles;
+    const { navItem, subMenu, accountItem, accountLabel } = styles;
     const { setIsOpen, setType } = useContext(SideBarContext);
     const { userInfo, handleLogout, isLoading } = useContext(UserInfoContext);
     const [isShowSubMenu, setIsShowSubMenu] = useState(false);
@@ -17,25 +17,21 @@ function MenuItem({ title, href, className, onClick }) {
 
         if (title === 'Sign in') {
             if (!userInfo) {
-                // Chưa login -> Mở sidebar login
                 setIsOpen(true);
                 setType('login');
             } else {
-              
-                setIsShowSubMenu(!isShowSubMenu);
+                setIsShowSubMenu((prev) => !prev);
             }
         } else if (href) {
             navigate(href);
         }
     };
 
-  
     const onLogout = (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         handleLogout();
     };
 
-  
     const getDisplayText = () => {
         if (title !== 'Sign in') {
             return title;
@@ -46,21 +42,31 @@ function MenuItem({ title, href, className, onClick }) {
         }
 
         if (userInfo) {
-            //  Hiển thị tên user từ userInfo object
-            return <b>{`Hello: ${userInfo.name || userInfo.email?.split('@')[0] || 'User'}`}</b>;
+            const displayName =
+                userInfo.name || userInfo.email?.split('@')[0] || 'User';
+
+            return (
+                <span className={accountLabel} title={displayName}>
+                    {`Hello: ${displayName}`}
+                </span>
+            );
         }
 
         return 'Sign in';
     };
 
     return (
-        <div className={classNames(navItem, className)} onClick={handleClick}>
+        <div
+            className={classNames(navItem, className, {
+                [accountItem]: title === 'Sign in' && userInfo
+            })}
+            onClick={handleClick}
+        >
             {getDisplayText()}
 
-            {/* SUBMENU - CHỈ HIỂN THỊ KHI ĐÃ LOGIN */}
             {isShowSubMenu && userInfo && (
-                <div 
-                    className={subMenu} 
+                <div
+                    className={subMenu}
                     onMouseLeave={() => setIsShowSubMenu(false)}
                 >
                     <div onClick={onLogout} style={{ cursor: 'pointer' }}>

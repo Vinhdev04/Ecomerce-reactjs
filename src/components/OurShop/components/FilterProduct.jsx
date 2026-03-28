@@ -5,7 +5,6 @@ import { OurShopContext } from '@contexts/OurShopContext.js';
 
 
 function FilterProduct() {
-
     const {
         sortOptions,
         showOptions,
@@ -14,15 +13,6 @@ function FilterProduct() {
         setShowLimit,
         viewMode
     } = useContext(OurShopContext);
-
-    // Debug: Check context
-    console.log('FilterProduct context:', {
-        sortOptions,
-        showOptions,
-        setViewMode,
-        setSortType,
-        setShowLimit
-    });
 
     const handleSortChange = (value) => {
         setSortType(value);
@@ -33,7 +23,6 @@ function FilterProduct() {
     };
 
     const handleViewModeChange = (mode) => {
-        
         setViewMode(mode);
     };
 

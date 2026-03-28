@@ -17,7 +17,10 @@ function Header() {
         containerBox,
         containerItem,
         containerHeader,
-
+        leftGroup,
+        rightGroup,
+        navLinks,
+        actionIcons,
         headerContent,
         titleBox,
         titleRow,
@@ -65,7 +68,7 @@ function Header() {
     return (
         <div className={classNames(container,topHeader,{[fixedXHeader]:fixedHeader})}>
             <div className={containerHeader}>
-                <div className={containerItem}>
+                <div className={classNames(containerItem, leftGroup)}>
                     <FaBars className={hamburgerBtn} onClick={() => setIsMobileMenuOpen(true)} role="button" aria-label="Open menu" tabIndex={0} />
                     
                     <div className={classNames(containerBox, desktopOnly)}>
@@ -80,7 +83,7 @@ function Header() {
                         })}
                     </div>
 
-                    <div className={classNames(containerItem, desktopOnly)}>
+                    <div className={classNames(containerItem, navLinks, desktopOnly)}>
                         {navItem?.slice(0, 3).map((item, idx) => {
                             return <MenuItem key={idx} title={item.title} href={item.href} />;
                         })}
@@ -97,14 +100,13 @@ function Header() {
                     </div>
                 </div>
 
-                <div className={containerItem}>
-                    {' '}
-                    <div className={classNames(containerItem, desktopOnly)}>
+                <div className={classNames(containerItem, rightGroup)}>
+                    <div className={classNames(containerItem, navLinks, desktopOnly)}>
                         {navItem?.slice(3, navItem.length).map((item, idx) => {
                             return <MenuItem key={idx} title={item.title} href={item.href} setIsOpen={isOpen}/>;
                         })}
                     </div>
-                    <div className={containerBox} >
+                    <div className={classNames(containerBox, actionIcons)} >
                         <TfiReload width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("compare")}/>
                         <FaRegHeart width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("favorites")}/>   
                         <BsCart width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("cart")}/>
