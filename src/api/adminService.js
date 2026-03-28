@@ -2,21 +2,29 @@ import axiosClient from './axiosClient';
 
 const normalizeProductPayload = (payload) => ({
     ...payload,
-    price: Number(payload.price),
-    stock: Number(payload.stock),
-    rating: Number(payload.rating),
-    image: Array.isArray(payload.image)
-        ? payload.image
-        : String(payload.image || '')
-              .split(',')
-              .map((item) => item.trim())
-              .filter(Boolean),
-    size: Array.isArray(payload.size)
-        ? payload.size
-        : String(payload.size || '')
-              .split(',')
-              .map((item) => item.trim())
-              .filter(Boolean)
+    ...(payload.price !== undefined ? { price: Number(payload.price) } : {}),
+    ...(payload.stock !== undefined ? { stock: Number(payload.stock) } : {}),
+    ...(payload.rating !== undefined ? { rating: Number(payload.rating) } : {}),
+    ...(payload.image !== undefined
+        ? {
+              image: Array.isArray(payload.image)
+                  ? payload.image
+                  : String(payload.image || '')
+                        .split(',')
+                        .map((item) => item.trim())
+                        .filter(Boolean)
+          }
+        : {}),
+    ...(payload.size !== undefined
+        ? {
+              size: Array.isArray(payload.size)
+                  ? payload.size
+                  : String(payload.size || '')
+                        .split(',')
+                        .map((item) => item.trim())
+                        .filter(Boolean)
+          }
+        : {})
 });
 
 const normalizeNewsPayload = (payload) => ({
@@ -31,14 +39,14 @@ const normalizeNewsPayload = (payload) => ({
 });
 
 const adminService = {
-    createUser: ({ name, email, password, role }) =>
-        axiosClient.post('/users', { email, password, name, role }),
+    createUser: ({ name, email, password, role, status }) =>
+        axiosClient.post('/users', { email, password, name, role, status }),
     getUsers: () => axiosClient.get('/users'),
     updateUser: (id, payload) => axiosClient.put(`/users/${id}`, payload),
     deleteUser: (id) => axiosClient.delete(`/users/${id}`),
 
     getProducts: () =>
-        axiosClient.get('/products', {
+        axiosClient.get('/products/admin/all', {
             params: {
                 page: 1,
                 limit: 200,
@@ -59,7 +67,11 @@ const adminService = {
     deleteNews: (id) => axiosClient.delete(`/news/${id}`),
 
     getOrders: () => axiosClient.get('/orders'),
-    updateOrderStatus: (id, payload) => axiosClient.put(`/orders/${id}`, payload)
+    updateOrderStatus: (id, payload) => axiosClient.put(`/orders/${id}`, payload),
+
+    getActivities: (params = {}) => axiosClient.get('/activities', { params }),
+    updateActivityStatus: (id, status) =>
+        axiosClient.put(`/activities/${id}/status`, { status })
 };
 
 export default adminService;

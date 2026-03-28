@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import prisma from '../lib/prisma.lib.js';
+import logActivity from '../helpers/activityLogger.js';
 
 const PASSWORD_REGEX =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
@@ -11,6 +13,7 @@ const USER_SELECT_FIELDS = {
     email: true,
     name: true,
     role: true,
+    status: true,
     createdAt: true,
     updatedAt: true
 };
@@ -23,20 +26,20 @@ const buildError = (message, status = 400) => {
 
 const validateCredentials = ({ email, password }) => {
     if (!email || !password) {
-        throw buildError('Email và mật khẩu là bắt buộc!', 400);
+        throw buildError('Email va mat khau la bat buoc!', 400);
     }
 
     if (!EMAIL_REGEX.test(email)) {
-        throw buildError('Email không hợp lệ!', 400);
+        throw buildError('Email khong hop le!', 400);
     }
 
     if (password.length < 6) {
-        throw buildError('Mật khẩu phải có ít nhất 6 ký tự!', 400);
+        throw buildError('Mat khau phai co it nhat 6 ky tu!', 400);
     }
 
     if (!PASSWORD_REGEX.test(password)) {
         throw buildError(
-            'Mật khẩu phải chứa ít nhất: 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt (@$!%*?&)!',
+            'Mat khau phai chua it nhat 1 chu hoa, 1 chu thuong, 1 so va 1 ky tu dac biet.',
             400
         );
     }
@@ -46,7 +49,8 @@ const createUserRecord = async ({
     email,
     password,
     name,
-    role = 'CUSTOMER'
+    role = 'CUSTOMER',
+    status = 'ACTIVE'
 }) => {
     validateCredentials({ email, password });
 
@@ -55,7 +59,7 @@ const createUserRecord = async ({
     });
 
     if (existingUser) {
-        throw buildError('Email đã được sử dụng!', 409);
+        throw buildError('Email da duoc su dung!', 409);
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -65,7 +69,8 @@ const createUserRecord = async ({
             email,
             password: hashedPassword,
             name: name?.trim() || email.split('@')[0],
-            role
+            role,
+            status: status === 'DISABLED' ? 'DISABLED' : 'ACTIVE'
         },
         select: USER_SELECT_FIELDS
     });
@@ -84,40 +89,41 @@ const register = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            message: 'Đăng ký tài khoản thành công!',
+            message: 'Dang ky tai khoan thanh cong!',
             data: newUser
         });
     } catch (error) {
-        console.error('Lỗi đăng ký tài khoản:', error);
+        console.error('Register error:', error);
         res.status(error.status || 500).json({
             success: false,
-            message: error.message || 'Lỗi hệ thống, vui lòng thử lại sau!',
+            message: error.message || 'Loi he thong, vui long thu lai sau!',
             error: error.message
         });
     }
 };
 
 const createUserByAdmin = async (req, res) => {
-    const { email, password, name, role } = req.body;
+    const { email, password, name, role, status } = req.body;
 
     try {
         const newUser = await createUserRecord({
             email,
             password,
             name,
-            role: role === 'ADMIN' ? 'ADMIN' : 'CUSTOMER'
+            role: role === 'ADMIN' ? 'ADMIN' : 'CUSTOMER',
+            status: status === 'DISABLED' ? 'DISABLED' : 'ACTIVE'
         });
 
         res.status(201).json({
             success: true,
-            message: 'Tạo người dùng mới thành công!',
+            message: 'Tao nguoi dung moi thanh cong!',
             data: newUser
         });
     } catch (error) {
-        console.error('Lỗi tạo người dùng từ admin:', error);
+        console.error('Create user by admin error:', error);
         res.status(error.status || 500).json({
             success: false,
-            message: error.message || 'Lỗi hệ thống, vui lòng thử lại sau!'
+            message: error.message || 'Loi he thong, vui long thu lai sau!'
         });
     }
 };
@@ -128,7 +134,7 @@ const login = async (req, res) => {
     if (!username || !password) {
         return res.status(400).json({
             success: false,
-            message: 'Email và mật khẩu là bắt buộc'
+            message: 'Email va mat khau la bat buoc'
         });
     }
 
@@ -140,7 +146,14 @@ const login = async (req, res) => {
         if (!user) {
             return res.status(401).json({
                 success: false,
-                message: 'Không tìm thấy người dùng!'
+                message: 'Khong tim thay nguoi dung!'
+            });
+        }
+
+        if (user.status === 'DISABLED') {
+            return res.status(403).json({
+                success: false,
+                message: 'Tai khoan da bi vo hieu hoa.'
             });
         }
 
@@ -149,15 +162,14 @@ const login = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(401).json({
                 success: false,
-                message: 'Email hoặc mật khẩu không chính xác'
+                message: 'Email hoac mat khau khong chinh xac'
             });
         }
 
-        const token = jwt.sign(
-            { userId: user.id },
-            process.env.JWT_SECRET,
-            { expiresIn: '15m' }
-        );
+        const sessionId = crypto.randomUUID();
+        const token = jwt.sign({ userId: user.id, sessionId }, process.env.JWT_SECRET, {
+            expiresIn: '15m'
+        });
 
         const refreshToken = jwt.sign(
             { userId: user.id },
@@ -168,6 +180,20 @@ const login = async (req, res) => {
         await prisma.user.update({
             where: { id: user.id },
             data: { refreshToken }
+        });
+
+        await logActivity({
+            req,
+            userId: user.id,
+            userEmail: user.email,
+            action: 'LOGIN',
+            entityType: 'AUTH',
+            entityId: user.id,
+            sessionId,
+            detail: {
+                role: user.role,
+                accountStatus: user.status || 'ACTIVE'
+            }
         });
 
         res.cookie('refreshToken', refreshToken, {
@@ -182,7 +208,7 @@ const login = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Đăng nhập thành công',
+            message: 'Dang nhap thanh cong',
             data: {
                 id: user.id,
                 user: userWithoutPassword,
@@ -190,10 +216,10 @@ const login = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Lỗi đăng nhập:', error);
+        console.error('Login error:', error);
         res.status(500).json({
             success: false,
-            message: 'Lỗi hệ thống, vui lòng thử lại sau'
+            message: 'Loi he thong, vui long thu lai sau'
         });
     }
 };
@@ -226,10 +252,10 @@ const logout = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Đăng xuất thành công!'
+            message: 'Dang xuat thanh cong!'
         });
     } catch (err) {
-        console.error('Lỗi đăng xuất:', err);
+        console.error('Logout error:', err);
 
         res.clearCookie('refreshToken', {
             httpOnly: true,
@@ -240,7 +266,7 @@ const logout = async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: 'Lỗi hệ thống!'
+            message: 'Loi he thong!'
         });
     }
 };
@@ -251,7 +277,7 @@ const refreshToken = async (req, res) => {
     if (!refreshTokenValue) {
         return res.status(401).json({
             success: false,
-            message: 'Không tìm thấy refresh token!'
+            message: 'Khong tim thay refresh token!'
         });
     }
 
@@ -268,12 +294,19 @@ const refreshToken = async (req, res) => {
         if (!user || user.refreshToken !== refreshTokenValue) {
             return res.status(403).json({
                 success: false,
-                message: 'Refresh token không hợp lệ!'
+                message: 'Refresh token khong hop le!'
+            });
+        }
+
+        if (user.status === 'DISABLED') {
+            return res.status(403).json({
+                success: false,
+                message: 'Tai khoan da bi vo hieu hoa.'
             });
         }
 
         const newAccessToken = jwt.sign(
-            { userId: user.id },
+            { userId: user.id, sessionId: crypto.randomUUID() },
             process.env.JWT_SECRET,
             { expiresIn: '15m' }
         );
@@ -299,7 +332,7 @@ const refreshToken = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Refresh token thành công!',
+            message: 'Refresh token thanh cong!',
             data: {
                 token: newAccessToken
             }
@@ -308,21 +341,21 @@ const refreshToken = async (req, res) => {
         if (error.name === 'TokenExpiredError') {
             return res.status(403).json({
                 success: false,
-                message: 'Refresh token đã hết hạn, vui lòng đăng nhập lại!'
+                message: 'Refresh token da het han, vui long dang nhap lai!'
             });
         }
 
         if (error.name === 'JsonWebTokenError') {
             return res.status(403).json({
                 success: false,
-                message: 'Refresh token không hợp lệ!'
+                message: 'Refresh token khong hop le!'
             });
         }
 
-        console.error('Lỗi refresh token:', error);
+        console.error('Refresh token error:', error);
         res.status(500).json({
             success: false,
-            message: 'Lỗi hệ thống, vui lòng thử lại sau!'
+            message: 'Loi he thong, vui long thu lai sau!'
         });
     }
 };
@@ -338,15 +371,15 @@ const getAllUsers = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Lấy danh sách người dùng thành công!',
+            message: 'Lay danh sach nguoi dung thanh cong!',
             data: users,
             total: users.length
         });
     } catch (error) {
-        console.error('Lỗi lấy danh sách người dùng:', error);
+        console.error('Get users error:', error);
         res.status(500).json({
             success: false,
-            message: 'Lỗi hệ thống, vui lòng thử lại sau!'
+            message: 'Loi he thong, vui long thu lai sau!'
         });
     }
 };
@@ -366,14 +399,14 @@ const getUserById = async (req, res) => {
         if (!requester) {
             return res.status(401).json({
                 success: false,
-                message: 'Không tìm thấy người dùng xác thực!'
+                message: 'Khong tim thay nguoi dung xac thuc!'
             });
         }
 
         if (requester.id !== id && requester.role !== 'ADMIN') {
             return res.status(403).json({
                 success: false,
-                message: 'Bạn không có quyền xem thông tin tài khoản này.'
+                message: 'Ban khong co quyen xem thong tin tai khoan nay.'
             });
         }
 
@@ -385,27 +418,27 @@ const getUserById = async (req, res) => {
         if (!user) {
             return res.status(404).json({
                 success: false,
-                message: 'Không tìm thấy người dùng!'
+                message: 'Khong tim thay nguoi dung!'
             });
         }
 
         res.status(200).json({
             success: true,
-            message: 'Lấy thông tin người dùng thành công',
+            message: 'Lay thong tin nguoi dung thanh cong',
             data: user
         });
     } catch (error) {
-        console.error('Lỗi lấy thông tin user:', error);
+        console.error('Get user by id error:', error);
         res.status(500).json({
             success: false,
-            message: 'Lỗi hệ thống, vui lòng thử lại sau'
+            message: 'Loi he thong, vui long thu lai sau'
         });
     }
 };
 
 const updateUserById = async (req, res) => {
     const { id } = req.params;
-    const { email, name, password, role } = req.body;
+    const { email, name, password, role, status } = req.body;
 
     try {
         const existingUser = await prisma.user.findUnique({
@@ -415,7 +448,7 @@ const updateUserById = async (req, res) => {
         if (!existingUser) {
             return res.status(404).json({
                 success: false,
-                message: 'Không tìm thấy người dùng!'
+                message: 'Khong tim thay nguoi dung!'
             });
         }
 
@@ -423,7 +456,7 @@ const updateUserById = async (req, res) => {
             if (!EMAIL_REGEX.test(email)) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Email không hợp lệ!'
+                    message: 'Email khong hop le!'
                 });
             }
 
@@ -434,7 +467,7 @@ const updateUserById = async (req, res) => {
             if (duplicatedEmail) {
                 return res.status(409).json({
                     success: false,
-                    message: 'Email đã được sử dụng bởi tài khoản khác!'
+                    message: 'Email da duoc su dung boi tai khoan khac!'
                 });
             }
         }
@@ -448,12 +481,16 @@ const updateUserById = async (req, res) => {
             hashedPassword = await bcrypt.hash(password, 10);
         }
 
+        const nextStatus =
+            status && status === 'DISABLED' ? 'DISABLED' : status ? 'ACTIVE' : undefined;
+
         const updatedUser = await prisma.user.update({
             where: { id },
             data: {
                 ...(email ? { email } : {}),
                 ...(name !== undefined ? { name } : {}),
                 ...(role ? { role: role === 'ADMIN' ? 'ADMIN' : 'CUSTOMER' } : {}),
+                ...(nextStatus ? { status: nextStatus } : {}),
                 ...(hashedPassword ? { password: hashedPassword } : {})
             },
             select: USER_SELECT_FIELDS
@@ -461,14 +498,14 @@ const updateUserById = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Cập nhật người dùng thành công!',
+            message: 'Cap nhat nguoi dung thanh cong!',
             data: updatedUser
         });
     } catch (error) {
-        console.error('Lỗi cập nhật người dùng:', error);
+        console.error('Update user error:', error);
         res.status(error.status || 500).json({
             success: false,
-            message: error.message || 'Lỗi hệ thống, vui lòng thử lại sau!'
+            message: error.message || 'Loi he thong, vui long thu lai sau!'
         });
     }
 };
@@ -484,7 +521,7 @@ const deleteUserById = async (req, res) => {
         if (!existingUser) {
             return res.status(404).json({
                 success: false,
-                message: 'Không tìm thấy người dùng!'
+                message: 'Khong tim thay nguoi dung!'
             });
         }
 
@@ -494,13 +531,108 @@ const deleteUserById = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Xóa người dùng thành công!'
+            message: 'Xoa nguoi dung thanh cong!'
         });
     } catch (error) {
-        console.error('Lỗi xóa người dùng:', error);
+        console.error('Delete user error:', error);
         res.status(500).json({
             success: false,
-            message: 'Lỗi hệ thống, vui lòng thử lại sau!'
+            message: 'Loi he thong, vui long thu lai sau!'
+        });
+    }
+};
+
+const getMyProfile = async (req, res) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: req.userId },
+            select: USER_SELECT_FIELDS
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'Khong tim thay nguoi dung!'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        console.error('Get my profile error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Loi he thong, vui long thu lai sau!'
+        });
+    }
+};
+
+const updateMyProfile = async (req, res) => {
+    const { email, name, password } = req.body;
+
+    try {
+        const existingUser = await prisma.user.findUnique({
+            where: { id: req.userId }
+        });
+
+        if (!existingUser) {
+            return res.status(404).json({
+                success: false,
+                message: 'Khong tim thay nguoi dung!'
+            });
+        }
+
+        if (email && email !== existingUser.email) {
+            if (!EMAIL_REGEX.test(email)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Email khong hop le!'
+                });
+            }
+
+            const duplicatedEmail = await prisma.user.findUnique({
+                where: { email }
+            });
+
+            if (duplicatedEmail) {
+                return res.status(409).json({
+                    success: false,
+                    message: 'Email da duoc su dung boi tai khoan khac!'
+                });
+            }
+        }
+
+        let hashedPassword;
+        if (password) {
+            validateCredentials({
+                email: email || existingUser.email,
+                password
+            });
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { id: req.userId },
+            data: {
+                ...(email ? { email } : {}),
+                ...(name !== undefined ? { name } : {}),
+                ...(hashedPassword ? { password: hashedPassword } : {})
+            },
+            select: USER_SELECT_FIELDS
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'Cap nhat profile thanh cong!',
+            data: updatedUser
+        });
+    } catch (error) {
+        console.error('Update my profile error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Loi he thong, vui long thu lai sau!'
         });
     }
 };
@@ -513,6 +645,8 @@ export {
     getAllUsers,
     getUserById,
     refreshToken,
+    getMyProfile,
+    updateMyProfile,
     updateUserById,
     deleteUserById
 };

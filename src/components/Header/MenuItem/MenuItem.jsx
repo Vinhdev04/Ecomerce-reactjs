@@ -38,6 +38,12 @@ function MenuItem({ title, href, className, onClick }) {
         navigate('/admin');
     };
 
+    const onGoProfile = (e) => {
+        e.stopPropagation();
+        setIsShowSubMenu(false);
+        navigate('/profile');
+    };
+
     const getDisplayText = () => {
         if (title !== 'Sign in') {
             return title;
@@ -75,6 +81,9 @@ function MenuItem({ title, href, className, onClick }) {
                     className={subMenu}
                     onMouseLeave={() => setIsShowSubMenu(false)}
                 >
+                    <div onClick={onGoProfile} style={{ cursor: 'pointer' }}>
+                        Profile settings
+                    </div>
                     {userInfo.role === 'ADMIN' && (
                         <div onClick={onGoAdmin} style={{ cursor: 'pointer' }}>
                             Admin CMS

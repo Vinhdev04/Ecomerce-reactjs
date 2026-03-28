@@ -22,6 +22,14 @@ const routers = [
         component: lazy(() => import('@/pages/Admin/AdminPage'))
     },
     {
+        path: '/admin/analytics',
+        component: lazy(() => import('@/pages/Admin/AdminPage'))
+    },
+    {
+        path: '/admin/history',
+        component: lazy(() => import('@/pages/Admin/AdminPage'))
+    },
+    {
         path: '/admin/users',
         component: lazy(() => import('@/pages/Admin/AdminPage'))
     },
@@ -61,6 +69,14 @@ const routers = [
     {
         path: '/news/:id',
         component: lazy(() => import('@/components/News/NewsDetail'))
+    },
+    {
+        path: '/products/:id',
+        component: lazy(() => import('@/pages/ProductDetail/ProductDetailPage'))
+    },
+    {
+        path: '/profile',
+        component: lazy(() => import('@/pages/Profile/ProfilePage'))
     }
 ];
 

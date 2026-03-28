@@ -5,7 +5,7 @@ const verifyAdmin = async (req, res, next) => {
         if (!req.userId) {
             return res.status(401).json({
                 success: false,
-                message: 'Thiếu thông tin xác thực người dùng.'
+                message: 'Thieu thong tin xac thuc nguoi dung.'
             });
         }
 
@@ -13,21 +13,29 @@ const verifyAdmin = async (req, res, next) => {
             where: { id: req.userId },
             select: {
                 id: true,
-                role: true
+                role: true,
+                status: true
             }
         });
 
         if (!user) {
             return res.status(401).json({
                 success: false,
-                message: 'Không tìm thấy tài khoản xác thực.'
+                message: 'Khong tim thay tai khoan xac thuc.'
+            });
+        }
+
+        if (user.status === 'DISABLED') {
+            return res.status(403).json({
+                success: false,
+                message: 'Tai khoan admin da bi vo hieu hoa.'
             });
         }
 
         if (user.role !== 'ADMIN') {
             return res.status(403).json({
                 success: false,
-                message: 'Bạn không có quyền truy cập khu vực quản trị.'
+                message: 'Ban khong co quyen truy cap khu vuc quan tri.'
             });
         }
 
@@ -37,7 +45,7 @@ const verifyAdmin = async (req, res, next) => {
         console.error('Admin middleware error:', error);
         res.status(500).json({
             success: false,
-            message: 'Không thể xác minh quyền quản trị.'
+            message: 'Khong the xac minh quyen quan tri.'
         });
     }
 };

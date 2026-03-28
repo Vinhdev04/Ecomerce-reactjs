@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma.lib.js";
+import logActivity from '../helpers/activityLogger.js';
 
 const newsListSelect = {
     id: true,
@@ -63,6 +64,19 @@ export const getAllNews = async (req, res) => {
             }
         });
 
+        if (req.userId) {
+            await logActivity({
+                req,
+                userId: req.userId,
+                action: 'READ_NEWS_LIST',
+                entityType: 'NEWS',
+                detail: {
+                    total: news.length
+                },
+                sessionId: req.sessionId || null
+            });
+        }
+
         res.status(200).json({
             success: true,
             data: news
@@ -90,6 +104,20 @@ export const getNewsById = async (req, res) => {
             return res.status(404).json({
                 success: false,
                 message: "News article not found"
+            });
+        }
+
+        if (req.userId) {
+            await logActivity({
+                req,
+                userId: req.userId,
+                action: 'VIEW_NEWS',
+                entityType: 'NEWS',
+                entityId: news.id,
+                detail: {
+                    title: news.title
+                },
+                sessionId: req.sessionId || null
             });
         }
 

@@ -7,6 +7,8 @@ import {
     getAllUsers,
     getUserById,
     refreshToken,
+    getMyProfile,
+    updateMyProfile,
     updateUserById,
     deleteUserById
 } from '../controller/users.controller.js';
@@ -27,5 +29,7 @@ router.get('/users', verifyToken, verifyAdmin, getAllUsers);
 router.get('/users/:id', verifyToken, getUserById);
 router.put('/users/:id', verifyToken, verifyAdmin, updateUserById);
 router.delete('/users/:id', verifyToken, verifyAdmin, deleteUserById);
+router.get('/profile', verifyToken, getMyProfile);
+router.put('/profile', verifyToken, updateMyProfile);
 
 export default router;

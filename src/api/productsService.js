@@ -29,4 +29,14 @@ const getAllProducts = async (query = {}) => {
     }
 };
 
-export { getAllProducts };
+const getProductById = async (productId) => {
+    try {
+        const res = await axiosClient.get(`/products/${productId}`);
+        return res;
+    } catch (error) {
+        console.error('Loi trong qua trinh lay chi tiet san pham', error);
+        throw error;
+    }
+};
+
+export { getAllProducts, getProductById };

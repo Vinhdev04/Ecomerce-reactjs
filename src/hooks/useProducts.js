@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getAllProducts } from '@api/productsService.js';
 
-/* ==============================
-     HOOKS: SỬ DỤNG TRONG PRODUCTS
- ============================== */
 export const useProducts = (initialLimit = 8) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
     const [error, setError] = useState(null);
+    const [hasMore, setHasMore] = useState(true);
     const [pagination, setPagination] = useState({
         page: 1,
         limit: initialLimit,
@@ -20,12 +19,18 @@ export const useProducts = (initialLimit = 8) => {
     });
 
     const fetchProducts = useCallback(
-        async (queryParams = {}) => {
+        async (queryParams = {}, options = {}) => {
+            const { append = false } = options;
+
             try {
-                setLoading(true);
+                if (append) {
+                    setIsFetchingMore(true);
+                } else {
+                    setLoading(true);
+                }
+
                 setError(null);
 
-                // Merge query params với state hiện tại
                 const finalParams = {
                     page: queryParams.page ?? pagination.page,
                     limit: queryParams.limit ?? pagination.limit,
@@ -33,147 +38,140 @@ export const useProducts = (initialLimit = 8) => {
                     category: queryParams.category ?? filters.category
                 };
 
-                // console.log('🔍 Fetching products with params:', finalParams);
-
                 const response = await getAllProducts(finalParams);
 
-                if (response && response.success) {
-                    setProducts(response.data || []);
-
-                    setPagination({
-                        page: finalParams.page,
-                        limit: finalParams.limit,
-                        total: response.pagination?.total || 0,
-                        totalPages: response.pagination?.totalPages || 1
-                    });
-
-                    setFilters({
-                        sortType: finalParams.sortType,
-                        category: finalParams.category
-                    });
-
-                    console.log('✅ Products loaded:', response.data?.length);
-                } else {
+                if (!response?.success) {
                     throw new Error(
-                        response?.message || 'Không thể tải dữ liệu các sản phẩm!'
+                        response?.message || 'Khong the tai du lieu san pham.'
                     );
                 }
-            } catch (err) {
-                console.error('❌ Error fetching products:', err);
-                setError(
-                    err.response?.data?.message ||
-                        err.message ||
-                        'Không thể tải dữ liệu các sản phẩm!'
+
+                const incomingProducts = Array.isArray(response?.data)
+                    ? response.data
+                    : [];
+                const nextTotalPages = Number(
+                    response?.pagination?.totalPages || 1
                 );
-                setProducts([]);
+
+                setProducts((prev) => {
+                    if (!append) return incomingProducts;
+
+                    const existingIds = new Set(
+                        prev.map((item) => item.id || item._id)
+                    );
+                    const uniqueIncoming = incomingProducts.filter(
+                        (item) => !existingIds.has(item.id || item._id)
+                    );
+                    return [...prev, ...uniqueIncoming];
+                });
+
+                setPagination({
+                    page: finalParams.page,
+                    limit: finalParams.limit,
+                    total: Number(response?.pagination?.total || 0),
+                    totalPages: nextTotalPages
+                });
+
+                setFilters({
+                    sortType: finalParams.sortType,
+                    category: finalParams.category ?? null
+                });
+
+                setHasMore(
+                    finalParams.page < nextTotalPages &&
+                        incomingProducts.length > 0
+                );
+            } catch (err) {
+                setError(
+                    err?.response?.data?.message ||
+                        err?.message ||
+                        'Khong the tai du lieu san pham.'
+                );
+
+                if (!options.append) {
+                    setProducts([]);
+                }
+
+                setHasMore(false);
             } finally {
                 setLoading(false);
+                setIsFetchingMore(false);
             }
         },
         [pagination.page, pagination.limit, filters.sortType, filters.category]
     );
 
-    /* ==============================
-         THAY ĐỔI TRANG
-     ============================== */
     const handlePageChange = useCallback(
         (newPage) => {
-            if (newPage < 1 || newPage > pagination.totalPages) {
-                console.warn('Invalid page number:', newPage);
-                return;
-            }
-
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-
+            if (newPage < 1 || newPage > pagination.totalPages) return;
             fetchProducts({ page: newPage });
         },
         [pagination.totalPages, fetchProducts]
     );
 
-    /* ==============================
-         THAY ĐỔI SORTING
-     ============================== */
+    const loadMore = useCallback(() => {
+        if (loading || isFetchingMore || !hasMore) return;
+        fetchProducts({ page: pagination.page + 1 }, { append: true });
+    }, [fetchProducts, hasMore, isFetchingMore, loading, pagination.page]);
+
     const handleSortChange = useCallback(
         (sortType) => {
-            // console.log('📊 Sort changed to:', sortType);
+            setHasMore(true);
             fetchProducts({
-                page: 1, // Reset về trang 1
+                page: 1,
                 sortType
             });
         },
         [fetchProducts]
     );
 
-    /* ==============================
-         THAY ĐỔI SỐ LƯỢNG HIỂN THỊ
-     ============================== */
     const handleLimitChange = useCallback(
         (newLimit) => {
-            // console.log('📏 Limit changed to:', newLimit);
+            setHasMore(true);
             fetchProducts({
-                page: 1, // Reset về trang 1
+                page: 1,
                 limit: newLimit
             });
         },
         [fetchProducts]
     );
 
-    /* ==============================
-         THAY ĐỔI CATEGORY
-     ============================== */
     const handleCategoryChange = useCallback(
         (category) => {
-            // console.log('🏷️ Category changed to:', category);
+            setHasMore(true);
             fetchProducts({
-                page: 1, // Reset về trang 1
+                page: 1,
                 category
             });
         },
         [fetchProducts]
     );
 
-    /* ==============================
-         RETRY KHI GẶP LỖI
-     ============================== */
     const retry = useCallback(() => {
-        // console.log('🔄 Retrying...');
-        fetchProducts();
+        fetchProducts({ page: 1 });
     }, [fetchProducts]);
 
-    /* ==============================
-         RESET VỀ ĐẦU PAGE
-     ============================== */
     const resetToFirstPage = useCallback(() => {
         fetchProducts({ page: 1 });
     }, [fetchProducts]);
 
-    /* ==============================
-         REFRESH CURRENT PAGE
-     ============================== */
     const refresh = useCallback(() => {
         fetchProducts();
     }, [fetchProducts]);
 
-    /* ==============================
-         TỰ ĐỘNG FETCH KHI COMPONENT MOUNT
-     ============================== */
     useEffect(() => {
-        // console.log('🚀 useProducts mounted, fetching initial data...');
-        fetchProducts();
-       
-    }, []);
+        fetchProducts({ page: 1 });
+    }, [fetchProducts]);
 
     return {
         products,
         loading,
+        isFetchingMore,
+        hasMore,
         error,
         pagination,
         filters,
-
-        // Actions
+        loadMore,
         handlePageChange,
         handleSortChange,
         handleLimitChange,

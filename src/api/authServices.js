@@ -71,10 +71,32 @@ const getAllUsers = async () => {
     }
 };
 
+const getMyProfile = async () => {
+    try {
+        const res = await axiosClient.get('/profile');
+        return res;
+    } catch (error) {
+        console.error('❌ Lay profile that bai!', error.response?.data || error.message);
+        throw error;
+    }
+};
+
+const updateMyProfile = async (payload) => {
+    try {
+        const res = await axiosClient.put('/profile', payload);
+        return res;
+    } catch (error) {
+        console.error('❌ Cap nhat profile that bai!', error.response?.data || error.message);
+        throw error;
+    }
+};
+
 export { 
     register, 
     login, 
     logout, 
     getInfoUser,
-    getAllUsers 
+    getAllUsers,
+    getMyProfile,
+    updateMyProfile
 };

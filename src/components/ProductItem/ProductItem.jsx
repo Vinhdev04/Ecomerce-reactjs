@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './ProductItem.module.scss';
 import {
     FavoriteIcon,
@@ -20,6 +21,7 @@ export default function ProductCard({
     className = ''
 }) {
     const { addToCart } = useContext(CartContext);
+    const navigate = useNavigate();
 
     const productDetails = details || {
         id: title,
@@ -31,6 +33,7 @@ export default function ProductCard({
         rating,
         stock
     };
+    const productId = productDetails?.id || productDetails?._id;
 
     return (
         <div className={`${styles.card} ${className}`}>
@@ -42,19 +45,19 @@ export default function ProductCard({
                             'https://via.placeholder.com/400x400?text=Product+Image'
                         }
                         alt={title || 'Product'}
-                        loading='lazy'
+                        loading="lazy"
                     />
 
                     {badge && <div className={styles.badge}>{badge}</div>}
 
                     {stock !== undefined && stock < 10 && stock > 0 && (
                         <div className={styles.stockWarning}>
-                            Chỉ còn {stock} sản phẩm
+                            Chi con {stock} san pham
                         </div>
                     )}
 
                     {stock === 0 && (
-                        <div className={styles.outOfStock}>Hết hàng</div>
+                        <div className={styles.outOfStock}>Het hang</div>
                     )}
 
                     <div className={styles.iconOverlay}>
@@ -68,13 +71,11 @@ export default function ProductCard({
                 </div>
 
                 <div className={styles.cardContent}>
-                    <h3 className={styles.cardTitle}>
-                        {title || 'Tên sản phẩm'}
-                    </h3>
+                    <h3 className={styles.cardTitle}>{title || 'Ten san pham'}</h3>
 
                     <p className={styles.cardText}>
                         {description ||
-                            'Mô tả ngắn gọn về sản phẩm, tính năng nổi bật và ưu điểm của sản phẩm này'}
+                            'Mo ta ngan gon ve san pham, tinh nang noi bat va uu diem cua san pham nay'}
                     </p>
 
                     {rating && (
@@ -88,38 +89,40 @@ export default function ProductCard({
                                             : styles.starEmpty
                                     }
                                 >
-                                    ★
+                                    *
                                 </span>
                             ))}
-                            <span className={styles.ratingText}>
-                                ({rating}/5)
-                            </span>
+                            <span className={styles.ratingText}>({rating}/5)</span>
                         </div>
                     )}
 
                     {price && (
                         <div className={styles.cardPrice}>
                             <span className={styles.currentPrice}>
-                                {price.toLocaleString('vi-VN')}đ
+                                {price.toLocaleString('vi-VN')}d
                             </span>
                             <span className={styles.oldPrice}>
-                                {(price * 1.2).toLocaleString('vi-VN')}đ
+                                {(price * 1.2).toLocaleString('vi-VN')}d
                             </span>
                         </div>
                     )}
                 </div>
 
                 <div className={styles.cardFooter}>
-                    <button className={styles.btnDetail} type='button'>
-                        Chi tiết
+                    <button
+                        className={styles.btnDetail}
+                        type="button"
+                        onClick={() => productId && navigate(`/products/${productId}`)}
+                    >
+                        Chi tiet
                     </button>
                     <button
                         className={styles.btnBuy}
-                        type='button'
+                        type="button"
                         disabled={stock === 0}
                         onClick={() => addToCart(productDetails)}
                     >
-                        {stock === 0 ? 'Hết hàng' : 'Thêm vào giỏ'}
+                        {stock === 0 ? 'Het hang' : 'Them vao gio'}
                     </button>
                 </div>
             </div>

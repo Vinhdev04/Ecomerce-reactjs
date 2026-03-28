@@ -216,3 +216,30 @@
         cursor: not-allowed;
     }
 }
+
+.itemEnter {
+    animation: itemEnter 0.45s ease both;
+}
+
+.infiniteSentinel {
+    width: 100%;
+    height: 2px;
+}
+
+.endOfList {
+    margin-top: 18px;
+    text-align: center;
+    color: #66768a;
+    font-weight: 600;
+}
+
+@keyframes itemEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

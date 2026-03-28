@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
 import styles from './ProductListShop.module.scss';
 import { ProductGrid } from '@/components/ProductList/ProductGrid.jsx';
-import { Pagination } from '@/components/ProductList/Pagination.jsx';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import {
     LoadingState,
     ErrorState,
-    EmptyState
+    EmptyState,
+    InlineLoadingState
 } from '@/components/ProductList/ProductStates.jsx';
 import { OurShopContext } from '@contexts/OurShopContext.js';
 import { CartContext } from '@contexts/CartContext.js';
@@ -14,17 +15,27 @@ function ProductListShop() {
     const {
         products,
         loading,
+        isFetchingMore,
+        hasMore,
         error,
-        pagination,
-        handlePageChange,
+        loadMore,
         retry,
         viewMode
     } = useContext(OurShopContext);
 
+    const { sentinelRef } = useInfiniteScroll({
+        enabled: !error,
+        loading: loading || isFetchingMore,
+        hasMore,
+        onLoadMore: loadMore
+    });
+
     return (
         <div className={styles.productListShop}>
             <div className="container">
-                {loading && <LoadingState />}
+                {loading && products.length === 0 && (
+                    <LoadingState variant={viewMode === 'grid' ? 'grid' : 'list'} />
+                )}
 
                 {error && !loading && <ErrorState error={error} onRetry={retry} />}
 
@@ -36,10 +47,17 @@ function ProductListShop() {
                             <ProductListView products={products} />
                         )}
 
-                        <Pagination
-                            pagination={pagination}
-                            onPageChange={handlePageChange}
+                        <div
+                            ref={sentinelRef}
+                            className={styles.infiniteSentinel}
+                            aria-hidden="true"
                         />
+                        {isFetchingMore && <InlineLoadingState />}
+                        {!hasMore && (
+                            <p className={styles.endOfList}>
+                                Da tai tat ca san pham.
+                            </p>
+                        )}
                     </>
                 )}
 
@@ -52,12 +70,13 @@ function ProductListShop() {
 function ProductListView({ products }) {
     return (
         <div className={styles.productListView}>
-            {products?.map((product) => (
+            {products?.map((product, index) => (
                 <ProductListItem
-                    key={product.id}
+                    key={product.id || product._id || `${product.title}-${index}`}
+                    className={styles.itemEnter}
+                    style={{ animationDelay: `${(index % 8) * 40}ms` }}
                     product={product}
-                    image={product.image[0]}
-                    images={product.image}
+                    image={Array.isArray(product.image) ? product.image[0] : product.image}
                     title={product.title}
                     description={product.description}
                     price={product.price}
@@ -73,6 +92,8 @@ function ProductListView({ products }) {
 
 function ProductListItem({
     product,
+    className,
+    style,
     image,
     title,
     description,
@@ -85,7 +106,7 @@ function ProductListItem({
     const { addToCart } = useContext(CartContext);
 
     return (
-        <div className={styles.productListItem}>
+        <div className={`${styles.productListItem} ${className || ''}`} style={style}>
             <div className={styles.itemImage}>
                 <img
                     src={image || 'https://via.placeholder.com/200x200'}
@@ -116,7 +137,7 @@ function ProductListItem({
                                         : styles.starEmpty
                                 }
                             >
-                                ★
+                                *
                             </span>
                         ))}
                         <span className={styles.ratingText}>({rating}/5)</span>
@@ -126,11 +147,11 @@ function ProductListItem({
                 <div className={styles.itemFooter}>
                     <div className={styles.priceInfo}>
                         <span className={styles.currentPrice}>
-                            {price?.toLocaleString('vi-VN')}đ
+                            {price?.toLocaleString('vi-VN')}d
                         </span>
                         {stock !== undefined && (
                             <span className={styles.stock}>
-                                {stock > 0 ? `Còn ${stock} sản phẩm` : 'Hết hàng'}
+                                {stock > 0 ? `Con ${stock} san pham` : 'Het hang'}
                             </span>
                         )}
                     </div>
@@ -141,7 +162,7 @@ function ProductListItem({
                             disabled={stock === 0}
                             onClick={() => addToCart(product)}
                         >
-                            {stock === 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
+                            {stock === 0 ? 'Het hang' : 'Them vao gio hang'}
                         </button>
                     </div>
                 </div>

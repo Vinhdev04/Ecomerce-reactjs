@@ -32,9 +32,12 @@ export const OurShopProvider = ({ children }) => {
     const {
         products,
         loading,
+        isFetchingMore,
+        hasMore,
         error,
         pagination,
         filters,
+        loadMore,
         handlePageChange,
         handleSortChange,
         handleLimitChange,
@@ -73,6 +76,8 @@ export const OurShopProvider = ({ children }) => {
         // Data
         products,
         loading,
+        isFetchingMore,
+        hasMore,
         error,
         pagination,
         filters,
@@ -84,6 +89,7 @@ export const OurShopProvider = ({ children }) => {
         // Actions 
         setSortType,
         setShowLimit,
+        loadMore,
         handlePageChange,
         handleSortChange,
         handleLimitChange,

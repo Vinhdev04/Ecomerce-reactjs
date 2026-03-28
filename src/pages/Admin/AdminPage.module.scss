@@ -674,3 +674,47 @@
         grid-column: auto;
     }
 }
+
+.skeletonBlock,
+.skeletonCard {
+    border-radius: 18px;
+    background: linear-gradient(90deg, #eaf0f8 15%, #f7fafe 45%, #eaf0f8 85%);
+    background-size: 240% 100%;
+    animation: shimmer 1.2s ease-in-out infinite;
+}
+
+.skeletonBrand {
+    height: 56px;
+}
+
+.skeletonNav {
+    display: grid;
+    gap: 12px;
+
+    .skeletonBlock {
+        height: 46px;
+    }
+}
+
+.skeletonTopbar {
+    height: 112px;
+}
+
+.skeletonCard {
+    min-height: 150px;
+    border: none;
+    box-shadow: none;
+}
+
+.dashboardGrid .skeletonCard {
+    min-height: 250px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 160% 0;
+    }
+    100% {
+        background-position: -80% 0;
+    }
+}

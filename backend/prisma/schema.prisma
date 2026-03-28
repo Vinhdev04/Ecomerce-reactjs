@@ -18,6 +18,7 @@ model Product {
   rating      Float
   badge       String?
   size        String[]
+  status      ProductStatus? @default(ACTIVE)
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
 
@@ -30,6 +31,7 @@ model User {
   password     String
   name         String
   role         UserRole @default(CUSTOMER)
+  status       AccountStatus? @default(ACTIVE)
   refreshToken String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -77,6 +79,25 @@ model News {
   @@map("news")
 }
 
+model ActivityLog {
+  id         String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String?          @db.ObjectId
+  userEmail  String?
+  action     ActivityAction
+  entityType ActivityEntity
+  entityId   String?
+  status     ActivityStatus   @default(ACTIVE)
+  ipAddress  String?
+  userAgent  String?
+  deviceInfo String?
+  sessionId  String?
+  detail     Json?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@map("activity_logs")
+}
+
 model Order {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
   orderCode      String        @unique
@@ -121,4 +142,38 @@ enum OrderStatus {
   SHIPPING
   COMPLETED
   CANCELLED
+}
+
+enum ProductStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum AccountStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum ActivityAction {
+  LOGIN
+  LOGOUT
+  VIEW_PRODUCT
+  VIEW_NEWS
+  PAYMENT
+  READ_NEWS_LIST
+  VIEW_PRODUCT_LIST
+}
+
+enum ActivityEntity {
+  AUTH
+  USER
+  PRODUCT
+  NEWS
+  ORDER
+  PAYMENT
+}
+
+enum ActivityStatus {
+  ACTIVE
+  DISABLED
 }

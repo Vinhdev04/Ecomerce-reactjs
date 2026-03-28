@@ -1,0 +1,148 @@
+.detailPage {
+    padding-top: 120px;
+    padding-bottom: 80px;
+    color: #e8effc;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+
+    a {
+        color: #7fd4ff;
+        text-decoration: none;
+    }
+}
+
+.detailGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 26px;
+}
+
+.gallery {
+    background: rgba(14, 24, 38, 0.82);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 16px;
+}
+
+.mainImage {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.thumbs {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+    gap: 8px;
+}
+
+.thumbBtn {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: transparent;
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+    }
+}
+
+.activeThumb {
+    border-color: #3fd8ff;
+}
+
+.info {
+    border-radius: 14px;
+    background: rgba(14, 24, 38, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px;
+
+    h1 {
+        margin: 10px 0 14px;
+        font-size: 30px;
+        line-height: 1.25;
+    }
+}
+
+.category {
+    display: inline-block;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(82, 193, 255, 0.2);
+    color: #bfe9ff;
+}
+
+.price {
+    margin: 0 0 12px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #ffb347;
+}
+
+.desc {
+    margin: 0 0 16px;
+    color: #c8d5e6;
+    line-height: 1.7;
+}
+
+.meta {
+    margin: 0 0 10px;
+    color: #a7b6ca;
+}
+
+.actions {
+    margin-top: 20px;
+}
+
+.buyBtn {
+    min-width: 180px;
+    min-height: 46px;
+    border: 0;
+    border-radius: 10px;
+    padding: 0 16px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff7a18 0%, #ff9f43 100%);
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+}
+
+.stateBox {
+    min-height: 420px;
+    padding-top: 120px;
+    padding-bottom: 100px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    gap: 12px;
+    color: #eef2ff;
+}
+
+.backLink {
+    color: #85daff;
+    text-decoration: none;
+}
+
+@media (max-width: 992px) {
+    .detailGrid {
+        grid-template-columns: 1fr;
+    }
+}

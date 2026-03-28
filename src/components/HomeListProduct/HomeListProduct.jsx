@@ -3,16 +3,24 @@ import ProductList from '@/components/ProductList/ProductList.jsx';
 import useProducts from '@/hooks/useProducts';
 
 function HomeListProduct() {
-    const { products, loading, error, pagination, handlePageChange, retry } =
-        useProducts(6); // 6 sản phẩm mỗi trang
+    const {
+        products,
+        loading,
+        isFetchingMore,
+        hasMore,
+        error,
+        retry,
+        loadMore
+    } = useProducts(6);
 
     return (
         <ProductList
             products={products}
             loading={loading}
+            isFetchingMore={isFetchingMore}
+            hasMore={hasMore}
             error={error}
-            pagination={pagination}
-            handlePageChange={handlePageChange}
+            loadMore={loadMore}
             retry={retry}
         />
     );
