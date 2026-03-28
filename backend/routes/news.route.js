@@ -1,12 +1,14 @@
 import express from "express";
 import { createNews, getAllNews, getNewsById, updateNews, deleteNews } from "../controller/news.controller.js";
+import verifyToken from '../middleware/auth.middleware.js';
+import verifyAdmin from '../middleware/admin.middleware.js';
 
 const router = express.Router();
 
 router.get("/", getAllNews);
 router.get("/:id", getNewsById);
-router.post("/", createNews);
-router.put("/:id", updateNews);
-router.delete("/:id", deleteNews);
+router.post("/", verifyToken, verifyAdmin, createNews);
+router.put("/:id", verifyToken, verifyAdmin, updateNews);
+router.delete("/:id", verifyToken, verifyAdmin, deleteNews);
 
 export default router;

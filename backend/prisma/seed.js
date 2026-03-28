@@ -1,7 +1,27 @@
 import prisma from "../lib/prisma.lib.js";
+import bcrypt from 'bcrypt';
 import { newsData } from "./data/newsData.js";
 
 async function main() {
+  const adminPassword = await bcrypt.hash('Admin@123', 10);
+
+  await prisma.user.upsert({
+    where: {
+      email: 'admin@xpadgame.vn'
+    },
+    update: {
+      name: 'XPAD Super Admin',
+      role: 'ADMIN',
+      password: adminPassword
+    },
+    create: {
+      email: 'admin@xpadgame.vn',
+      name: 'XPAD Super Admin',
+      role: 'ADMIN',
+      password: adminPassword
+    }
+  });
+
   // Seed Products
   console.log("🌱 Bắt đầu seed dữ liệu sản phẩm...");
   

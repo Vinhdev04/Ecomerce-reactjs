@@ -32,6 +32,12 @@ function MenuItem({ title, href, className, onClick }) {
         handleLogout();
     };
 
+    const onGoAdmin = (e) => {
+        e.stopPropagation();
+        setIsShowSubMenu(false);
+        navigate('/admin');
+    };
+
     const getDisplayText = () => {
         if (title !== 'Sign in') {
             return title;
@@ -69,6 +75,11 @@ function MenuItem({ title, href, className, onClick }) {
                     className={subMenu}
                     onMouseLeave={() => setIsShowSubMenu(false)}
                 >
+                    {userInfo.role === 'ADMIN' && (
+                        <div onClick={onGoAdmin} style={{ cursor: 'pointer' }}>
+                            Admin CMS
+                        </div>
+                    )}
                     <div onClick={onLogout} style={{ cursor: 'pointer' }}>
                         Log out
                     </div>

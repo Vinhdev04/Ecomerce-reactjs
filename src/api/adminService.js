@@ -31,8 +31,8 @@ const normalizeNewsPayload = (payload) => ({
 });
 
 const adminService = {
-    createUser: ({ name, email, password }) =>
-        axiosClient.post('/register', { username: email, password, name }),
+    createUser: ({ name, email, password, role }) =>
+        axiosClient.post('/users', { email, password, name, role }),
     getUsers: () => axiosClient.get('/users'),
     updateUser: (id, payload) => axiosClient.put(`/users/${id}`, payload),
     deleteUser: (id) => axiosClient.delete(`/users/${id}`),
