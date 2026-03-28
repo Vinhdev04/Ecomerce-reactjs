@@ -79,6 +79,10 @@ const routers = [
     {
         path: '/profile',
         component: lazy(() => import('@/pages/Profile/ProfilePage'))
+    },
+    {
+        path: '/compare',
+        component: lazy(() => import('@/pages/Compare/ComparePage'))
     }
 ];
 
