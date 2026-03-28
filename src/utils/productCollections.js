@@ -1,14 +1,19 @@
 /**
  * Product collections store (favorites + compare) backed by localStorage.
  */
+import Cookies from 'js-cookie';
+
 const FAVORITES_STORAGE_KEY = 'xpad-favorite-products';
 const COMPARE_STORAGE_KEY = 'xpad-compare-products';
 export const PRODUCT_COLLECTION_EVENT = 'xpad:product-collection-updated';
 const COMPARE_LIMIT = 4;
 
+const getOwnerId = () => Cookies.get('userId') || 'guest';
+const withOwnerKey = (storageKey) => `${storageKey}:${getOwnerId()}`;
+
 const readCollection = (storageKey) => {
     try {
-        const raw = localStorage.getItem(storageKey);
+        const raw = localStorage.getItem(withOwnerKey(storageKey));
         const parsed = raw ? JSON.parse(raw) : [];
         return Array.isArray(parsed) ? parsed : [];
     } catch {
@@ -17,10 +22,11 @@ const readCollection = (storageKey) => {
 };
 
 const writeCollection = (storageKey, items) => {
-    localStorage.setItem(storageKey, JSON.stringify(items));
+    const scopedKey = withOwnerKey(storageKey);
+    localStorage.setItem(scopedKey, JSON.stringify(items));
     window.dispatchEvent(
         new CustomEvent(PRODUCT_COLLECTION_EVENT, {
-            detail: { storageKey, items }
+            detail: { storageKey: scopedKey, items }
         })
     );
 };
@@ -114,4 +120,8 @@ export const removeComparedProduct = (productId) => {
 
 export const clearCompareProducts = () => {
     writeCollection(COMPARE_STORAGE_KEY, []);
+};
+
+export const clearFavoriteProducts = () => {
+    writeCollection(FAVORITES_STORAGE_KEY, []);
 };

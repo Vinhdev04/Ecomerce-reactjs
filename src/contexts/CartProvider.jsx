@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { CartContext } from '@contexts/CartContext.js';
 import { ToastContext } from '@contexts/ToastContext';
 import { SideBarContext } from '@contexts/SideBarContext.js';
+import { UserInfoContext } from '@contexts/UserInfoContext.js';
 
 const CART_STORAGE_KEY = 'xpad-cart-items';
+const cartStorageKey = (ownerId = 'guest') => `${CART_STORAGE_KEY}:${ownerId}`;
 
 const normalizeCartItem = (product) => ({
     id: product.id || product._id,
@@ -18,11 +20,14 @@ export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
     const { toast } = useContext(ToastContext);
     const { setIsOpen, setType } = useContext(SideBarContext);
+    const { userId } = useContext(UserInfoContext);
+    const ownerId = userId || 'guest';
 
     useEffect(() => {
-        const storedItems = localStorage.getItem(CART_STORAGE_KEY);
+        const storedItems = localStorage.getItem(cartStorageKey(ownerId));
 
         if (!storedItems) {
+            setCartItems([]);
             return;
         }
 
@@ -30,13 +35,14 @@ export const CartProvider = ({ children }) => {
             setCartItems(JSON.parse(storedItems));
         } catch (error) {
             console.error('Failed to parse cart items:', error);
-            localStorage.removeItem(CART_STORAGE_KEY);
+            localStorage.removeItem(cartStorageKey(ownerId));
+            setCartItems([]);
         }
-    }, []);
+    }, [ownerId]);
 
     useEffect(() => {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
-    }, [cartItems]);
+        localStorage.setItem(cartStorageKey(ownerId), JSON.stringify(cartItems));
+    }, [cartItems, ownerId]);
 
     const openCartSidebar = () => {
         setType('cart');

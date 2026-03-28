@@ -1,7 +1,8 @@
 /**
  * Realtime counter hook for favorite and compare product collections.
  */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserInfoContext } from '@contexts/UserInfoContext.js';
 import {
     PRODUCT_COLLECTION_EVENT,
     getCompareProducts,
@@ -11,6 +12,7 @@ import {
 export default function useProductCollectionCounts() {
     const [favoriteCount, setFavoriteCount] = useState(0);
     const [compareCount, setCompareCount] = useState(0);
+    const { userId } = useContext(UserInfoContext);
 
     useEffect(() => {
         const syncCounts = () => {
@@ -27,7 +29,7 @@ export default function useProductCollectionCounts() {
             window.removeEventListener(PRODUCT_COLLECTION_EVENT, syncCounts);
             window.removeEventListener('storage', syncCounts);
         };
-    }, []);
+    }, [userId]);
 
     return { favoriteCount, compareCount };
 }
