@@ -1,214 +1,104 @@
-# 🎮 xPadGame – Gaming Controller E‑Commerce Website
+# xPadGame - Ecommerce ReactJS + NodeJS
 
-## 📌 Giới thiệu
+Du an thuong mai dien tu ban tay cam game va phu kien gaming.  
+Kien truc fullstack gom `frontend ReactJS (Vite)` va `backend NodeJS/Express + Prisma + MongoDB`.
 
-**xPadGame** là một website thương mại điện tử chuyên cung cấp **tay cầm chơi game (game controllers)** và phụ kiện gaming. Dự án được xây dựng theo mô hình **Full‑stack JavaScript**, hướng tới trải nghiệm mua sắm hiện đại, trực quan và hiệu năng cao, sẵn sàng triển khai trên môi trường thực tế.
+## 1) Tinh nang chinh
+- Dang ky, dang nhap, dang xuat, refresh token.
+- Xem danh sach san pham, loc/sort, infinite scroll.
+- Xem chi tiet san pham.
+- Gio hang, checkout, theo doi don hang.
+- Trang tin tuc.
+- Admin CMS: analytics, history log, user/product/news/payment management.
+- Profile settings cho user.
 
-Website cho phép người dùng duyệt sản phẩm, đăng ký/đăng nhập tài khoản và tương tác với hệ thống thông qua các **RESTful APIs**.
+## 2) Cong nghe
+- Frontend: ReactJS, React Router, Context API, Axios, SCSS Modules, Bootstrap.
+- Backend: NodeJS, Express, Prisma ORM.
+- Database: MongoDB.
+- Auth/Security: JWT, bcrypt, cookie-based refresh token.
 
----
-
-## 🧩 Tính năng chính
-
-### 👤 Người dùng (User)
-
-* Đăng ký tài khoản
-* Đăng nhập / Đăng xuất
-* Mã hóa mật khẩu bằng **bcrypt**
-* Kiểm tra dữ liệu đầu vào (validation) bằng **Yup** & **Formik**
-* Bảo mật thông tin người dùng 
-
-
-### 🛒 Sản phẩm (Product)
-
-* Hiển thị danh sách tay cầm chơi game
-* Phân loại theo hãng / nền tảng (PC, PS, Xbox, Mobile)
-* Xem chi tiết sản phẩm
-* Giao diện thân thiện, responsive
-
-### 🔐 Bảo mật & API
-
-* Không trả về mật khẩu từ API
-* Chuẩn RESTful API
-* Xử lý lỗi tập trung
-
-
-###
----
-
-## 🏗️ Công nghệ sử dụng
-
-### Frontend
-
-* **HTML5, SCSS/CSS**
-* **JavaScript (ES6+)**
-* **Bootstrap 5** (UI & Responsive)
-* **AOS (Animate On Scroll)** – animation khi cuộn trang
-* **Font Awesome / Remix Icon** – icon
-* **ReactJS** – routing, state management, hooks,context
-* **Formik** – form validation
-* **Yup** – form validation
-* **Axios** – API request
-* **ContextAPI** – context API
-* **React-Toastify** – toast notification
-* **Config Alias** - config alias
-* **Lazy Load** - lazy load
-* **React Router | React Lazy** - routing, lazy load
-  
-
-### Backend
-
-* **Node.js**
-* **Express.js**
-* **Prisma ORM**
-* **bcrypt** – hash & verify password
-* **dotenv** – quản lý biến môi trường
-
-### Database
-
-* **MongoDB Atlas**
-
-### DevOps & Tools
-
-* Git & GitHub
-* Postman (test API)
-* Environment Variables (`.env`)
-* Sẵn sàng deploy (Render / Railway / Vercel)
-
----
-
-## 📂 Cấu trúc thư mục
-
-
----
-
-## ⚙️ Cài đặt & chạy dự án
-
-### 1️⃣ Clone repository
-
-```bash
-git clone https://github.com/Vinhdev04/Ecomerce-reactjs.git
-cd xPadGame
+## 3) Cau truc thu muc
+```text
+Ecomerce-reactjs/
+  backend/
+    controller/
+    middleware/
+    routes/
+    prisma/
+  src/
+    api/
+    components/
+    contexts/
+    hooks/
+    pages/
+    routes/
 ```
 
-### 2️⃣ Cài đặt backend
+## 4) Quy uoc tach UI va Logic
+Du an dang chuan hoa theo pattern:
+- UI component chi render giao dien.
+- Logic fetch/state/action dua vao hook rieng cung cap du lieu cho UI.
 
+Vi du:
+- `src/pages/Profile/ProfilePage.jsx` (UI)
+- `src/pages/Profile/useProfilePage.js` (logic)
+- `src/pages/ProductDetail/ProductDetailPage.jsx` (UI)
+- `src/pages/ProductDetail/useProductDetailPage.js` (logic)
+
+## 5) Cai dat va chay du an
+
+### 5.1 Frontend
+```bash
+npm install
+npm run dev
+```
+Frontend mac dinh: `http://localhost:5173`
+
+### 5.2 Backend
 ```bash
 cd backend
 npm install
-```
-
-### 3️⃣ Cấu hình biến môi trường (`.env`)
-
-```env
-PORT
-DATABASE_URL
-```
-
-### 4️⃣ Đồng bộ database
-
-```bash
-npx prisma db push
-```
-
-### 5️⃣ Chạy server
-
-```bash
+npx prisma db push --skip-generate --schema prisma/schema.prisma
 npm run dev
 ```
+Backend mac dinh: `http://localhost:3000`
 
-Server chạy tại:
+## 6) Bien moi truong can co
 
-```
-http://localhost:3000
-```
-
----
-
-## 🧪 API mẫu
-
-### 👤 User APIs
-
-#### Đăng ký
-
-```
-POST /api/auth/register
+### backend/.env
+```env
+PORT=3000
+DATABASE_URL=...
+JWT_SECRET=...
+JWT_REFRESH_SECRET=...
 ```
 
-```json
-{
-  "email": "user@gmail.com",
-  "password": "Password@123"
-}
+### frontend .env (optional)
+```env
+VITE_API_URL=http://localhost:3000
 ```
 
-#### Đăng nhập
+## 7) Script huu ich
+- `npm run dev`: chay frontend dev.
+- `npm run build`: build frontend production.
+- `npm run preview`: preview build frontend.
 
-```
-POST /api/auth/login
-```
+## 8) API tieu bieu
+- `GET /api/products`
+- `GET /api/products/:id`
+- `GET /api/news`
+- `POST /api/login`
+- `POST /api/register`
+- `GET /api/profile`
+- `PUT /api/profile`
+- `GET /api/orders` (admin)
 
-```json
-{
-  "email": "user@gmail.com",
-  "password": "Password@123"
-}
-```
+## 9) Huong phat trien tiep
+- Tiep tuc tach logic ra hook/service cho toan bo man hinh con lai.
+- Them test (unit + integration) cho service/hook quan trong.
+- Toi uu hieu nang assets va pagination.
 
----
-
-### 🛒 Product APIs
-
-#### Lấy danh sách sản phẩm
-
-```
-GET /api/products
-```
-
-#### Lấy chi tiết sản phẩm
-
-```
-GET /api/products/:id
-```
-
----
-
-## 🚀 Deploy
-
-Dự án có thể deploy trên:
-
-* **Render**
-* **Railway**
-* **Vercel (Backend riêng)**
-
-Khi deploy cần:
-
-* Thiết lập biến môi trường `DATABASE_URL`
-* Không commit file `.env`
-
----
-
-## 📈 Định hướng phát triển
-
-* Giỏ hàng & Thanh toán
-* JWT Authentication (Access / Refresh Token)
-* Quản lý sản phẩm (Admin)
-* Animation nâng cao cho UI
-* Tối ưu SEO
-
----
-
-## 👨‍💻 Tác giả
-
-* **Phạm Công Vinh**
-* **Frontend Developer | Web Developer**
-
----
-
-## 📄 Giấy phép
-
-Dự án được phát triển cho mục đích **học tập và demo kỹ năng**.
-
----
-
-⭐ Nếu bạn thấy dự án hữu ích, hãy cho một **star** để ủng hộ!
+## 10) Tac gia
+- Pham Cong Vinh
+- Repo: `https://github.com/Vinhdev04/Ecomerce-reactjs`

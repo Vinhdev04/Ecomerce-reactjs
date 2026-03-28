@@ -1,3 +1,7 @@
+/**
+ * Shared product data hook:
+ * filtering, pagination and infinite append behaviors.
+ */
 import { useState, useEffect, useCallback } from 'react';
 import { getAllProducts } from '@api/productsService.js';
 

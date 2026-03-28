@@ -1,3 +1,7 @@
+/**
+ * Product API service:
+ * keeps all product-related HTTP requests in one place.
+ */
 import axiosClient from '../api/axiosClient';
 
 /* ==============================

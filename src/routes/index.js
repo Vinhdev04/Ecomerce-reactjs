@@ -1,4 +1,6 @@
-
+/**
+ * Application route table (lazy loaded page components).
+ */
 import { lazy } from 'react';
 const routers = [
     {

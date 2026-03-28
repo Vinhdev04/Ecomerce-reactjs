@@ -1,3 +1,6 @@
+/**
+ * Product card UI used by grid/list views.
+ */
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ProductItem.module.scss';

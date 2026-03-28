@@ -1,3 +1,6 @@
+/**
+ * Grid renderer for product collections.
+ */
 import React from 'react';
 import ProductCard from '@/components/ProductItem/ProductItem.jsx';
 import styles from './HomeListProduct.module.scss';

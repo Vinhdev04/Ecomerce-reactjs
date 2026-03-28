@@ -1,3 +1,6 @@
+/**
+ * Shop product list section with infinite-scroll behaviors.
+ */
 import React, { useContext } from 'react';
 import styles from './ProductListShop.module.scss';
 import { ProductGrid } from '@/components/ProductList/ProductGrid.jsx';
