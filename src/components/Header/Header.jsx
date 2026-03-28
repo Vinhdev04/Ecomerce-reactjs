@@ -4,6 +4,7 @@ import { icons, navItem } from './constant.js';
 import NavIcon from './NavIcon/NavIcon.jsx';
 import MenuItem from './MenuItem/MenuItem.jsx';
 import useScrollHandling from '@hooks/useScrollHandling.js';
+import useProductCollectionCounts from '@hooks/useProductCollectionCounts.js';
 import classNames from 'classnames';
 import { SideBarContext } from '@contexts/SideBarContext.js';
 import { CartContext } from '@contexts/CartContext.js';
@@ -47,6 +48,7 @@ function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const {isOpen,setIsOpen,setType} = useContext(SideBarContext);
     const { totalQuantity } = useContext(CartContext);
+    const { favoriteCount, compareCount } = useProductCollectionCounts();
 
     const handleShowSidebar = (type)=> {
         setIsOpen(true);
@@ -111,8 +113,32 @@ function Header() {
                         })}
                     </div>
                     <div className={classNames(containerBox, actionIcons)} >
-                        <TfiReload width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("compare")}/>
-                        <FaRegHeart width={26} height={26} className={boxIcons} onClick={() => handleShowSidebar("favorites")}/>
+                        <button
+                            type="button"
+                            className={iconButton}
+                            onClick={() => handleShowSidebar("compare")}
+                            aria-label={`Open compare${compareCount ? ` (${compareCount} items)` : ''}`}
+                        >
+                            <TfiReload width={26} height={26} className={boxIcons}/>
+                            {compareCount > 0 && (
+                                <span className={cartBadge}>
+                                    {compareCount > 99 ? '99+' : compareCount}
+                                </span>
+                            )}
+                        </button>
+                        <button
+                            type="button"
+                            className={iconButton}
+                            onClick={() => handleShowSidebar("favorites")}
+                            aria-label={`Open favorites${favoriteCount ? ` (${favoriteCount} items)` : ''}`}
+                        >
+                            <FaRegHeart width={26} height={26} className={boxIcons}/>
+                            {favoriteCount > 0 && (
+                                <span className={cartBadge}>
+                                    {favoriteCount > 99 ? '99+' : favoriteCount}
+                                </span>
+                            )}
+                        </button>
                         <button
                             type="button"
                             className={iconButton}

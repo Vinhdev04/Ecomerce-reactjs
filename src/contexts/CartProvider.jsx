@@ -6,7 +6,7 @@ import { SideBarContext } from '@contexts/SideBarContext.js';
 const CART_STORAGE_KEY = 'xpad-cart-items';
 
 const normalizeCartItem = (product) => ({
-    id: product.id,
+    id: product.id || product._id,
     title: product.title,
     price: product.price,
     image: product.image?.[0] || product.image || '',
@@ -44,7 +44,9 @@ export const CartProvider = ({ children }) => {
     };
 
     const addToCart = (product) => {
-        if (!product?.id) {
+        const productId = product?.id || product?._id;
+
+        if (!productId) {
             return;
         }
 
@@ -54,11 +56,11 @@ export const CartProvider = ({ children }) => {
         }
 
         setCartItems((prevItems) => {
-            const existingItem = prevItems.find((item) => item.id === product.id);
+            const existingItem = prevItems.find((item) => item.id === productId);
 
             if (existingItem) {
                 return prevItems.map((item) =>
-                    item.id === product.id
+                    item.id === productId
                         ? {
                               ...item,
                               quantity: Math.min(

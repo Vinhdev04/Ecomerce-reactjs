@@ -1,15 +1,16 @@
 /**
  * Product card UI used by grid/list views.
  */
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ProductItem.module.scss';
 import {
     FavoriteIcon,
     QuickViewIcon,
+    CompareIcon,
     AddToCartIcon
 } from '@/components/ProductIcons/ProductIcon.jsx';
-import { CartContext } from '@contexts/CartContext.js';
+import useProductActions from '@/hooks/useProductActions';
 
 export default function ProductCard({
     details,
@@ -23,7 +24,6 @@ export default function ProductCard({
     stock,
     className = ''
 }) {
-    const { addToCart } = useContext(CartContext);
     const navigate = useNavigate();
 
     const productDetails = details || {
@@ -36,7 +36,19 @@ export default function ProductCard({
         rating,
         stock
     };
-    const productId = productDetails?.id || productDetails?._id;
+    const {
+        productId,
+        isFavorite,
+        isCompared,
+        toggleFavorite,
+        toggleCompare,
+        addProductToCart
+    } = useProductActions(productDetails);
+
+    const handleQuickView = () => {
+        if (!productId) return;
+        navigate(`/products/${productId}`);
+    };
 
     return (
         <div className={`${styles.card} ${className}`}>
@@ -64,10 +76,17 @@ export default function ProductCard({
                     )}
 
                     <div className={styles.iconOverlay}>
-                        <FavoriteIcon />
-                        <QuickViewIcon />
+                        <FavoriteIcon
+                            isFavorite={isFavorite}
+                            onClick={toggleFavorite}
+                        />
+                        <QuickViewIcon onClick={handleQuickView} />
+                        <CompareIcon
+                            isCompared={isCompared}
+                            onClick={toggleCompare}
+                        />
                         <AddToCartIcon
-                            onClick={() => addToCart(productDetails)}
+                            onClick={addProductToCart}
                             disabled={stock === 0}
                         />
                     </div>
@@ -123,7 +142,7 @@ export default function ProductCard({
                         className={styles.btnBuy}
                         type="button"
                         disabled={stock === 0}
-                        onClick={() => addToCart(productDetails)}
+                        onClick={addProductToCart}
                     >
                         {stock === 0 ? 'Het hang' : 'Them vao gio'}
                     </button>

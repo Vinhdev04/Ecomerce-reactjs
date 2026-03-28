@@ -2,18 +2,17 @@
  * Product detail page logic hook:
  * loads product by id and manages gallery state.
  */
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductById } from '@/api/productsService';
-import { CartContext } from '@contexts/CartContext.js';
+import useProductActions from '@/hooks/useProductActions';
 
 export default function useProductDetailPage() {
     const { id } = useParams();
-    const { addToCart } = useContext(CartContext);
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [activeImage, setActiveImage] = useState('');
+    const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
         const loadProduct = async () => {
@@ -23,11 +22,7 @@ export default function useProductDetailPage() {
                 const response = await getProductById(id);
                 if (response?.success && response?.data) {
                     setProduct(response.data);
-                    setActiveImage(
-                        Array.isArray(response.data.image)
-                            ? response.data.image[0]
-                            : response.data.image
-                    );
+                    setActiveIndex(0);
                 } else {
                     setError('Khong tim thay san pham.');
                 }
@@ -46,19 +41,52 @@ export default function useProductDetailPage() {
 
     const images = Array.isArray(product?.image) ? product.image : [product?.image];
     const safeImages = images.filter(Boolean);
-    const heroImage =
-        activeImage ||
-        safeImages[0] ||
-        'https://via.placeholder.com/800x800?text=Product';
+    const imageCount = safeImages.length;
+    const boundedIndex =
+        imageCount > 0 ? Math.min(activeIndex, imageCount - 1) : 0;
+    const activeImage = safeImages[boundedIndex];
+    const heroImage = activeImage || 'https://via.placeholder.com/800x800?text=Product';
+
+    const selectImage = (index) => {
+        if (!imageCount) return;
+        const safeIndex = Math.max(0, Math.min(index, imageCount - 1));
+        setActiveIndex(safeIndex);
+    };
+
+    const nextImage = () => {
+        if (!imageCount) return;
+        setActiveIndex((prev) => (prev + 1) % imageCount);
+    };
+
+    const prevImage = () => {
+        if (!imageCount) return;
+        setActiveIndex((prev) => (prev - 1 + imageCount) % imageCount);
+    };
+
+    const {
+        isFavorite,
+        isCompared,
+        toggleFavorite,
+        toggleCompare,
+        addProductToCart
+    } = useProductActions(product);
 
     return {
         product,
         loading,
         error,
         activeImage,
-        setActiveImage,
+        activeIndex: boundedIndex,
+        selectImage,
+        nextImage,
+        prevImage,
+        hasMultipleImages: imageCount > 1,
         safeImages,
         heroImage,
-        addToCart
+        isFavorite,
+        isCompared,
+        toggleFavorite,
+        toggleCompare,
+        addProductToCart
     };
 }

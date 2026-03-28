@@ -13,11 +13,18 @@ function ProductDetailPage() {
         product,
         loading,
         error,
-        activeImage,
-        setActiveImage,
+        activeIndex,
+        selectImage,
+        nextImage,
+        prevImage,
+        hasMultipleImages,
         safeImages,
         heroImage,
-        addToCart
+        isFavorite,
+        isCompared,
+        toggleFavorite,
+        toggleCompare,
+        addProductToCart
     } = useProductDetailPage();
 
     if (loading) {
@@ -54,20 +61,40 @@ function ProductDetailPage() {
 
                 <div className={styles.detailGrid}>
                     <section className={styles.gallery}>
-                        <img
-                            src={heroImage}
-                            alt={product.title}
-                            className={styles.mainImage}
-                        />
+                        <div className={styles.heroBox}>
+                            <img
+                                src={heroImage}
+                                alt={product.title}
+                                className={styles.mainImage}
+                            />
+                            {hasMultipleImages && (
+                                <>
+                                    <button
+                                        type="button"
+                                        className={`${styles.sliderNav} ${styles.prevNav}`}
+                                        onClick={prevImage}
+                                    >
+                                        ‹
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`${styles.sliderNav} ${styles.nextNav}`}
+                                        onClick={nextImage}
+                                    >
+                                        ›
+                                    </button>
+                                </>
+                            )}
+                        </div>
                         <div className={styles.thumbs}>
                             {safeImages.map((img, index) => (
                                 <button
                                     key={`${img}-${index}`}
                                     type="button"
                                     className={`${styles.thumbBtn} ${
-                                        activeImage === img ? styles.activeThumb : ''
+                                        activeIndex === index ? styles.activeThumb : ''
                                     }`}
-                                    onClick={() => setActiveImage(img)}
+                                    onClick={() => selectImage(index)}
                                 >
                                     <img src={img} alt={`${product.title}-${index}`} />
                                 </button>
@@ -98,11 +125,29 @@ function ProductDetailPage() {
                                 type="button"
                                 className={styles.buyBtn}
                                 disabled={Number(product.stock || 0) <= 0}
-                                onClick={() => addToCart(product)}
+                                onClick={addProductToCart}
                             >
                                 {Number(product.stock || 0) <= 0
                                     ? 'Het hang'
                                     : 'Them vao gio hang'}
+                            </button>
+                            <button
+                                type="button"
+                                className={`${styles.actionBtn} ${
+                                    isFavorite ? styles.activeAction : ''
+                                }`}
+                                onClick={toggleFavorite}
+                            >
+                                {isFavorite ? 'Da yeu thich' : 'Yeu thich'}
+                            </button>
+                            <button
+                                type="button"
+                                className={`${styles.actionBtn} ${
+                                    isCompared ? styles.activeAction : ''
+                                }`}
+                                onClick={toggleCompare}
+                            >
+                                {isCompared ? 'Da compare' : 'Compare san pham'}
                             </button>
                         </div>
                     </section>

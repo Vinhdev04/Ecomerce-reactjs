@@ -61,62 +61,77 @@ function ProfilePage() {
                     <strong>Profile</strong>
                 </div>
 
-                <div className={styles.card}>
-                    <div className={styles.cardHeader}>
-                        <h1>Profile settings</h1>
-                        <p>Cap nhat thong tin tai khoan ca nhan.</p>
-                    </div>
+                <div className={styles.shell}>
+                    <aside className={styles.accountPanel}>
+                        <div className={styles.avatar}>
+                            {(profile?.name || userInfo?.name || 'U')
+                                .charAt(0)
+                                .toUpperCase()}
+                        </div>
+                        <h2>{profile?.name || 'User'}</h2>
+                        <p>{profile?.email}</p>
 
-                    <form onSubmit={handleSubmit} className={styles.formGrid}>
-                        <label>
-                            Ho ten
-                            <input
-                                value={form.name}
-                                onChange={(e) => updateField('name', e.target.value)}
-                                placeholder="Nhap ho ten"
-                            />
-                        </label>
+                        <div className={styles.metaGrid}>
+                            <div className={styles.metaCard}>
+                                <span>Role</span>
+                                <strong>{profile?.role || 'CUSTOMER'}</strong>
+                            </div>
+                            <div className={styles.metaCard}>
+                                <span>Status</span>
+                                <strong>{profile?.status || 'ACTIVE'}</strong>
+                            </div>
+                        </div>
+                    </aside>
 
-                        <label>
-                            Email
-                            <input
-                                value={form.email}
-                                onChange={(e) => updateField('email', e.target.value)}
-                                placeholder="Nhap email"
-                                type="email"
-                            />
-                        </label>
-
-                        <label>
-                            Mat khau moi (tuy chon)
-                            <input
-                                value={form.password}
-                                onChange={(e) => updateField('password', e.target.value)}
-                                placeholder="De trong neu khong doi"
-                                type="password"
-                            />
-                        </label>
-
-                        <div className={styles.infoMeta}>
-                            <span>
-                                Role: <strong>{profile?.role || 'CUSTOMER'}</strong>
-                            </span>
-                            <span>
-                                Status: <strong>{profile?.status || 'ACTIVE'}</strong>
-                            </span>
+                    <div className={styles.card}>
+                        <div className={styles.cardHeader}>
+                            <p className={styles.kicker}>Account settings</p>
+                            <h1>Profile settings</h1>
+                            <p>Cap nhat thong tin tai khoan ca nhan.</p>
                         </div>
 
-                        {error && <p className={styles.errorText}>{error}</p>}
-                        {success && <p className={styles.successText}>{success}</p>}
+                        <form onSubmit={handleSubmit} className={styles.formGrid}>
+                            <label>
+                                Ho ten
+                                <input
+                                    value={form.name}
+                                    onChange={(e) => updateField('name', e.target.value)}
+                                    placeholder="Nhap ho ten"
+                                />
+                            </label>
 
-                        <button
-                            type="submit"
-                            className={styles.primaryBtn}
-                            disabled={saving}
-                        >
-                            {saving ? 'Dang luu...' : 'Luu thay doi'}
-                        </button>
-                    </form>
+                            <label>
+                                Email
+                                <input
+                                    value={form.email}
+                                    onChange={(e) => updateField('email', e.target.value)}
+                                    placeholder="Nhap email"
+                                    type="email"
+                                />
+                            </label>
+
+                            <label>
+                                Mat khau moi (tuy chon)
+                                <input
+                                    value={form.password}
+                                    onChange={(e) => updateField('password', e.target.value)}
+                                    placeholder="De trong neu khong doi"
+                                    type="password"
+                                />
+                            </label>
+
+                            {error && <p className={styles.errorText}>{error}</p>}
+                            {success && <p className={styles.successText}>{success}</p>}
+
+                            <button
+                                type="submit"
+                                className={styles.primaryBtn}
+                                disabled={saving}
+                            >
+                                {saving ? 'Dang luu...' : 'Luu thay doi'}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </section>
         </Layout>
