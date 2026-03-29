@@ -1,0 +1,20 @@
+{
+  "name": "Premium GameXBox",
+  "short_name": "GameXBox",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1f7aec",
+  "icons": [
+    {
+      "src": "/favilight.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favilight.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
